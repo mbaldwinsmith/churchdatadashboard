@@ -394,6 +394,25 @@ body {
   height: 100% !important;
 }
 
+.chart-area.is-empty canvas {
+  opacity: 0.2;
+  filter: grayscale(0.6);
+}
+
+.chart-area.is-empty::after {
+  content: 'No data matches your filters yet—try widening them.';
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 0 2rem;
+  font-weight: 500;
+  color: var(--muted);
+  pointer-events: none;
+}
+
 .chart-header {
   display: flex;
   justify-content: space-between;
@@ -494,6 +513,18 @@ tbody tr:nth-child(even) {
 
 tbody tr:hover {
   background: rgba(63, 106, 224, 0.12);
+}
+
+.table-empty-state,
+.table-empty-state:hover {
+  background: none !important;
+}
+
+.table-empty-state td {
+  text-align: center;
+  padding: 1.5rem;
+  color: var(--muted);
+  font-weight: 500;
 }
 
 .page-footer {

@@ -140,6 +140,13 @@ function updateChartAriaLabel(canvas, description) {
   canvas.setAttribute('aria-label', description);
 }
 
+function setChartAreaState(canvas, hasData) {
+  if (!canvas) return;
+  const chartArea = canvas.closest('.chart-area');
+  if (!chartArea) return;
+  chartArea.classList.toggle('is-empty', !hasData);
+}
+
 function setDatasetStatus(message, type = 'info') {
   if (!elements.datasetStatus) return;
   elements.datasetStatus.textContent = message;
@@ -445,6 +452,7 @@ function updateTrendChart(filtered, metricKey) {
       ? `Line chart showing weekly ${metricDescription} totals.`
       : `Line chart showing weekly ${metricDescription} totals. No data available for the current filters.`
   );
+  setChartAreaState(elements.trendChartCanvas, hasData);
 
   if (!trendChart) {
     trendChart = new Chart(elements.trendChartCanvas, {
@@ -515,6 +523,7 @@ function updateMonthlyChart(filtered, metricKey) {
       ? `Bar chart showing monthly ${metricDescription} totals.`
       : `Bar chart showing monthly ${metricDescription} totals. No data available for the current filters.`
   );
+  setChartAreaState(elements.monthlyChartCanvas, hasData);
 
   if (!monthlyChart) {
     monthlyChart = new Chart(elements.monthlyChartCanvas, {
@@ -574,6 +583,7 @@ function updateDistributionChart(filtered, metricKey) {
       ? `Pie chart showing ${metricDescription} by ${dimensionDescription}.`
       : `Pie chart showing ${metricDescription} by ${dimensionDescription}. No data available for the current filters.`
   );
+  setChartAreaState(elements.distributionChartCanvas, hasData);
 
   if (!distributionChart) {
     distributionChart = new Chart(elements.distributionChartCanvas, {
@@ -611,20 +621,30 @@ function updateTable(filtered) {
     return cell;
   };
 
-  sorted.slice(0, 50).forEach((row) => {
-    const tableRow = document.createElement('tr');
+  if (!sorted.length) {
+    const emptyRow = document.createElement('tr');
+    emptyRow.className = 'table-empty-state';
+    const emptyCell = document.createElement('td');
+    emptyCell.colSpan = 6;
+    emptyCell.textContent = 'No data matches your filters yet—try widening them.';
+    emptyRow.appendChild(emptyCell);
+    fragment.appendChild(emptyRow);
+  } else {
+    sorted.slice(0, 50).forEach((row) => {
+      const tableRow = document.createElement('tr');
 
-    tableRow.append(
-      createCell(row.Week),
-      createCell(formatDateLabel(row.Date)),
-      createCell(row.Site),
-      createCell(row.Service),
-      createCell(formatNumber(row[metricKey])),
-      createCell(formatNumber(row[secondaryKey]))
-    );
+      tableRow.append(
+        createCell(row.Week),
+        createCell(formatDateLabel(row.Date)),
+        createCell(row.Site),
+        createCell(row.Service),
+        createCell(formatNumber(row[metricKey])),
+        createCell(formatNumber(row[secondaryKey]))
+      );
 
-    fragment.appendChild(tableRow);
-  });
+      fragment.appendChild(tableRow);
+    });
+  }
 
   elements.tableBody.replaceChildren(fragment);
 }
