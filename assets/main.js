@@ -665,7 +665,6 @@ function updateActiveFilters() {
   } else {
     siteLabel = `${state.site} site`;
   }
-
   const serviceLabel = state.service === 'All' ? 'all services' : `${state.service} service`;
   const metricLabel = state.metric === 'Attendance' ? 'attendance' : 'kids check-ins';
 

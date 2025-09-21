@@ -9,7 +9,7 @@ Interactive static dashboard for church attendance data.
    ```bash
    node scripts/generateAttendanceData.js
    ```
-
+   
    This produces both `data/attendance.json` and `data/attendance.csv` which the
    dashboard loads by default.
 
