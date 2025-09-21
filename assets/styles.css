@@ -182,25 +182,60 @@ main {
   min-width: 160px;
 }
 
-.control-group label,
+.toggle-group {
+  gap: 0.6rem;
+}
+
+.control-group .control-label,
 .metric-toggle span {
   font-weight: 600;
   font-size: 0.9rem;
 }
 
-select {
-  padding: 0.6rem 0.75rem;
-  border-radius: 0.75rem;
-  border: 1px solid var(--border);
-  background: #fff;
-  font-size: 0.95rem;
-  transition: border 0.2s ease, box-shadow 0.2s ease;
+.toggle-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
 }
 
-select:focus {
+.toggle-button {
+  border: 1px solid var(--border);
+  background: #fff;
+  color: var(--muted);
+  font-weight: 600;
+  border-radius: 999px;
+  padding: 0.45rem 0.95rem;
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+  white-space: nowrap;
+}
+
+.toggle-button.small {
+  padding: 0.35rem 0.8rem;
+  font-size: 0.85rem;
+}
+
+.toggle-button:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.toggle-button:focus-visible {
   outline: none;
   border-color: var(--accent);
+  color: var(--accent);
   box-shadow: 0 0 0 3px var(--accent-soft);
+}
+
+.toggle-button.active {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+  box-shadow: 0 10px 20px rgba(63, 106, 224, 0.2);
+}
+
+.toggle-button.active:focus-visible {
+  box-shadow: 0 0 0 3px var(--accent-soft), 0 10px 20px rgba(63, 106, 224, 0.2);
 }
 
 .metric-toggle {
@@ -278,11 +313,29 @@ select:focus {
   box-shadow: 0 16px 32px rgba(31, 41, 51, 0.08);
 }
 
+.chart-area {
+  position: relative;
+  height: 220px;
+}
+
+.chart-area canvas {
+  width: 100% !important;
+  height: 100% !important;
+}
+
 .chart-header {
   display: flex;
   justify-content: space-between;
-  align-items: baseline;
+  align-items: flex-start;
   margin-bottom: 0.75rem;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.chart-title {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
 }
 
 .chart-header h2 {
@@ -294,6 +347,13 @@ select:focus {
   margin: 0;
   color: var(--muted);
   font-size: 0.85rem;
+}
+
+.chart-toggle-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
 }
 
 .table-section {
@@ -368,6 +428,6 @@ footer {
   .chart-header {
     flex-direction: column;
     align-items: flex-start;
-    gap: 0.25rem;
+    gap: 0.5rem;
   }
 }
