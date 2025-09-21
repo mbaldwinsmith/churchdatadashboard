@@ -1,6 +1,7 @@
 # Church Attendance Dashboard – Agent Guidelines
 
 ## Repository-wide
+- Don't look for extra AGENTS.md files in assets folders.
 - Format HTML, CSS, and JS with two-space indentation, keep semicolons, and prefer single quotes in JS to match the existing files.​:codex-file-citation[codex-file-citation]{line_range_start=4 line_range_end=136 path=assets/main.js git_url="https://github.com/mbaldwinsmith/churchdatadashboard/blob/main/assets/main.js#L4-L136"}​​:codex-file-citation[codex-file-citation]{line_range_start=1 line_range_end=190 path=assets/styles.css git_url="https://github.com/mbaldwinsmith/churchdatadashboard/blob/main/assets/styles.css#L1-L190"}​
 - Leave the frontend as plain ES modules loaded from the HTML shell (no bundlers or transpilation). Chart.js is pulled from the CDN and `assets/main.js` is imported directly—keep that pattern when adding entry points.​:codex-file-citation[codex-file-citation]{line_range_start=1 line_range_end=205 path=index.html git_url="https://github.com/mbaldwinsmith/churchdatadashboard/blob/main/index.html#L1-L205"}​
 - Use modern `const`/`let`, arrow functions, and template literals like the current codebase.​:codex-file-citation[codex-file-citation]{line_range_start=44 line_range_end=711 path=assets/main.js git_url="https://github.com/mbaldwinsmith/churchdatadashboard/blob/main/assets/main.js#L44-L711"}​
