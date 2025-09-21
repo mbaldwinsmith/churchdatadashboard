@@ -30,11 +30,13 @@ function getSundays(year) {
   const sundays = [];
   const date = getFirstSunday(year);
   let week = 1;
-  while (week <= 52) {
+
+  while (date.getFullYear() === year) {
     sundays.push({ week, date: new Date(date) });
     date.setDate(date.getDate() + 7);
     week += 1;
   }
+
   return sundays;
 }
 
@@ -73,7 +75,10 @@ function weeklyNoise(intensity = 0.08) {
 }
 
 function formatDate(date) {
-  return date.toISOString().slice(0, 10);
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
 }
 
 function toMonthString(date) {

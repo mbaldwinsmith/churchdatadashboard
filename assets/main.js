@@ -794,19 +794,30 @@ function updateTable(filtered) {
     return 0;
   });
 
-  const rows = sorted.slice(0, 50).map((row) => {
-    return `
-      <tr>
-        <td>${row.Week}</td>
-        <td>${formatDateLabel(row.Date)}</td>
-        <td>${row.Site}</td>
-        <td>${row.Service}</td>
-        <td>${formatNumber(row[metricKey])}</td>
-        <td>${formatNumber(row[secondaryKey])}</td>
-      </tr>`;
+  const fragment = document.createDocumentFragment();
+
+  const createCell = (value) => {
+    const cell = document.createElement('td');
+    cell.textContent = value;
+    return cell;
+  };
+
+  sorted.slice(0, 50).forEach((row) => {
+    const tableRow = document.createElement('tr');
+
+    tableRow.append(
+      createCell(row.Week),
+      createCell(formatDateLabel(row.Date)),
+      createCell(row.Site),
+      createCell(row.Service),
+      createCell(formatNumber(row[metricKey])),
+      createCell(formatNumber(row[secondaryKey]))
+    );
+
+    fragment.appendChild(tableRow);
   });
 
-  elements.tableBody.innerHTML = rows.join('');
+  elements.tableBody.replaceChildren(fragment);
 }
 
 function updateActiveFilters() {
