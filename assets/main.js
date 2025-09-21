@@ -46,7 +46,10 @@ const elements = {
   activeFilters: document.getElementById('activeFilters'),
   metricHeader: document.getElementById('metricHeader'),
   secondaryMetricHeader: document.getElementById('secondaryMetricHeader'),
-  tableBody: document.getElementById('tableBody')
+  tableBody: document.getElementById('tableBody'),
+  trendChartCanvas: document.getElementById('trendChart'),
+  monthlyChartCanvas: document.getElementById('monthlyChart'),
+  distributionChartCanvas: document.getElementById('distributionChart')
 };
 
 let dataset = [];
@@ -142,12 +145,59 @@ function formatNumber(value, { decimals = 0 } = {}) {
 }
 
 function formatDateLabel(dateString) {
-  const date = new Date(dateString);
+  const date = parseIsoDateLocal(dateString);
   return date.toLocaleDateString('en-US', {
     month: 'short',
     day: 'numeric',
     year: 'numeric'
   });
+}
+
+function parseIsoDateLocal(value) {
+  if (typeof value !== 'string') {
+    throw new Error(`Invalid Date value "${value}".`);
+  }
+
+  const parts = value.split('-');
+  if (parts.length !== 3) {
+    throw new Error(`Invalid Date value "${value}".`);
+  }
+
+  const [yearPart, monthPart, dayPart] = parts;
+  const year = Number(yearPart);
+  const month = Number(monthPart);
+  const day = Number(dayPart);
+
+  if (![year, month, day].every((part) => Number.isInteger(part))) {
+    throw new Error(`Invalid Date value "${value}".`);
+  }
+
+  const date = new Date(year, month - 1, day);
+  if (
+    Number.isNaN(date.getTime()) ||
+    date.getFullYear() !== year ||
+    date.getMonth() !== month - 1 ||
+    date.getDate() !== day
+  ) {
+    throw new Error(`Invalid Date value "${value}".`);
+  }
+
+  return date;
+}
+
+function getMetricDescription(metricKey) {
+  if (metricKey === 'Attendance') {
+    return 'attendance';
+  }
+  if (metricKey === 'Kids Checked-in') {
+    return 'kids check-ins';
+  }
+  return String(metricKey || '').toLowerCase();
+}
+
+function updateChartAriaLabel(canvas, description) {
+  if (!canvas) return;
+  canvas.setAttribute('aria-label', description);
 }
 
 function setDatasetStatus(message, type = 'info') {
@@ -208,10 +258,7 @@ function normalizeCsvRow(entry) {
     throw new Error('Date is required.');
   }
 
-  const parsedDate = new Date(entry.Date);
-  if (Number.isNaN(parsedDate.getTime())) {
-    throw new Error(`Invalid Date value "${entry.Date}".`);
-  }
+  const parsedDate = parseIsoDateLocal(entry.Date);
 
   const site = entry.Site?.trim();
   if (!site) {
@@ -409,7 +456,9 @@ function aggregateByDate(rows, metricKey) {
     const record = map.get(key);
     record.value += row[metricKey];
   });
-  return Array.from(map.values()).sort((a, b) => new Date(a.date) - new Date(b.date));
+  return Array.from(map.values()).sort(
+    (a, b) => parseIsoDateLocal(a.date) - parseIsoDateLocal(b.date)
+  );
 }
 
 function aggregateMonthly(rows, metricKey) {
@@ -524,6 +573,7 @@ function updateTrendChart(filtered, metricKey) {
   const aggregated = aggregateByDate(filtered, metricKey);
   const labels = aggregated.map((item) => item.date);
   const values = aggregated.map((item) => item.value);
+  const metricDescription = getMetricDescription(state.metric);
 
   const chartData = {
     labels,
@@ -553,7 +603,7 @@ function updateTrendChart(filtered, metricKey) {
           callback: (value, index) => {
             const label = labels[index];
             if (!label) return '';
-            const date = new Date(label);
+            const date = parseIsoDateLocal(label);
             return `${date.getMonth() + 1}/${date.getDate()}`;
           }
         },
@@ -579,9 +629,16 @@ function updateTrendChart(filtered, metricKey) {
     }
   };
 
+  const hasData = aggregated.length > 0;
+  updateChartAriaLabel(
+    elements.trendChartCanvas,
+    hasData
+      ? `Line chart showing weekly ${metricDescription} totals.`
+      : `Line chart showing weekly ${metricDescription} totals. No data available for the current filters.`
+  );
+
   if (!trendChart) {
-    const ctx = document.getElementById('trendChart');
-    trendChart = new Chart(ctx, {
+    trendChart = new Chart(elements.trendChartCanvas, {
       type: 'line',
       data: chartData,
       options
@@ -597,6 +654,7 @@ function updateMonthlyChart(filtered, metricKey) {
   const aggregated = aggregateMonthly(filtered, metricKey);
   const labels = aggregated.map((item) => item.label);
   const values = aggregated.map((item) => item.value);
+  const metricDescription = getMetricDescription(state.metric);
 
   const chartData = {
     labels,
@@ -641,9 +699,16 @@ function updateMonthlyChart(filtered, metricKey) {
     }
   };
 
+  const hasData = aggregated.length > 0;
+  updateChartAriaLabel(
+    elements.monthlyChartCanvas,
+    hasData
+      ? `Bar chart showing monthly ${metricDescription} totals.`
+      : `Bar chart showing monthly ${metricDescription} totals. No data available for the current filters.`
+  );
+
   if (!monthlyChart) {
-    const ctx = document.getElementById('monthlyChart');
-    monthlyChart = new Chart(ctx, {
+    monthlyChart = new Chart(elements.monthlyChartCanvas, {
       type: 'bar',
       data: chartData,
       options
@@ -658,6 +723,8 @@ function updateMonthlyChart(filtered, metricKey) {
 function updateDistributionChart(filtered, metricKey) {
   const distribution = getDistributionData(filtered, metricKey, state.distributionDimension);
   elements.distributionLabel.textContent = `Share by ${distribution.dimension.toLowerCase()}`;
+  const metricDescription = getMetricDescription(state.metric);
+  const dimensionDescription = distribution.dimension.toLowerCase();
 
   const chartData = {
     labels: distribution.labels,
@@ -691,9 +758,16 @@ function updateDistributionChart(filtered, metricKey) {
     }
   };
 
+  const hasData = distribution.values.length > 0;
+  updateChartAriaLabel(
+    elements.distributionChartCanvas,
+    hasData
+      ? `Pie chart showing ${metricDescription} by ${dimensionDescription}.`
+      : `Pie chart showing ${metricDescription} by ${dimensionDescription}. No data available for the current filters.`
+  );
+
   if (!distributionChart) {
-    const ctx = document.getElementById('distributionChart');
-    distributionChart = new Chart(ctx, {
+    distributionChart = new Chart(elements.distributionChartCanvas, {
       type: 'pie',
       data: chartData,
       options
@@ -713,7 +787,7 @@ function updateTable(filtered) {
   elements.secondaryMetricHeader.textContent = secondaryKey;
 
   const sorted = [...filtered].sort((a, b) => {
-    const dateDiff = new Date(b.Date) - new Date(a.Date);
+    const dateDiff = parseIsoDateLocal(b.Date) - parseIsoDateLocal(a.Date);
     if (dateDiff !== 0) return dateDiff;
     if (a.Site !== b.Site) return a.Site > b.Site ? 1 : -1;
     if (a.Service !== b.Service) return a.Service > b.Service ? 1 : -1;
@@ -780,7 +854,7 @@ function updateActiveFilters() {
   } else {
     serviceLabel = `${formatList(serviceSelections)} services`;
   }
-  const metricLabel = state.metric === 'Attendance' ? 'attendance' : 'kids check-ins';
+  const metricLabel = getMetricDescription(state.metric);
 
   elements.activeFilters.textContent = `Showing ${metricLabel} for ${serviceLabel} at ${siteLabel} across ${yearLabel}.`;
 }
