@@ -1,3 +1,6 @@
+import { monthRank, parseCsv, parseIsoDateLocal } from './csvParser.mjs';
+import { MAX_FILE_SIZE_BYTES, describeFileSize } from './csvSecurity.mjs';
+
 const state = {
   year: ['All'],
   site: ['All'],
@@ -5,26 +8,6 @@ const state = {
   metric: 'Attendance',
   distributionDimension: 'Service'
 };
-
-const monthNames = [
-  'January',
-  'February',
-  'March',
-  'April',
-  'May',
-  'June',
-  'July',
-  'August',
-  'September',
-  'October',
-  'November',
-  'December'
-];
-
-const monthRank = monthNames.reduce((acc, name, index) => {
-  acc[name] = index;
-  return acc;
-}, {});
 
 const elements = {
   yearToggle: document.getElementById('yearToggle'),
@@ -67,17 +50,6 @@ const colors = [
   '#15aabf',
   '#f76707',
   '#20c997'
-];
-
-const REQUIRED_HEADERS = [
-  'Week',
-  'Date',
-  'Year',
-  'Month',
-  'Site',
-  'Service',
-  'Attendance',
-  'Kids Checked-in'
 ];
 
 function getActiveSelections(stateKey) {
@@ -153,38 +125,6 @@ function formatDateLabel(dateString) {
   });
 }
 
-function parseIsoDateLocal(value) {
-  if (typeof value !== 'string') {
-    throw new Error(`Invalid Date value "${value}".`);
-  }
-
-  const parts = value.split('-');
-  if (parts.length !== 3) {
-    throw new Error(`Invalid Date value "${value}".`);
-  }
-
-  const [yearPart, monthPart, dayPart] = parts;
-  const year = Number(yearPart);
-  const month = Number(monthPart);
-  const day = Number(dayPart);
-
-  if (![year, month, day].every((part) => Number.isInteger(part))) {
-    throw new Error(`Invalid Date value "${value}".`);
-  }
-
-  const date = new Date(year, month - 1, day);
-  if (
-    Number.isNaN(date.getTime()) ||
-    date.getFullYear() !== year ||
-    date.getMonth() !== month - 1 ||
-    date.getDate() !== day
-  ) {
-    throw new Error(`Invalid Date value "${value}".`);
-  }
-
-  return date;
-}
-
 function getMetricDescription(metricKey) {
   if (metricKey === 'Attendance') {
     return 'attendance';
@@ -209,137 +149,6 @@ function setDatasetStatus(message, type = 'info') {
   } else if (type === 'error') {
     elements.datasetStatus.classList.add('error');
   }
-}
-
-function parseCsvLine(line) {
-  const values = [];
-  let current = '';
-  let inQuotes = false;
-
-  for (let i = 0; i < line.length; i += 1) {
-    const char = line[i];
-    if (char === '"') {
-      if (inQuotes && line[i + 1] === '"') {
-        current += '"';
-        i += 1;
-      } else {
-        inQuotes = !inQuotes;
-      }
-    } else if (char === ',' && !inQuotes) {
-      values.push(current);
-      current = '';
-    } else {
-      current += char;
-    }
-  }
-
-  values.push(current);
-  return values;
-}
-
-function normalizeMonth(value, date) {
-  if (value) {
-    const match = monthNames.find((month) => month.toLowerCase() === value.toLowerCase());
-    if (match) {
-      return match;
-    }
-  }
-  return monthNames[date.getMonth()];
-}
-
-function normalizeCsvRow(entry) {
-  const weekValue = Number(entry.Week);
-  if (!Number.isFinite(weekValue)) {
-    throw new Error('Week must be a number.');
-  }
-  const week = Math.round(weekValue);
-
-  if (!entry.Date) {
-    throw new Error('Date is required.');
-  }
-
-  const parsedDate = parseIsoDateLocal(entry.Date);
-
-  const site = entry.Site?.trim();
-  if (!site) {
-    throw new Error('Site is required.');
-  }
-
-  const service = entry.Service?.trim();
-  if (!service) {
-    throw new Error('Service is required.');
-  }
-
-  const attendanceValue = Number(entry.Attendance);
-  if (!Number.isFinite(attendanceValue)) {
-    throw new Error('Attendance must be a number.');
-  }
-  const attendance = Math.round(attendanceValue);
-
-  const kidsValue = Number(entry['Kids Checked-in']);
-  if (!Number.isFinite(kidsValue)) {
-    throw new Error('Kids Checked-in must be a number.');
-  }
-  const kids = Math.round(kidsValue);
-
-  const yearValue = entry.Year ? String(entry.Year).trim() : String(parsedDate.getFullYear());
-  const monthValue = normalizeMonth(entry.Month ? String(entry.Month).trim() : '', parsedDate);
-
-  return {
-    Week: week,
-    Date: entry.Date,
-    Year: yearValue,
-    Month: monthValue,
-    Site: site,
-    Service: service,
-    Attendance: attendance,
-    'Kids Checked-in': kids
-  };
-}
-
-function parseCsv(text) {
-  const lines = text
-    .split(/\r?\n/)
-    .map((line) => line.trim())
-    .filter((line) => line.length > 0);
-
-  if (!lines.length) {
-    throw new Error('The CSV file is empty.');
-  }
-
-  const headers = parseCsvLine(lines[0]).map((header) => header.trim());
-  const missing = REQUIRED_HEADERS.filter((header) => !headers.includes(header));
-
-  if (missing.length) {
-    throw new Error(`The CSV file is missing required columns: ${missing.join(', ')}.`);
-  }
-
-  const records = [];
-
-  for (let index = 1; index < lines.length; index += 1) {
-    const rawLine = lines[index];
-    if (!rawLine.trim()) {
-      continue;
-    }
-
-    const values = parseCsvLine(rawLine);
-    const entry = {};
-    headers.forEach((header, headerIndex) => {
-      entry[header] = values[headerIndex]?.trim() ?? '';
-    });
-
-    try {
-      records.push(normalizeCsvRow(entry));
-    } catch (error) {
-      throw new Error(`Row ${index + 1}: ${error.message}`);
-    }
-  }
-
-  if (!records.length) {
-    throw new Error('The CSV file does not contain any data rows.');
-  }
-
-  return records;
 }
 
 function buildServicesBySite(data) {
@@ -1075,6 +884,21 @@ function handleDatasetUpload(event) {
 
   if (!file.name.toLowerCase().endsWith('.csv')) {
     setDatasetStatus('Please choose a CSV file.', 'error');
+    input.value = '';
+    return;
+  }
+
+  if (file.size === 0) {
+    setDatasetStatus('The selected file is empty.', 'error');
+    input.value = '';
+    return;
+  }
+
+  if (file.size > MAX_FILE_SIZE_BYTES) {
+    setDatasetStatus(
+      `The selected file is too large. The maximum supported size is ${describeFileSize(MAX_FILE_SIZE_BYTES)}.`,
+      'error'
+    );
     input.value = '';
     return;
   }
