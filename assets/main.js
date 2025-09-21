@@ -1,7 +1,7 @@
 const state = {
-  year: 'All',
-  site: 'All',
-  service: 'All',
+  year: ['All'],
+  site: ['All'],
+  service: ['All'],
   metric: 'Attendance',
   distributionDimension: 'Service'
 };
@@ -76,6 +76,63 @@ const REQUIRED_HEADERS = [
   'Attendance',
   'Kids Checked-in'
 ];
+
+function getActiveSelections(stateKey) {
+  const value = state[stateKey];
+  if (Array.isArray(value)) {
+    return [...value];
+  }
+  if (value === undefined || value === null) {
+    state[stateKey] = [];
+    return [];
+  }
+  state[stateKey] = [value];
+  return [...state[stateKey]];
+}
+
+function applySelection(stateKey, selections, options = []) {
+  const optionSet = new Set(options);
+  const hasAllOption = optionSet.has('All');
+  const fallback = options.length ? (hasAllOption ? 'All' : options[0]) : 'All';
+  let normalized = [];
+
+  selections.forEach((value) => {
+    if (value === 'All' && hasAllOption) {
+      normalized = ['All'];
+    } else if (value !== 'All') {
+      const isAllowed = !options.length || optionSet.has(value);
+      if (isAllowed && !normalized.includes(value)) {
+        normalized.push(value);
+      }
+    }
+  });
+
+  if (!normalized.length) {
+    normalized = fallback ? [fallback] : [];
+  }
+
+  if (normalized.length > 1 && normalized.includes('All')) {
+    normalized = ['All'];
+  }
+
+  if (options.length) {
+    normalized = options.filter((option) => normalized.includes(option));
+  }
+
+  state[stateKey] = normalized;
+  return normalized;
+}
+
+function matchesSelection(selections, value) {
+  return !selections.length || selections.includes('All') || selections.includes(value);
+}
+
+function formatList(items) {
+  if (!items.length) return '';
+  if (items.length === 1) return items[0];
+  if (items.length === 2) return `${items[0]} and ${items[1]}`;
+  return `${items.slice(0, -1).join(', ')}, and ${items[items.length - 1]}`;
+}
 
 function formatNumber(value, { decimals = 0 } = {}) {
   return Number(value).toLocaleString('en-US', {
@@ -264,14 +321,12 @@ function renderToggleOptions(container, options, stateKey) {
   if (!container) return;
   if (!options.length) {
     container.innerHTML = '';
+    state[stateKey] = [];
     return;
   }
 
-  let selectedValue = state[stateKey];
-  if (!options.includes(selectedValue)) {
-    selectedValue = options[0];
-    state[stateKey] = selectedValue;
-  }
+  const selections = applySelection(stateKey, getActiveSelections(stateKey), options);
+  const selectionSet = new Set(selections);
 
   container.innerHTML = '';
   options.forEach((option) => {
@@ -280,11 +335,29 @@ function renderToggleOptions(container, options, stateKey) {
     button.className = 'toggle-button';
     button.dataset.value = option;
     button.textContent = option;
-    button.setAttribute('role', 'radio');
+    button.setAttribute('role', 'checkbox');
+    const isActive = selectionSet.has(option);
+    if (isActive) {
+      button.classList.add('active');
+    }
+    button.setAttribute('aria-checked', isActive ? 'true' : 'false');
+    button.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+    button.tabIndex = 0;
     container.appendChild(button);
   });
+}
 
-  updateToggleGroupSelection(container, selectedValue);
+function updateMultiToggleSelection(container, stateKey) {
+  if (!container) return;
+  const selections = Array.isArray(state[stateKey]) ? state[stateKey] : [];
+  const selectionSet = new Set(selections);
+  container.querySelectorAll('.toggle-button').forEach((button) => {
+    const value = button.dataset.value;
+    const isActive = selectionSet.has(value);
+    button.classList.toggle('active', isActive);
+    button.setAttribute('aria-checked', isActive ? 'true' : 'false');
+    button.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+  });
 }
 
 function populateFilterOptions() {
@@ -294,27 +367,34 @@ function populateFilterOptions() {
   const uniqueSites = Array.from(new Set(dataset.map((row) => row.Site))).sort();
   renderToggleOptions(elements.siteToggle, ['All', ...uniqueSites], 'site');
 
-  updateServiceOptions(state.site);
+  updateServiceOptions();
 }
 
-function updateServiceOptions(site) {
-  let services;
-  if (site === 'All') {
-    const allServices = new Set();
-    dataset.forEach((row) => allServices.add(row.Service));
-    services = Array.from(allServices).sort();
+function updateServiceOptions() {
+  const siteSelections = getActiveSelections('site');
+  const servicesSet = new Set();
+
+  if (!siteSelections.length || siteSelections.includes('All')) {
+    dataset.forEach((row) => servicesSet.add(row.Service));
   } else {
-    services = servicesBySite.get(site) || [];
+    siteSelections.forEach((site) => {
+      const services = servicesBySite.get(site) || [];
+      services.forEach((service) => servicesSet.add(service));
+    });
   }
-  const options = ['All', ...services];
+
+  const options = ['All', ...Array.from(servicesSet).sort()];
   renderToggleOptions(elements.serviceToggle, options, 'service');
 }
 
 function filterData() {
+  const yearSelections = getActiveSelections('year');
+  const siteSelections = getActiveSelections('site');
+  const serviceSelections = getActiveSelections('service');
   return dataset.filter((row) => {
-    const yearMatch = state.year === 'All' || row.Year === state.year;
-    const siteMatch = state.site === 'All' || row.Site === state.site;
-    const serviceMatch = state.service === 'All' || row.Service === state.service;
+    const yearMatch = matchesSelection(yearSelections, row.Year);
+    const siteMatch = matchesSelection(siteSelections, row.Site);
+    const serviceMatch = matchesSelection(serviceSelections, row.Service);
     return yearMatch && siteMatch && serviceMatch;
   });
 }
@@ -656,34 +736,50 @@ function updateTable(filtered) {
 }
 
 function updateActiveFilters() {
+  const yearSelections = getActiveSelections('year');
+  const siteSelections = getActiveSelections('site');
+  const serviceSelections = getActiveSelections('service');
+
+  const availableYears = Array.from(new Set(dataset.map((row) => row.Year))).sort();
   let yearLabel;
-  if (state.year === 'All') {
-    const years = Array.from(new Set(dataset.map((row) => row.Year))).sort();
-    if (years.length > 1) {
-      yearLabel = `all years (${years[0]}–${years[years.length - 1]})`;
-    } else if (years.length === 1) {
-      yearLabel = `the year ${years[0]}`;
+  if (!yearSelections.length || yearSelections.includes('All')) {
+    if (availableYears.length > 1) {
+      yearLabel = `all years (${availableYears[0]}–${availableYears[availableYears.length - 1]})`;
+    } else if (availableYears.length === 1) {
+      yearLabel = `the year ${availableYears[0]}`;
     } else {
       yearLabel = 'all available years';
     }
+  } else if (yearSelections.length === 1) {
+    yearLabel = `the year ${yearSelections[0]}`;
   } else {
-    yearLabel = `the year ${state.year}`;
+    yearLabel = `the years ${formatList(yearSelections)}`;
   }
 
+  const availableSites = Array.from(new Set(dataset.map((row) => row.Site))).sort();
   let siteLabel;
-  if (state.site === 'All') {
-    const sites = Array.from(new Set(dataset.map((row) => row.Site))).sort();
-    if (sites.length > 1) {
+  if (!siteSelections.length || siteSelections.includes('All')) {
+    if (availableSites.length > 1) {
       siteLabel = 'all sites';
-    } else if (sites.length === 1) {
-      siteLabel = `${sites[0]} site`;
+    } else if (availableSites.length === 1) {
+      siteLabel = `${availableSites[0]} site`;
     } else {
       siteLabel = 'available sites';
     }
+  } else if (siteSelections.length === 1) {
+    siteLabel = `${siteSelections[0]} site`;
   } else {
-    siteLabel = `${state.site} site`;
+    siteLabel = `${formatList(siteSelections)} sites`;
   }
-  const serviceLabel = state.service === 'All' ? 'all services' : `${state.service} service`;
+
+  let serviceLabel;
+  if (!serviceSelections.length || serviceSelections.includes('All')) {
+    serviceLabel = 'all services';
+  } else if (serviceSelections.length === 1) {
+    serviceLabel = `${serviceSelections[0]} service`;
+  } else {
+    serviceLabel = `${formatList(serviceSelections)} services`;
+  }
   const metricLabel = state.metric === 'Attendance' ? 'attendance' : 'kids check-ins';
 
   elements.activeFilters.textContent = `Showing ${metricLabel} for ${serviceLabel} at ${siteLabel} across ${yearLabel}.`;
@@ -701,7 +797,7 @@ function updateDashboard() {
   updateActiveFilters();
 }
 
-function registerFilterToggle(container, stateKey, { onChange } = {}) {
+function registerSingleSelectToggle(container, stateKey, { onChange } = {}) {
   if (!container) return;
 
   container.addEventListener('click', (event) => {
@@ -754,15 +850,93 @@ function registerFilterToggle(container, stateKey, { onChange } = {}) {
   });
 }
 
+function registerMultiSelectToggle(container, stateKey, { onChange } = {}) {
+  if (!container) return;
+
+  container.addEventListener('click', (event) => {
+    const button = event.target.closest('.toggle-button');
+    if (!button || !container.contains(button)) {
+      return;
+    }
+
+    const value = button.dataset.value;
+    if (!value) {
+      return;
+    }
+
+    const options = Array.from(container.querySelectorAll('.toggle-button')).map((btn) => btn.dataset.value);
+    const current = getActiveSelections(stateKey);
+    let next;
+
+    if (value === 'All') {
+      next = ['All'];
+    } else {
+      const hasValue = current.includes(value);
+      if (hasValue) {
+        next = current.filter((item) => item !== value && item !== 'All');
+      } else {
+        next = current.filter((item) => item !== 'All');
+        next.push(value);
+      }
+
+      if (!next.length) {
+        next = ['All'];
+      }
+    }
+
+    const normalized = applySelection(stateKey, next, options);
+    updateMultiToggleSelection(container, stateKey);
+
+    if (typeof onChange === 'function') {
+      onChange(normalized);
+    }
+
+    button.focus();
+    updateDashboard();
+  });
+
+  container.addEventListener('keydown', (event) => {
+    const keys = ['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Home', 'End'];
+    if (!keys.includes(event.key)) {
+      return;
+    }
+
+    const buttons = Array.from(container.querySelectorAll('.toggle-button'));
+    if (!buttons.length) {
+      return;
+    }
+
+    const currentIndex = buttons.indexOf(document.activeElement);
+    let targetIndex = currentIndex >= 0 ? currentIndex : 0;
+
+    if (event.key === 'ArrowLeft' || event.key === 'ArrowUp') {
+      targetIndex = targetIndex <= 0 ? buttons.length - 1 : targetIndex - 1;
+    } else if (event.key === 'ArrowRight' || event.key === 'ArrowDown') {
+      targetIndex = targetIndex === buttons.length - 1 ? 0 : targetIndex + 1;
+    } else if (event.key === 'Home') {
+      targetIndex = 0;
+    } else if (event.key === 'End') {
+      targetIndex = buttons.length - 1;
+    }
+
+    const targetButton = buttons[targetIndex];
+    if (targetButton) {
+      targetButton.focus();
+    }
+
+    event.preventDefault();
+  });
+}
+
 function attachEventListeners() {
-  registerFilterToggle(elements.yearToggle, 'year');
-  registerFilterToggle(elements.siteToggle, 'site', {
+  registerMultiSelectToggle(elements.yearToggle, 'year');
+  registerMultiSelectToggle(elements.siteToggle, 'site', {
     onChange: () => {
-      updateServiceOptions(state.site);
+      updateServiceOptions();
     }
   });
-  registerFilterToggle(elements.serviceToggle, 'service');
-  registerFilterToggle(elements.distributionToggle, 'distributionDimension');
+  registerMultiSelectToggle(elements.serviceToggle, 'service');
+  registerSingleSelectToggle(elements.distributionToggle, 'distributionDimension');
   updateToggleGroupSelection(elements.distributionToggle, state.distributionDimension);
 
   elements.metricRadios.forEach((radio) => {
@@ -791,9 +965,9 @@ function applyDataset(data, { message, type = 'info' } = {}) {
   dataset = data;
   buildServicesBySite(dataset);
 
-  state.year = 'All';
-  state.site = 'All';
-  state.service = 'All';
+  state.year = ['All'];
+  state.site = ['All'];
+  state.service = ['All'];
 
   populateFilterOptions();
 
