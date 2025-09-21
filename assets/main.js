@@ -30,6 +30,9 @@ const elements = {
   siteSelect: document.getElementById('siteSelect'),
   serviceSelect: document.getElementById('serviceSelect'),
   metricRadios: document.querySelectorAll("input[name='metric']"),
+  datasetStatus: document.getElementById('datasetStatus'),
+  datasetUpload: document.getElementById('datasetUpload'),
+  resetDataset: document.getElementById('resetDataset'),
   summaryTotal: document.getElementById('summaryTotal'),
   summaryTotalLabel: document.getElementById('summaryTotalLabel'),
   summaryAverage: document.getElementById('summaryAverage'),
@@ -61,6 +64,17 @@ const colors = [
   '#20c997'
 ];
 
+const REQUIRED_HEADERS = [
+  'Week',
+  'Date',
+  'Year',
+  'Month',
+  'Site',
+  'Service',
+  'Attendance',
+  'Kids Checked-in'
+];
+
 function formatNumber(value, { decimals = 0 } = {}) {
   return Number(value).toLocaleString('en-US', {
     minimumFractionDigits: decimals,
@@ -75,6 +89,151 @@ function formatDateLabel(dateString) {
     day: 'numeric',
     year: 'numeric'
   });
+}
+
+function setDatasetStatus(message, type = 'info') {
+  if (!elements.datasetStatus) return;
+  elements.datasetStatus.textContent = message;
+  elements.datasetStatus.classList.remove('success', 'error');
+  if (type === 'success') {
+    elements.datasetStatus.classList.add('success');
+  } else if (type === 'error') {
+    elements.datasetStatus.classList.add('error');
+  }
+}
+
+function parseCsvLine(line) {
+  const values = [];
+  let current = '';
+  let inQuotes = false;
+
+  for (let i = 0; i < line.length; i += 1) {
+    const char = line[i];
+    if (char === '"') {
+      if (inQuotes && line[i + 1] === '"') {
+        current += '"';
+        i += 1;
+      } else {
+        inQuotes = !inQuotes;
+      }
+    } else if (char === ',' && !inQuotes) {
+      values.push(current);
+      current = '';
+    } else {
+      current += char;
+    }
+  }
+
+  values.push(current);
+  return values;
+}
+
+function normalizeMonth(value, date) {
+  if (value) {
+    const match = monthNames.find((month) => month.toLowerCase() === value.toLowerCase());
+    if (match) {
+      return match;
+    }
+  }
+  return monthNames[date.getMonth()];
+}
+
+function normalizeCsvRow(entry) {
+  const weekValue = Number(entry.Week);
+  if (!Number.isFinite(weekValue)) {
+    throw new Error('Week must be a number.');
+  }
+  const week = Math.round(weekValue);
+
+  if (!entry.Date) {
+    throw new Error('Date is required.');
+  }
+
+  const parsedDate = new Date(entry.Date);
+  if (Number.isNaN(parsedDate.getTime())) {
+    throw new Error(`Invalid Date value "${entry.Date}".`);
+  }
+
+  const site = entry.Site?.trim();
+  if (!site) {
+    throw new Error('Site is required.');
+  }
+
+  const service = entry.Service?.trim();
+  if (!service) {
+    throw new Error('Service is required.');
+  }
+
+  const attendanceValue = Number(entry.Attendance);
+  if (!Number.isFinite(attendanceValue)) {
+    throw new Error('Attendance must be a number.');
+  }
+  const attendance = Math.round(attendanceValue);
+
+  const kidsValue = Number(entry['Kids Checked-in']);
+  if (!Number.isFinite(kidsValue)) {
+    throw new Error('Kids Checked-in must be a number.');
+  }
+  const kids = Math.round(kidsValue);
+
+  const yearValue = entry.Year ? String(entry.Year).trim() : String(parsedDate.getFullYear());
+  const monthValue = normalizeMonth(entry.Month ? String(entry.Month).trim() : '', parsedDate);
+
+  return {
+    Week: week,
+    Date: entry.Date,
+    Year: yearValue,
+    Month: monthValue,
+    Site: site,
+    Service: service,
+    Attendance: attendance,
+    'Kids Checked-in': kids
+  };
+}
+
+function parseCsv(text) {
+  const lines = text
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .filter((line) => line.length > 0);
+
+  if (!lines.length) {
+    throw new Error('The CSV file is empty.');
+  }
+
+  const headers = parseCsvLine(lines[0]).map((header) => header.trim());
+  const missing = REQUIRED_HEADERS.filter((header) => !headers.includes(header));
+
+  if (missing.length) {
+    throw new Error(`The CSV file is missing required columns: ${missing.join(', ')}.`);
+  }
+
+  const records = [];
+
+  for (let index = 1; index < lines.length; index += 1) {
+    const rawLine = lines[index];
+    if (!rawLine.trim()) {
+      continue;
+    }
+
+    const values = parseCsvLine(rawLine);
+    const entry = {};
+    headers.forEach((header, headerIndex) => {
+      entry[header] = values[headerIndex]?.trim() ?? '';
+    });
+
+    try {
+      records.push(normalizeCsvRow(entry));
+    } catch (error) {
+      throw new Error(`Row ${index + 1}: ${error.message}`);
+    }
+  }
+
+  if (!records.length) {
+    throw new Error('The CSV file does not contain any data rows.');
+  }
+
+  return records;
 }
 
 function buildServicesBySite(data) {
@@ -285,6 +444,10 @@ function updateTrendChart(filtered, metricKey) {
 
   const options = {
     maintainAspectRatio: false,
+    interaction: {
+      mode: 'index',
+      intersect: false
+    },
     scales: {
       x: {
         ticks: {
@@ -351,6 +514,10 @@ function updateMonthlyChart(filtered, metricKey) {
 
   const options = {
     maintainAspectRatio: false,
+    interaction: {
+      mode: 'index',
+      intersect: false
+    },
     scales: {
       x: {
         ticks: {
@@ -407,6 +574,10 @@ function updateDistributionChart(filtered, metricKey) {
 
   const options = {
     maintainAspectRatio: false,
+    interaction: {
+      mode: 'nearest',
+      intersect: true
+    },
     plugins: {
       legend: {
         position: 'bottom'
@@ -467,8 +638,33 @@ function updateTable(filtered) {
 }
 
 function updateActiveFilters() {
-  const yearLabel = state.year === 'All' ? 'all years (2022–2024)' : `the year ${state.year}`;
-  const siteLabel = state.site === 'All' ? 'both sites' : `${state.site} site`;
+  let yearLabel;
+  if (state.year === 'All') {
+    const years = Array.from(new Set(dataset.map((row) => row.Year))).sort();
+    if (years.length > 1) {
+      yearLabel = `all years (${years[0]}–${years[years.length - 1]})`;
+    } else if (years.length === 1) {
+      yearLabel = `the year ${years[0]}`;
+    } else {
+      yearLabel = 'all available years';
+    }
+  } else {
+    yearLabel = `the year ${state.year}`;
+  }
+
+  let siteLabel;
+  if (state.site === 'All') {
+    const sites = Array.from(new Set(dataset.map((row) => row.Site))).sort();
+    if (sites.length > 1) {
+      siteLabel = 'all sites';
+    } else if (sites.length === 1) {
+      siteLabel = `${sites[0]} site`;
+    } else {
+      siteLabel = 'available sites';
+    }
+  } else {
+    siteLabel = `${state.site} site`;
+  }
   const serviceLabel = state.service === 'All' ? 'all services' : `${state.service} service`;
   const metricLabel = state.metric === 'Attendance' ? 'attendance' : 'kids check-ins';
 
@@ -510,20 +706,108 @@ function attachEventListeners() {
       updateDashboard();
     });
   });
-}
 
-async function loadData() {
-  try {
-    const response = await fetch('data/attendance.json');
-    dataset = await response.json();
-    buildServicesBySite(dataset);
-    populateFilterOptions();
-    attachEventListeners();
-    updateDashboard();
-  } catch (error) {
-    console.error('Failed to load dataset', error);
-    elements.activeFilters.textContent = 'Unable to load the dataset. Please refresh to try again.';
+  if (elements.datasetUpload) {
+    elements.datasetUpload.addEventListener('change', handleDatasetUpload);
+  }
+
+  if (elements.resetDataset) {
+    elements.resetDataset.addEventListener('click', () => {
+      loadPlaceholderDataset('success');
+    });
   }
 }
 
-loadData();
+function applyDataset(data, { message, type = 'info' } = {}) {
+  if (!Array.isArray(data) || data.length === 0) {
+    throw new Error('The dataset must contain at least one row.');
+  }
+
+  dataset = data;
+  buildServicesBySite(dataset);
+
+  state.year = 'All';
+  state.site = 'All';
+  state.service = 'All';
+
+  populateFilterOptions();
+  elements.yearSelect.value = 'All';
+  elements.siteSelect.value = 'All';
+  elements.serviceSelect.value = 'All';
+
+  updateDashboard();
+
+  if (elements.datasetUpload) {
+    elements.datasetUpload.value = '';
+  }
+
+  const defaultMessage = `Loaded ${formatNumber(dataset.length)} rows.`;
+  setDatasetStatus(message || defaultMessage, type);
+}
+
+function handleDatasetUpload(event) {
+  const input = event.target;
+  const file = input.files && input.files[0];
+  if (!file) {
+    return;
+  }
+
+  if (!file.name.toLowerCase().endsWith('.csv')) {
+    setDatasetStatus('Please choose a CSV file.', 'error');
+    input.value = '';
+    return;
+  }
+
+  const reader = new FileReader();
+
+  reader.onload = () => {
+    try {
+      if (typeof reader.result !== 'string') {
+        throw new Error('Unable to read the file as text.');
+      }
+      const text = reader.result;
+      const parsed = parseCsv(text);
+      applyDataset(parsed, {
+        message: `Loaded ${formatNumber(parsed.length)} rows from ${file.name}.`,
+        type: 'success'
+      });
+    } catch (error) {
+      console.error('Failed to parse uploaded dataset', error);
+      setDatasetStatus(error.message, 'error');
+      input.value = '';
+    }
+  };
+
+  reader.onerror = () => {
+    console.error('Failed to read uploaded dataset', reader.error);
+    setDatasetStatus('Unable to read the selected file. Please try again.', 'error');
+    input.value = '';
+  };
+
+  reader.readAsText(file);
+}
+
+async function loadPlaceholderDataset(feedbackType = 'info') {
+  try {
+    setDatasetStatus('Loading placeholder dataset…');
+    const response = await fetch('data/attendance.json', { cache: 'no-store' });
+    if (!response.ok) {
+      throw new Error(`Request failed with status ${response.status}`);
+    }
+    const data = await response.json();
+    applyDataset(data, {
+      message: `Using placeholder dataset generated for Central and North sites (2022–2024). Rows available: ${formatNumber(data.length)}.`,
+      type: feedbackType
+    });
+  } catch (error) {
+    console.error('Failed to load placeholder dataset', error);
+    setDatasetStatus('Unable to load the placeholder dataset. Upload a CSV file to continue.', 'error');
+  }
+}
+
+function initialize() {
+  attachEventListeners();
+  loadPlaceholderDataset();
+}
+
+initialize();

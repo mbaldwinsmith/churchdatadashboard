@@ -25,6 +25,36 @@
     </header>
 
     <main>
+      <section class="data-management" aria-labelledby="dataManagementHeading">
+        <article class="data-card">
+          <h2 id="dataManagementHeading">Data source</h2>
+          <p id="datasetStatus" class="dataset-status" role="status">
+            Using placeholder dataset generated for Central and North sites (2022–2024).
+          </p>
+          <div class="data-actions">
+            <label class="file-upload">
+              <span>Upload CSV dataset</span>
+              <input type="file" id="datasetUpload" accept=".csv" />
+            </label>
+            <button type="button" id="resetDataset" class="pill-button secondary">Reset to placeholder</button>
+            <a class="pill-button" href="data/attendance.csv" download>Download sample CSV</a>
+          </div>
+          <details class="guidelines">
+            <summary>CSV formatting guidelines</summary>
+            <ul>
+              <li>
+                Include a header row with the following columns: Week, Date, Year, Month, Site, Service,
+                Attendance, Kids Checked-in.
+              </li>
+              <li>Use ISO format (<code>YYYY-MM-DD</code>) for the Date column.</li>
+              <li>Year and Month should be stored as text (e.g. <code>2024</code>, <code>September</code>).</li>
+              <li>Attendance and Kids Checked-in must contain whole numbers.</li>
+              <li>Provide one row per site, service, and Sunday combination.</li>
+            </ul>
+          </details>
+        </article>
+      </section>
+    
       <section class="controls">
         <div class="control-group">
           <label for="yearSelect">Year</label>
