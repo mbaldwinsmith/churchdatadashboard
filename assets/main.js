@@ -1,12 +1,55 @@
-import { monthRank, parseCsv, parseIsoDateLocal } from './csvParser.mjs';
+import {
+  monthNames,
+  monthRank,
+  parseCsv,
+  parseIsoDateLocal,
+  computeIsoWeek
+} from './csvParser.mjs';
 import { MAX_FILE_SIZE_BYTES, describeFileSize } from './csvSecurity.mjs';
 
-const state = {
+const STORAGE_KEY = 'church-dashboard-state-v2';
+const DEFAULT_TREND_METRICS = ['Attendance'];
+
+const colors = {
+  Attendance: {
+    line: '#3f6ae0',
+    fill: 'rgba(63, 106, 224, 0.15)',
+    avg: '#102a83'
+  },
+  'Kids Checked-in': {
+    line: '#2eb88a',
+    fill: 'rgba(46, 184, 138, 0.18)',
+    avg: '#146b4f'
+  }
+};
+
+const distributionPalette = [
+  '#3f6ae0',
+  '#2eb88a',
+  '#f2a93b',
+  '#ef5b5b',
+  '#7e5bef',
+  '#15aabf',
+  '#f76707',
+  '#20c997',
+  '#1f2933',
+  '#ff6f91',
+  '#ffd166'
+];
+
+const defaultState = {
   year: ['All'],
   site: ['All'],
   service: ['All'],
   metric: 'Attendance',
-  distributionDimension: 'Service'
+  trendMetrics: [...DEFAULT_TREND_METRICS],
+  distributionDimension: 'Service',
+  distributionView: 'pie',
+  monthlyMode: 'grouped',
+  includeZeros: false,
+  search: '',
+  tableSort: { key: 'Date', direction: 'desc' },
+  tableLimit: 50
 };
 
 const elements = {
@@ -18,6 +61,8 @@ const elements = {
   datasetUpload: document.getElementById('datasetUpload'),
   resetDataset: document.getElementById('resetDataset'),
   distributionToggle: document.getElementById('distributionToggle'),
+  distributionViewToggle: document.getElementById('distributionViewToggle'),
+  monthlyModeToggle: document.getElementById('monthlyModeToggle'),
   summaryTotal: document.getElementById('summaryTotal'),
   summaryTotalLabel: document.getElementById('summaryTotalLabel'),
   summaryAverage: document.getElementById('summaryAverage'),
@@ -30,27 +75,430 @@ const elements = {
   metricHeader: document.getElementById('metricHeader'),
   secondaryMetricHeader: document.getElementById('secondaryMetricHeader'),
   tableBody: document.getElementById('tableBody'),
-  trendChartCanvas: document.getElementById('trendChart'),
-  monthlyChartCanvas: document.getElementById('monthlyChart'),
-  distributionChartCanvas: document.getElementById('distributionChart')
+  tableHeaderCells: document.querySelectorAll('.table-wrapper thead th'),
+  tableDescription: document.getElementById('tableDescription'),
+  tablePageSize: document.getElementById('tablePageSize'),
+  quickSearch: document.getElementById('quickSearch'),
+  trendMetricToggles: document.querySelectorAll('.trend-metric'),
+  includeZeros: document.getElementById('includeZeros'),
+  chartCards: document.querySelectorAll('.chart-card'),
+  chartExportButtons: document.querySelectorAll('[data-export]'),
+  storySummary: document.getElementById('storySummary'),
+  anomalyHighlights: document.getElementById('anomalyHighlights'),
+  ingestNotices: document.getElementById('ingestNotices'),
+  emptyState: document.getElementById('emptyState'),
+  controlsSection: document.querySelector('.controls'),
+  toggleButtons: document.querySelectorAll('.toggle-button')
 };
 
+const state = loadPersistedState();
+
 let dataset = [];
+let rawDataset = [];
+let servicesBySite = new Map();
+let serviceAliasInfo = [];
+let duplicatesInfo = null;
+let duplicateResolution = 'sum';
+let dataRevision = 0;
+let latestFilterKey = '';
+let latestFilteredRows = [];
+
+let filteredCache = { key: null, rows: [] };
+const aggregationCache = new Map();
+
 let trendChart;
 let monthlyChart;
 let distributionChart;
-let servicesBySite = new Map();
+let ChartJS;
+let csvWorker;
 
-const colors = [
-  '#3f6ae0',
-  '#2eb88a',
-  '#f2a93b',
-  '#ef5b5b',
-  '#7e5bef',
-  '#15aabf',
-  '#f76707',
-  '#20c997'
-];
+function loadPersistedState() {
+  const params = new URLSearchParams(window.location.search);
+  let saved = {};
+  try {
+    const stored = localStorage.getItem(STORAGE_KEY);
+    if (stored) {
+      saved = JSON.parse(stored) || {};
+    }
+  } catch (error) {
+    console.warn('Unable to read saved preferences', error);
+  }
+
+  const parseList = (value) => {
+    if (!value) return undefined;
+    return value.split('|').map((item) => item.trim()).filter(Boolean);
+  };
+
+  const merged = { ...defaultState, ...saved };
+
+  const yearParam = parseList(params.get('year'));
+  const siteParam = parseList(params.get('site'));
+  const serviceParam = parseList(params.get('service'));
+
+  if (yearParam) merged.year = yearParam;
+  if (siteParam) merged.site = siteParam;
+  if (serviceParam) merged.service = serviceParam;
+
+  if (params.has('metric')) merged.metric = params.get('metric');
+  if (params.has('trend')) merged.trendMetrics = parseList(params.get('trend')) || merged.trendMetrics;
+  if (params.has('dist')) merged.distributionDimension = params.get('dist');
+  if (params.has('view')) merged.distributionView = params.get('view');
+  if (params.has('month')) merged.monthlyMode = params.get('month');
+  if (params.has('zeros')) merged.includeZeros = params.get('zeros') === '1';
+  if (params.has('q')) merged.search = params.get('q');
+  if (params.has('limit')) merged.tableLimit = Number(params.get('limit')) || merged.tableLimit;
+  if (params.has('sort')) {
+    const [key, direction] = params.get('sort').split(':');
+    if (key) {
+      merged.tableSort = { key, direction: direction === 'asc' ? 'asc' : 'desc' };
+    }
+  }
+
+  return merged;
+}
+
+function persistState() {
+  const safeState = {
+    year: state.year,
+    site: state.site,
+    service: state.service,
+    metric: state.metric,
+    trendMetrics: state.trendMetrics,
+    distributionDimension: state.distributionDimension,
+    distributionView: state.distributionView,
+    monthlyMode: state.monthlyMode,
+    includeZeros: state.includeZeros,
+    search: state.search,
+    tableSort: state.tableSort,
+    tableLimit: state.tableLimit
+  };
+
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(safeState));
+  } catch (error) {
+    console.warn('Unable to persist dashboard state', error);
+  }
+
+  const params = new URLSearchParams();
+
+  const encodeList = (key, values) => {
+    const selections = Array.isArray(values) ? values.filter((value) => value !== 'All') : [];
+    if (selections.length) {
+      params.set(key, selections.join('|'));
+    }
+  };
+
+  encodeList('year', state.year);
+  encodeList('site', state.site);
+  encodeList('service', state.service);
+
+  if (state.metric !== defaultState.metric) {
+    params.set('metric', state.metric);
+  }
+
+  if (state.trendMetrics.sort().join('|') !== DEFAULT_TREND_METRICS.sort().join('|')) {
+    params.set('trend', state.trendMetrics.join('|'));
+  }
+
+  if (state.distributionDimension !== defaultState.distributionDimension) {
+    params.set('dist', state.distributionDimension);
+  }
+
+  if (state.distributionView !== defaultState.distributionView) {
+    params.set('view', state.distributionView);
+  }
+
+  if (state.monthlyMode !== defaultState.monthlyMode) {
+    params.set('month', state.monthlyMode);
+  }
+
+  if (state.includeZeros) {
+    params.set('zeros', '1');
+  }
+
+  if (state.search) {
+    params.set('q', state.search);
+  }
+
+  if (state.tableLimit !== defaultState.tableLimit) {
+    params.set('limit', String(state.tableLimit));
+  }
+
+  if (state.tableSort.key !== defaultState.tableSort.key || state.tableSort.direction !== defaultState.tableSort.direction) {
+    params.set('sort', `${state.tableSort.key}:${state.tableSort.direction}`);
+  }
+
+  const query = params.toString();
+  const newUrl = query ? `${window.location.pathname}?${query}` : window.location.pathname;
+  window.history.replaceState(null, '', newUrl);
+}
+
+function getChartModule() {
+  if (ChartJS) {
+    return Promise.resolve(ChartJS);
+  }
+  return import('https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.esm.js').then((module) => {
+    ChartJS = module.Chart;
+    ChartJS.defaults.font.family = getComputedStyle(document.documentElement).fontFamily;
+    ChartJS.defaults.color = '#1f2933';
+    ChartJS.defaults.plugins.legend.labels.usePointStyle = true;
+    return ChartJS;
+  });
+}
+
+function getCsvWorker() {
+  if (!csvWorker) {
+    csvWorker = new Worker(new URL('./csvWorker.js', import.meta.url), { type: 'module' });
+  }
+  return csvWorker;
+}
+
+function formatNumber(value, { decimals = 0 } = {}) {
+  return Number(value || 0).toLocaleString('en-US', {
+    minimumFractionDigits: decimals,
+    maximumFractionDigits: decimals
+  });
+}
+
+function formatDateLabel(dateString) {
+  const date = parseIsoDateLocal(dateString);
+  return date.toLocaleDateString('en-US', {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric'
+  });
+}
+
+function toggleEmptyState(show) {
+  if (!elements.emptyState) return;
+  elements.emptyState.hidden = !show;
+  elements.chartCards.forEach((card) => {
+    card.classList.toggle('disabled', show);
+  });
+}
+
+function setDatasetStatus(message, type = 'info') {
+  if (!elements.datasetStatus) return;
+  elements.datasetStatus.textContent = message;
+  elements.datasetStatus.classList.remove('success', 'error');
+  if (type === 'success') {
+    elements.datasetStatus.classList.add('success');
+  } else if (type === 'error') {
+    elements.datasetStatus.classList.add('error');
+  }
+}
+
+function renderIngestNotices() {
+  if (!elements.ingestNotices) return;
+  elements.ingestNotices.innerHTML = '';
+
+  const notices = [];
+
+  if (serviceAliasInfo.length) {
+    const summary = serviceAliasInfo
+      .map(({ canonical, aliases }) => `${canonical} ← ${aliases.join(', ')}`)
+      .join('\n');
+    notices.push({
+      type: 'info',
+      message: 'Service aliases resolved',
+      detail: summary
+    });
+  }
+
+  if (duplicatesInfo && duplicatesInfo.totalGroups > 0) {
+    notices.push({
+      type: 'warning',
+      message: `${duplicatesInfo.totalGroups} duplicate ${duplicatesInfo.totalGroups === 1 ? 'row' : 'rows'} detected (same Date, Site, Service).`,
+      detail: 'Choose how duplicates should be handled.'
+    });
+  }
+
+  notices.forEach((notice) => {
+    const wrapper = document.createElement('div');
+    wrapper.className = `ingest-notice${notice.type === 'warning' ? ' warning' : ''}${notice.type === 'error' ? ' error' : ''}`;
+    const message = document.createElement('strong');
+    message.textContent = notice.message;
+    wrapper.appendChild(message);
+    if (notice.detail) {
+      const detail = document.createElement('pre');
+      detail.textContent = notice.detail;
+      wrapper.appendChild(detail);
+    }
+    elements.ingestNotices.appendChild(wrapper);
+  });
+
+  if (duplicatesInfo && duplicatesInfo.totalGroups > 0) {
+    const control = document.createElement('div');
+    control.className = 'ingest-notice warning';
+    const label = document.createElement('label');
+    label.textContent = 'Duplicate handling';
+    label.style.fontWeight = '600';
+    label.style.display = 'block';
+    label.style.marginBottom = '0.35rem';
+
+    const select = document.createElement('select');
+    select.innerHTML = `
+      <option value="sum">Sum duplicates</option>
+      <option value="latest">Keep latest entry</option>
+      <option value="first">Keep first entry</option>
+    `;
+    select.value = duplicateResolution;
+
+    const applyButton = document.createElement('button');
+    applyButton.type = 'button';
+    applyButton.className = 'pill-button tertiary';
+    applyButton.textContent = 'Apply';
+    applyButton.style.marginTop = '0.5rem';
+
+    applyButton.addEventListener('click', () => {
+      duplicateResolution = select.value;
+      const resolvedRows = resolveDuplicates(rawDataset, duplicateResolution);
+      applyResolvedDataset(resolvedRows, { message: 'Duplicate handling updated.', type: 'success', skipNotices: true });
+    });
+
+    control.appendChild(label);
+    control.appendChild(select);
+    control.appendChild(applyButton);
+    elements.ingestNotices.appendChild(control);
+  }
+}
+
+function hydrateRow(row) {
+  const cloned = { ...row };
+  cloned.Week = Number(cloned.Week);
+  cloned.Attendance = Number(cloned.Attendance);
+  cloned['Kids Checked-in'] = Number(cloned['Kids Checked-in']);
+  cloned.Year = String(cloned.Year ?? '');
+  cloned.Month = cloned.Month || monthNames[parseIsoDateLocal(cloned.Date).getMonth()];
+  cloned.Site = String(cloned.Site ?? '').trim();
+  cloned.Service = String(cloned.Service ?? '').trim();
+
+  if (!cloned.Date) {
+    throw new Error('Date is required.');
+  }
+
+  const parsed = parseIsoDateLocal(cloned.Date);
+  const { isoWeek, isoYear } = computeIsoWeek(parsed);
+  cloned.IsoWeek = Number(cloned.IsoWeek ?? isoWeek);
+  cloned.IsoYear = String(cloned.IsoYear ?? isoYear);
+  const isoWeekIndex = String(cloned.IsoWeek).padStart(2, '0');
+  cloned.YearWeek = cloned.YearWeek || `${cloned.IsoYear}-${isoWeekIndex}`;
+
+  return cloned;
+}
+
+function normalizeServiceAliases(rows) {
+  const canonicalMap = new Map();
+  const merges = new Map();
+
+  rows.forEach((row) => {
+    const trimmed = row.Service.replace(/\s+/g, ' ').trim();
+    const key = trimmed.toLowerCase();
+    if (!canonicalMap.has(key)) {
+      canonicalMap.set(key, trimmed);
+      merges.set(trimmed, new Set([trimmed]));
+      row.Service = trimmed;
+    } else {
+      const canonical = canonicalMap.get(key);
+      merges.get(canonical).add(trimmed);
+      row.Service = canonical;
+    }
+  });
+
+  const summary = [];
+  merges.forEach((aliases, canonical) => {
+    const aliasList = Array.from(aliases).filter((alias) => alias !== canonical);
+    if (aliasList.length) {
+      summary.push({ canonical, aliases: aliasList });
+    }
+  });
+
+  return summary;
+}
+
+function detectDuplicates(rows) {
+  const groups = new Map();
+  rows.forEach((row, index) => {
+    const key = `${row.Date}|${row.Site}|${row.Service}`;
+    if (!groups.has(key)) {
+      groups.set(key, []);
+    }
+    groups.get(key).push(index);
+  });
+  const duplicateGroups = Array.from(groups.values()).filter((indexes) => indexes.length > 1);
+  return {
+    totalGroups: duplicateGroups.length,
+    groups
+  };
+}
+
+function resolveDuplicates(rows, mode = 'sum') {
+  if (!duplicatesInfo || duplicatesInfo.totalGroups === 0) {
+    return rows.map((row) => ({ ...row }));
+  }
+
+  const resolved = new Map();
+
+  rows.forEach((row, index) => {
+    const key = `${row.Date}|${row.Site}|${row.Service}`;
+    if (!resolved.has(key)) {
+      resolved.set(key, { ...row, _sourceIndex: index });
+      return;
+    }
+
+    const current = resolved.get(key);
+    if (mode === 'sum') {
+      current.Attendance += row.Attendance;
+      current['Kids Checked-in'] += row['Kids Checked-in'];
+    } else if (mode === 'latest') {
+      if (index > current._sourceIndex) {
+        resolved.set(key, { ...row, _sourceIndex: index });
+      }
+    }
+  });
+
+  return Array.from(resolved.values()).map(({ _sourceIndex, ...rest }) => rest);
+}
+
+function applyResolvedDataset(rows, { message, type = 'info', skipNotices = false } = {}) {
+  dataset = rows.map((row) => ({ ...row }));
+  servicesBySite = buildServicesBySite(dataset);
+  dataRevision += 1;
+  filteredCache = { key: null, rows: [] };
+  aggregationCache.clear();
+  populateFilterOptions();
+  applyStateToControls();
+  updateDashboard();
+  if (!skipNotices) {
+    renderIngestNotices();
+  }
+  if (elements.datasetUpload) {
+    elements.datasetUpload.value = '';
+  }
+  const defaultMessage = `Loaded ${formatNumber(dataset.length)} rows.`;
+  setDatasetStatus(message || defaultMessage, type);
+  toggleEmptyState(false);
+}
+
+function ingestDataset(rows, feedback = {}) {
+  rawDataset = rows.map((row) => hydrateRow(row));
+  serviceAliasInfo = normalizeServiceAliases(rawDataset);
+  duplicatesInfo = detectDuplicates(rawDataset);
+  duplicateResolution = 'sum';
+  const resolvedRows = resolveDuplicates(rawDataset, duplicateResolution);
+  applyResolvedDataset(resolvedRows, feedback);
+}
+
+function buildServicesBySite(data) {
+  const map = new Map();
+  data.forEach((row) => {
+    if (!map.has(row.Site)) {
+      map.set(row.Site, new Set());
+    }
+    map.get(row.Site).add(row.Service);
+  });
+  return new Map(Array.from(map.entries()).map(([site, services]) => [site, Array.from(services).sort()]));
+}
 
 function getActiveSelections(stateKey) {
   const value = state[stateKey];
@@ -87,90 +535,18 @@ function applySelection(stateKey, selections, options = []) {
   }
 
   if (normalized.length > 1 && normalized.includes('All')) {
-    normalized = ['All'];
+    normalized = normalized.filter((value) => value !== 'All');
   }
 
   if (options.length) {
     normalized = options.filter((option) => normalized.includes(option));
+    if (!normalized.length && hasAllOption) {
+      normalized = ['All'];
+    }
   }
 
   state[stateKey] = normalized;
   return normalized;
-}
-
-function matchesSelection(selections, value) {
-  return !selections.length || selections.includes('All') || selections.includes(value);
-}
-
-function formatList(items) {
-  if (!items.length) return '';
-  if (items.length === 1) return items[0];
-  if (items.length === 2) return `${items[0]} and ${items[1]}`;
-  return `${items.slice(0, -1).join(', ')}, and ${items[items.length - 1]}`;
-}
-
-function formatNumber(value, { decimals = 0 } = {}) {
-  return Number(value).toLocaleString('en-US', {
-    minimumFractionDigits: decimals,
-    maximumFractionDigits: decimals
-  });
-}
-
-function formatDateLabel(dateString) {
-  const date = parseIsoDateLocal(dateString);
-  return date.toLocaleDateString('en-US', {
-    month: 'short',
-    day: 'numeric',
-    year: 'numeric'
-  });
-}
-
-function getMetricDescription(metricKey) {
-  if (metricKey === 'Attendance') {
-    return 'attendance';
-  }
-  if (metricKey === 'Kids Checked-in') {
-    return 'kids check-ins';
-  }
-  return String(metricKey || '').toLowerCase();
-}
-
-function updateChartAriaLabel(canvas, description) {
-  if (!canvas) return;
-  canvas.setAttribute('aria-label', description);
-}
-
-function setDatasetStatus(message, type = 'info') {
-  if (!elements.datasetStatus) return;
-  elements.datasetStatus.textContent = message;
-  elements.datasetStatus.classList.remove('success', 'error');
-  if (type === 'success') {
-    elements.datasetStatus.classList.add('success');
-  } else if (type === 'error') {
-    elements.datasetStatus.classList.add('error');
-  }
-}
-
-function buildServicesBySite(data) {
-  const map = new Map();
-  data.forEach((row) => {
-    if (!map.has(row.Site)) {
-      map.set(row.Site, new Set());
-    }
-    map.get(row.Site).add(row.Service);
-  });
-  servicesBySite = new Map(Array.from(map.entries()).map(([site, services]) => [site, Array.from(services).sort()]));
-}
-
-function updateToggleGroupSelection(container, selectedValue) {
-  if (!container) return;
-  const buttons = container.querySelectorAll('.toggle-button');
-  buttons.forEach((button) => {
-    const isActive = button.dataset.value === selectedValue;
-    button.classList.toggle('active', isActive);
-    button.setAttribute('aria-checked', isActive ? 'true' : 'false');
-    button.setAttribute('tabindex', isActive ? '0' : '-1');
-  });
 }
 
 function renderToggleOptions(container, options, stateKey) {
@@ -243,455 +619,889 @@ function updateServiceOptions() {
   renderToggleOptions(elements.serviceToggle, options, 'service');
 }
 
-function filterData() {
+function matchesSelection(selections, value) {
+  return !selections.length || selections.includes('All') || selections.includes(value);
+}
+
+function computeFilterKey() {
+  return [
+    dataRevision,
+    state.year.join('|'),
+    state.site.join('|'),
+    state.service.join('|'),
+    state.includeZeros ? '1' : '0',
+    state.search.toLowerCase()
+  ].join('::');
+}
+
+function filterRows() {
   const yearSelections = getActiveSelections('year');
   const siteSelections = getActiveSelections('site');
   const serviceSelections = getActiveSelections('service');
+  const query = state.search.trim().toLowerCase();
+
   return dataset.filter((row) => {
     const yearMatch = matchesSelection(yearSelections, row.Year);
     const siteMatch = matchesSelection(siteSelections, row.Site);
     const serviceMatch = matchesSelection(serviceSelections, row.Service);
-    return yearMatch && siteMatch && serviceMatch;
+    const zeroMatch = state.includeZeros || row.Attendance > 0;
+    const searchMatch =
+      !query ||
+      row.Site.toLowerCase().includes(query) ||
+      row.Service.toLowerCase().includes(query) ||
+      row.Year.toLowerCase().includes(query) ||
+      row.Month.toLowerCase().includes(query);
+    return yearMatch && siteMatch && serviceMatch && zeroMatch && searchMatch;
   });
 }
 
-function aggregateByDate(rows, metricKey) {
-  const map = new Map();
-  rows.forEach((row) => {
-    const key = row.Date;
-    if (!map.has(key)) {
-      map.set(key, { date: row.Date, value: 0, week: row.Week, year: row.Year });
-    }
-    const record = map.get(key);
-    record.value += row[metricKey];
-  });
-  return Array.from(map.values()).sort(
-    (a, b) => parseIsoDateLocal(a.date) - parseIsoDateLocal(b.date)
-  );
+function getFilteredRows() {
+  const key = computeFilterKey();
+  if (filteredCache.key !== key) {
+    filteredCache = {
+      key,
+      rows: filterRows()
+    };
+    aggregationCache.delete(key);
+  }
+  latestFilterKey = key;
+  latestFilteredRows = filteredCache.rows;
+  return filteredCache.rows;
 }
 
-function aggregateMonthly(rows, metricKey) {
-  const map = new Map();
-  rows.forEach((row) => {
-    const key = `${row.Year}-${row.Month}`;
-    if (!map.has(key)) {
+function aggregateData(rows) {
+  const key = latestFilterKey;
+  if (!aggregationCache.has(key)) {
+    const byDateMap = new Map();
+    const monthlyMap = new Map();
+
+    rows.forEach((row) => {
+      const dateKey = row.Date;
+      if (!byDateMap.has(dateKey)) {
+        byDateMap.set(dateKey, {
+          date: row.Date,
+          isoWeek: row.IsoWeek,
+          isoYear: row.IsoYear,
+          yearWeek: row.YearWeek,
+          attendance: 0,
+          kids: 0
+        });
+      }
+      const record = byDateMap.get(dateKey);
+      record.attendance += row.Attendance;
+      record.kids += row['Kids Checked-in'];
+
       const monthIndex = monthRank[row.Month];
-      map.set(key, {
-        label: `${row.Month} ${row.Year}`,
-        value: 0,
-        sortKey: `${row.Year}-${String(monthIndex + 1).padStart(2, '0')}`
-      });
-    }
-    const entry = map.get(key);
-    entry.value += row[metricKey];
-  });
-  return Array.from(map.values()).sort((a, b) => (a.sortKey > b.sortKey ? 1 : -1));
+      const monthKey = `${String(monthIndex).padStart(2, '0')}-${row.Month}`;
+      if (!monthlyMap.has(monthKey)) {
+        monthlyMap.set(monthKey, {
+          month: row.Month,
+          monthIndex,
+          totals: new Map()
+        });
+      }
+      const monthEntry = monthlyMap.get(monthKey);
+      if (!monthEntry.totals.has(row.Year)) {
+        monthEntry.totals.set(row.Year, { attendance: 0, kids: 0 });
+      }
+      const totals = monthEntry.totals.get(row.Year);
+      totals.attendance += row.Attendance;
+      totals.kids += row['Kids Checked-in'];
+    });
+
+    const aggregated = {
+      byDate: Array.from(byDateMap.values()).sort((a, b) => parseIsoDateLocal(a.date) - parseIsoDateLocal(b.date)),
+      monthly: Array.from(monthlyMap.values()).sort((a, b) => a.monthIndex - b.monthIndex)
+    };
+    aggregationCache.set(key, aggregated);
+  }
+  return aggregationCache.get(key);
 }
 
-function getDistributionData(rows, metricKey, requestedDimension = 'Service') {
+function getDistributionData(rows, dimension) {
   const dimensionMap = new Map([
     ['Service', (row) => row.Service],
     ['Site', (row) => row.Site],
     ['Year', (row) => row.Year]
   ]);
 
-  const dimension = dimensionMap.has(requestedDimension) ? requestedDimension : 'Service';
-  const groupFn = dimensionMap.get(dimension);
-
-  if (!rows.length || !groupFn) {
-    return { labels: [], values: [], dimension };
-  }
+  const dimensionKey = dimensionMap.has(dimension) ? dimension : 'Service';
+  const groupFn = dimensionMap.get(dimensionKey);
 
   const map = new Map();
   rows.forEach((row) => {
     const key = groupFn(row);
     if (!map.has(key)) {
-      map.set(key, 0);
+      map.set(key, { attendance: 0, kids: 0 });
     }
-    map.set(key, map.get(key) + row[metricKey]);
+    const entry = map.get(key);
+    entry.attendance += row.Attendance;
+    entry.kids += row['Kids Checked-in'];
   });
 
-  const entries = Array.from(map.entries()).sort((a, b) => {
-    if (dimension === 'Year') {
-      return a[0].localeCompare(b[0], undefined, { numeric: true });
-    }
-    return String(a[0]).localeCompare(String(b[0]), undefined, { numeric: true, sensitivity: 'base' });
-  });
+  const entries = Array.from(map.entries()).sort((a, b) =>
+    String(a[0]).localeCompare(String(b[0]), undefined, { numeric: true, sensitivity: 'base' })
+  );
 
-  return {
-    labels: entries.map(([label]) => label),
-    values: entries.map(([, value]) => value),
-    dimension
-  };
+  return entries.map(([label, values]) => ({ label, ...values }));
 }
 
-function updateSummaries(filtered, metricKey) {
-  const total = filtered.reduce((sum, row) => sum + row[metricKey], 0);
-  const aggregated = aggregateByDate(filtered, metricKey);
-  const average = aggregated.length ? total / aggregated.length : 0;
+function getMedian(values) {
+  if (!values.length) return 0;
+  const sorted = [...values].sort((a, b) => a - b);
+  const middle = Math.floor(sorted.length / 2);
+  if (sorted.length % 2 === 0) {
+    return (sorted[middle - 1] + sorted[middle]) / 2;
+  }
+  return sorted[middle];
+}
+
+function getRollingAverage(values, windowSize = 4) {
+  return values.map((value, index) => {
+    const start = Math.max(0, index - windowSize + 1);
+    const window = values.slice(start, index + 1);
+    const sum = window.reduce((acc, item) => acc + item, 0);
+    return window.length ? sum / window.length : value;
+  });
+}
+
+function updateSummaries(filtered) {
+  const { byDate } = aggregateData(filtered);
+  const metricKey = state.metric === 'Attendance' ? 'attendance' : 'kids';
+  const total = byDate.reduce((sum, item) => sum + item[metricKey], 0);
+  const average = byDate.length ? total / byDate.length : 0;
 
   elements.summaryTotal.textContent = formatNumber(total);
   elements.summaryTotalLabel.textContent = `Total ${state.metric}`;
   elements.summaryAverage.textContent = formatNumber(average, { decimals: 1 });
 
-  if (aggregated.length) {
-    const peak = aggregated.reduce((acc, item) => (item.value > acc.value ? item : acc));
-    elements.summaryPeak.textContent = formatNumber(peak.value);
-    elements.summaryPeakLabel.textContent = `${formatDateLabel(peak.date)} (Week ${peak.week})`;
+  if (byDate.length) {
+    const peak = byDate.reduce((acc, item) => (item[metricKey] > acc[metricKey] ? item : acc));
+    elements.summaryPeak.textContent = formatNumber(peak[metricKey]);
+    elements.summaryPeakLabel.textContent = `${formatDateLabel(peak.date)} (ISO Week ${peak.isoWeek} of ${peak.isoYear})`;
   } else {
     elements.summaryPeak.textContent = '0';
     elements.summaryPeakLabel.textContent = 'No data available';
   }
 
-  const distribution = getDistributionData(filtered, metricKey, state.distributionDimension);
-  if (distribution.values.length) {
-    let maxIndex = 0;
-    distribution.values.forEach((value, index) => {
-      if (value > distribution.values[maxIndex]) {
-        maxIndex = index;
-      }
-    });
-    elements.summaryTopGroup.textContent = formatNumber(distribution.values[maxIndex]);
-    elements.summaryTopGroupLabel.textContent = `${distribution.dimension}: ${distribution.labels[maxIndex]}`;
+  const distribution = getDistributionData(filtered, state.distributionDimension);
+  if (distribution.length) {
+    const metricLabel = state.metric === 'Attendance' ? 'attendance' : 'kids check-ins';
+    const best = distribution.reduce((acc, entry) =>
+      entry[metricKey] > acc[metricKey] ? entry : acc
+    );
+    elements.summaryTopGroup.textContent = formatNumber(best[metricKey]);
+    elements.summaryTopGroupLabel.textContent = `${state.distributionDimension}: ${best.label}`;
+    elements.summaryTopGroupLabel.setAttribute('title', `${formatNumber(best[metricKey])} ${metricLabel}`);
   } else {
     elements.summaryTopGroup.textContent = '0';
     elements.summaryTopGroupLabel.textContent = 'No data for selected grouping';
   }
 }
 
-function generatePalette(count) {
-  if (count <= colors.length) {
-    return colors.slice(0, count);
-  }
-  const palette = [...colors];
-  let index = 0;
-  while (palette.length < count) {
-    const base = colors[index % colors.length];
-    const [r, g, b] = base
-      .replace('#', '')
-      .match(/.{1,2}/g)
-      .map((hex) => parseInt(hex, 16));
-    const factor = 0.8 + (palette.length / count) * 0.2;
-    palette.push(`rgba(${Math.round(r * factor)}, ${Math.round(g * factor)}, ${Math.round(b * factor)}, 0.9)`);
-    index += 1;
-  }
-  return palette;
-}
+function updateTrendChart(filtered) {
+  const { byDate } = aggregateData(filtered);
+  const labels = byDate.map((item) => item.date);
+  const metrics = state.trendMetrics.length ? state.trendMetrics : [state.metric];
 
-function updateTrendChart(filtered, metricKey) {
-  const aggregated = aggregateByDate(filtered, metricKey);
-  const labels = aggregated.map((item) => item.date);
-  const values = aggregated.map((item) => item.value);
-  const metricDescription = getMetricDescription(state.metric);
+  const datasets = metrics.map((metric) => {
+    const key = metric === 'Attendance' ? 'attendance' : 'kids';
+    const colorConfig = colors[metric] || colors.Attendance;
+    const values = byDate.map((item) => item[key]);
+    const positiveValues = values.filter((value) => value > 0);
+    const median = getMedian(positiveValues);
+    const threshold = median * 5;
+    const outlierIndexes = new Set();
+    values.forEach((value, index) => {
+      if (median > 0 && value >= threshold) {
+        outlierIndexes.add(index);
+      }
+    });
 
-  const chartData = {
-    labels,
-    datasets: [
+    const rolling = getRollingAverage(values);
+
+    return [
       {
-        label: state.metric,
+        label: metric,
         data: values,
-        borderColor: '#3f6ae0',
-        backgroundColor: 'rgba(63, 106, 224, 0.15)',
+        borderColor: colorConfig.line,
+        backgroundColor: colorConfig.fill,
         fill: true,
         tension: 0.35,
-        pointRadius: 0
-      }
-    ]
-  };
-
-  const options = {
-    maintainAspectRatio: false,
-    interaction: {
-      mode: 'index',
-      intersect: false
-    },
-    scales: {
-      x: {
-        ticks: {
-          maxRotation: 0,
-          callback: (value, index) => {
-            const label = labels[index];
-            if (!label) return '';
-            const date = parseIsoDateLocal(label);
-            return `${date.getMonth() + 1}/${date.getDate()}`;
-          }
-        },
-        grid: {
-          display: false
-        }
+        pointRadius: values.map((value, index) => (outlierIndexes.has(index) ? 5 : 0)),
+        pointBorderWidth: values.map((value, index) => (outlierIndexes.has(index) ? 2 : 0)),
+        pointBorderColor: colorConfig.avg,
+        pointBackgroundColor: values.map((value, index) => (outlierIndexes.has(index) ? '#fff' : colorConfig.line)),
+        _outlierTooltip: threshold
       },
-      y: {
-        beginAtZero: true,
-        ticks: {
-          callback: (value) => formatNumber(value)
-        }
+      {
+        label: `${metric} (4-week avg)`,
+        data: rolling,
+        borderColor: colorConfig.avg,
+        backgroundColor: 'transparent',
+        borderDash: [6, 4],
+        tension: 0.35,
+        pointRadius: 0,
+        fill: false
       }
-    },
-    plugins: {
-      legend: { display: false },
-      tooltip: {
-        callbacks: {
-          title: (items) => items.map((item) => formatDateLabel(item.label)),
-          label: (item) => `${state.metric}: ${formatNumber(item.parsed.y)}`
-        }
-      }
-    }
-  };
+    ];
+  });
 
-  const hasData = aggregated.length > 0;
+  const flattenedDatasets = datasets.flat();
+
+  const metricDescription = state.trendMetrics.length > 1 ? 'metrics' : state.metric.toLowerCase();
+
+  const hasData = byDate.length > 0;
   updateChartAriaLabel(
-    elements.trendChartCanvas,
+    document.getElementById('trendChart'),
     hasData
       ? `Line chart showing weekly ${metricDescription} totals.`
       : `Line chart showing weekly ${metricDescription} totals. No data available for the current filters.`
   );
 
-  if (!trendChart) {
-    trendChart = new Chart(elements.trendChartCanvas, {
-      type: 'line',
-      data: chartData,
-      options
-    });
-  } else {
-    trendChart.data = chartData;
-    trendChart.options = options;
-    trendChart.update();
-  }
-}
-
-function updateMonthlyChart(filtered, metricKey) {
-  const aggregated = aggregateMonthly(filtered, metricKey);
-  const labels = aggregated.map((item) => item.label);
-  const values = aggregated.map((item) => item.value);
-  const metricDescription = getMetricDescription(state.metric);
-
-  const chartData = {
-    labels,
-    datasets: [
-      {
-        label: state.metric,
-        data: values,
-        backgroundColor: 'rgba(46, 184, 138, 0.7)',
-        borderRadius: 6
-      }
-    ]
-  };
-
-  const options = {
-    maintainAspectRatio: false,
-    interaction: {
-      mode: 'index',
-      intersect: false
-    },
-    scales: {
-      x: {
-        ticks: {
-          maxRotation: 60,
-          minRotation: 30
+  getChartModule().then((Chart) => {
+    if (!trendChart) {
+      trendChart = new Chart(document.getElementById('trendChart'), {
+        type: 'line',
+        data: {
+          labels,
+          datasets: flattenedDatasets
         },
-        grid: { display: false }
-      },
-      y: {
-        beginAtZero: true,
-        ticks: {
-          callback: (value) => formatNumber(value)
-        }
-      }
-    },
-    plugins: {
-      legend: { display: false },
-      tooltip: {
-        callbacks: {
-          label: (item) => `${state.metric}: ${formatNumber(item.parsed.y)}`
-        }
-      }
-    }
-  };
-
-  const hasData = aggregated.length > 0;
-  updateChartAriaLabel(
-    elements.monthlyChartCanvas,
-    hasData
-      ? `Bar chart showing monthly ${metricDescription} totals.`
-      : `Bar chart showing monthly ${metricDescription} totals. No data available for the current filters.`
-  );
-
-  if (!monthlyChart) {
-    monthlyChart = new Chart(elements.monthlyChartCanvas, {
-      type: 'bar',
-      data: chartData,
-      options
-    });
-  } else {
-    monthlyChart.data = chartData;
-    monthlyChart.options = options;
-    monthlyChart.update();
-  }
-}
-
-function updateDistributionChart(filtered, metricKey) {
-  const distribution = getDistributionData(filtered, metricKey, state.distributionDimension);
-  elements.distributionLabel.textContent = `Share by ${distribution.dimension.toLowerCase()}`;
-  const metricDescription = getMetricDescription(state.metric);
-  const dimensionDescription = distribution.dimension.toLowerCase();
-
-  const chartData = {
-    labels: distribution.labels,
-    datasets: [
-      {
-        label: state.metric,
-        data: distribution.values,
-        backgroundColor: generatePalette(distribution.labels.length)
-      }
-    ]
-  };
-
-  const options = {
-    maintainAspectRatio: false,
-    interaction: {
-      mode: 'nearest',
-      intersect: true
-    },
-    plugins: {
-      legend: {
-        position: 'bottom'
-      },
-      tooltip: {
-        callbacks: {
-          label: (item) => {
-            const value = item.parsed;
-            return `${item.label}: ${formatNumber(value)}`;
+        options: {
+          maintainAspectRatio: false,
+          interaction: {
+            mode: 'nearest',
+            intersect: false
+          },
+          scales: {
+            x: {
+              ticks: {
+                maxRotation: 0,
+                callback: (value, index) => {
+                  const label = labels[index];
+                  if (!label) return '';
+                  const date = parseIsoDateLocal(label);
+                  return `${date.getMonth() + 1}/${date.getDate()}`;
+                }
+              },
+              grid: {
+                display: false
+              }
+            },
+            y: {
+              beginAtZero: true,
+              ticks: {
+                callback: (value) => formatNumber(value)
+              }
+            }
+          },
+          plugins: {
+            tooltip: {
+              callbacks: {
+                title: (items) => items.map((item) => formatDateLabel(item.label)),
+                label: (item) => {
+                  const datasetMeta = item.dataset._outlierTooltip;
+                  const value = formatNumber(item.parsed.y);
+                  const base = `${item.dataset.label}: ${value}`;
+                  if (datasetMeta && item.raw && Array.isArray(item.dataset.pointRadius)) {
+                    const index = item.dataIndex;
+                    if (item.dataset.pointRadius[index] > 0) {
+                      return `${base} (Potential special event?)`;
+                    }
+                  }
+                  return base;
+                }
+              }
+            }
+          },
+          onClick: (evt, activeElements) => {
+            if (!activeElements.length) return;
+            const element = activeElements[0];
+            const point = byDate[element.index];
+            if (point) {
+              state.year = [point.isoYear];
+              updateMultiToggleSelection(elements.yearToggle, 'year');
+              persistState();
+              updateDashboard();
+            }
           }
         }
-      }
+      });
+    } else {
+      trendChart.data.labels = labels;
+      trendChart.data.datasets = flattenedDatasets;
+      trendChart.update();
     }
-  };
+  });
+}
 
-  const hasData = distribution.values.length > 0;
+function updateMonthlyChart(filtered) {
+  const { monthly } = aggregateData(filtered);
+  const years = Array.from(
+    new Set(filtered.map((row) => row.Year)).values()
+  ).sort((a, b) => a.localeCompare(b, undefined, { numeric: true }));
+
+  const labels = monthly.map((entry) => entry.month);
+  const datasets = years.map((year, index) => {
+    const values = monthly.map((entry) => {
+      const totals = entry.totals.get(year);
+      if (!totals) return 0;
+      return state.metric === 'Attendance' ? totals.attendance : totals.kids;
+    });
+    const baseColor = distributionPalette[index % distributionPalette.length];
+    return {
+      label: year,
+      data: values,
+      backgroundColor: baseColor,
+      stack: state.monthlyMode === 'stacked' ? 'monthly' : undefined,
+      borderRadius: 6
+    };
+  });
+
+  const hasData = datasets.some((dataset) => dataset.data.some((value) => value > 0));
   updateChartAriaLabel(
-    elements.distributionChartCanvas,
+    document.getElementById('monthlyChart'),
     hasData
-      ? `Pie chart showing ${metricDescription} by ${dimensionDescription}.`
-      : `Pie chart showing ${metricDescription} by ${dimensionDescription}. No data available for the current filters.`
+      ? 'Bar chart showing monthly totals grouped by month across selected years.'
+      : 'Bar chart showing monthly totals. No data available for the current filters.'
   );
 
-  if (!distributionChart) {
-    distributionChart = new Chart(elements.distributionChartCanvas, {
-      type: 'pie',
-      data: chartData,
-      options
-    });
+  getChartModule().then((Chart) => {
+    const options = {
+      maintainAspectRatio: false,
+      scales: {
+        x: {
+          stacked: state.monthlyMode === 'stacked',
+          ticks: {
+            maxRotation: 60,
+            minRotation: 30
+          },
+          grid: {
+            display: false
+          }
+        },
+        y: {
+          stacked: state.monthlyMode === 'stacked',
+          beginAtZero: true,
+          ticks: {
+            callback: (value) => formatNumber(value)
+          }
+        }
+      },
+      plugins: {
+        tooltip: {
+          callbacks: {
+            label: (item) => `${item.dataset.label}: ${formatNumber(item.parsed.y)}`
+          }
+        }
+      },
+      onClick: (evt, activeElements) => {
+        if (!activeElements.length) return;
+        const element = activeElements[0];
+        const datasetLabel = years[element.datasetIndex];
+        if (datasetLabel) {
+          state.year = [datasetLabel];
+          updateMultiToggleSelection(elements.yearToggle, 'year');
+          persistState();
+          updateDashboard();
+        }
+      }
+    };
+
+    if (!monthlyChart) {
+      monthlyChart = new Chart(document.getElementById('monthlyChart'), {
+        type: 'bar',
+        data: {
+          labels,
+          datasets
+        },
+        options
+      });
+    } else {
+      monthlyChart.data.labels = labels;
+      monthlyChart.data.datasets = datasets;
+      monthlyChart.options = { ...monthlyChart.options, ...options };
+      monthlyChart.update();
+    }
+  });
+}
+
+function updateDistributionChart(filtered) {
+  const distribution = getDistributionData(filtered, state.distributionDimension);
+  const metricKey = state.metric === 'Attendance' ? 'attendance' : 'kids';
+  const labels = distribution.map((entry) => entry.label);
+  const values = distribution.map((entry) => entry[metricKey]);
+
+  const hasData = values.some((value) => value > 0);
+  const description = hasData
+    ? `Showing distribution of ${state.metric.toLowerCase()} by ${state.distributionDimension.toLowerCase()}.`
+    : `Distribution of ${state.metric.toLowerCase()} by ${state.distributionDimension.toLowerCase()}. No data available.`;
+
+  updateChartAriaLabel(document.getElementById('distributionChart'), description);
+  elements.distributionLabel.textContent = `Share by ${state.distributionDimension.toLowerCase()}`;
+
+  getChartModule().then((Chart) => {
+    const config = {
+      labels,
+      datasets: [
+        {
+          label: state.metric,
+          data: values,
+          backgroundColor: distributionPalette.slice(0, Math.max(values.length, 1)),
+          borderWidth: 1
+        }
+      ]
+    };
+
+    const options = {
+      maintainAspectRatio: false,
+      plugins: {
+        tooltip: {
+          callbacks: {
+            label: (item) => `${item.label}: ${formatNumber(item.parsed)} ${state.metric.toLowerCase()}`
+          }
+        },
+        legend: {
+          onClick: (event, legendItem) => {
+            const label = legendItem.text;
+            if (label) {
+              handleDistributionFilter(label);
+            }
+          }
+        }
+      },
+      onClick: (event, elements) => {
+        if (!elements.length) return;
+        const element = elements[0];
+        const label = labels[element.index];
+        if (label) {
+          handleDistributionFilter(label);
+        }
+      }
+    };
+
+    const chartType = state.distributionView === 'bar' ? 'bar' : 'pie';
+
+    if (!distributionChart) {
+      distributionChart = new Chart(document.getElementById('distributionChart'), {
+        type: chartType,
+        data: config,
+        options
+      });
+    } else {
+      distributionChart.config.type = chartType;
+      distributionChart.data = config;
+      distributionChart.options = options;
+      distributionChart.update();
+    }
+  });
+}
+
+function handleDistributionFilter(label) {
+  if (state.distributionDimension === 'Year') {
+    state.year = [label];
+    updateMultiToggleSelection(elements.yearToggle, 'year');
+  } else if (state.distributionDimension === 'Site') {
+    state.site = [label];
+    updateMultiToggleSelection(elements.siteToggle, 'site');
+    updateServiceOptions();
   } else {
-    distributionChart.data = chartData;
-    distributionChart.options = options;
-    distributionChart.update();
+    state.service = [label];
+    updateMultiToggleSelection(elements.serviceToggle, 'service');
   }
+  persistState();
+  updateDashboard();
 }
 
 function updateTable(filtered) {
-  const metricKey = state.metric;
-  const secondaryKey = metricKey === 'Attendance' ? 'Kids Checked-in' : 'Attendance';
-
-  elements.metricHeader.textContent = metricKey;
-  elements.secondaryMetricHeader.textContent = secondaryKey;
+  const sortKey = state.tableSort.key;
+  const direction = state.tableSort.direction === 'asc' ? 1 : -1;
 
   const sorted = [...filtered].sort((a, b) => {
-    const dateDiff = parseIsoDateLocal(b.Date) - parseIsoDateLocal(a.Date);
-    if (dateDiff !== 0) return dateDiff;
-    if (a.Site !== b.Site) return a.Site > b.Site ? 1 : -1;
-    if (a.Service !== b.Service) return a.Service > b.Service ? 1 : -1;
-    return 0;
+    const valueA = a[sortKey];
+    const valueB = b[sortKey];
+    if (sortKey === 'Date') {
+      return (parseIsoDateLocal(valueA) - parseIsoDateLocal(valueB)) * direction;
+    }
+    if (typeof valueA === 'number' && typeof valueB === 'number') {
+      return (valueA - valueB) * direction;
+    }
+    return String(valueA).localeCompare(String(valueB), undefined, { numeric: true }) * direction;
   });
 
-  const fragment = document.createDocumentFragment();
+  const limit = state.tableLimit === 0 ? sorted.length : state.tableLimit;
+  const rows = sorted.slice(0, limit);
 
-  const createCell = (value) => {
-    const cell = document.createElement('td');
-    cell.textContent = value;
-    return cell;
-  };
-
-  sorted.slice(0, 50).forEach((row) => {
-    const tableRow = document.createElement('tr');
-
-    tableRow.append(
-      createCell(row.Week),
-      createCell(formatDateLabel(row.Date)),
-      createCell(row.Site),
-      createCell(row.Service),
-      createCell(formatNumber(row[metricKey])),
-      createCell(formatNumber(row[secondaryKey]))
-    );
-
-    fragment.appendChild(tableRow);
+  elements.tableBody.innerHTML = '';
+  rows.forEach((row) => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>${row.IsoWeek}</td>
+      <td>${formatDateLabel(row.Date)}</td>
+      <td>${row.Site}</td>
+      <td>${row.Service}</td>
+      <td>${formatNumber(row.Attendance)}</td>
+      <td>${formatNumber(row['Kids Checked-in'])}</td>
+    `;
+    elements.tableBody.appendChild(tr);
   });
 
-  elements.tableBody.replaceChildren(fragment);
+  const descriptionLimit = state.tableLimit === 0 ? 'all available' : state.tableLimit;
+  elements.tableDescription.textContent = `Showing the latest ${descriptionLimit} entries based on the selected filters.`;
+
+  elements.tableHeaderCells.forEach((th) => {
+    const key = th.dataset.key;
+    th.classList.remove('sort-asc', 'sort-desc');
+    if (key === sortKey) {
+      th.classList.add(direction === 1 ? 'sort-asc' : 'sort-desc');
+    }
+  });
+}
+
+function updateMetricHeaders() {
+  elements.metricHeader.textContent = state.metric;
+  const secondary = state.metric === 'Attendance' ? 'Kids Checked-in' : 'Attendance';
+  elements.secondaryMetricHeader.textContent = secondary;
 }
 
 function updateActiveFilters() {
   const yearSelections = getActiveSelections('year');
   const siteSelections = getActiveSelections('site');
   const serviceSelections = getActiveSelections('service');
+  const metricLabel = state.metric.toLowerCase();
+  const yearLabel = yearSelections.includes('All') ? 'all years' : yearSelections.join(', ');
+  const siteLabel = siteSelections.includes('All') ? 'all sites' : siteSelections.join(', ');
+  const serviceLabel = serviceSelections.includes('All') ? 'all services' : serviceSelections.join(', ');
 
-  const availableYears = Array.from(new Set(dataset.map((row) => row.Year))).sort();
-  let yearLabel;
-  if (!yearSelections.length || yearSelections.includes('All')) {
-    if (availableYears.length > 1) {
-      yearLabel = `all years (${availableYears[0]}–${availableYears[availableYears.length - 1]})`;
-    } else if (availableYears.length === 1) {
-      yearLabel = `the year ${availableYears[0]}`;
-    } else {
-      yearLabel = 'all available years';
+  const parts = [`Showing ${metricLabel} for ${serviceLabel} at ${siteLabel} across ${yearLabel}.`];
+  if (!state.includeZeros) {
+    parts.push('Zero attendance entries hidden.');
+  }
+  if (state.search) {
+    parts.push(`Search filter: "${state.search}".`);
+  }
+
+  elements.activeFilters.textContent = parts.join(' ');
+}
+
+function updateStory(filtered) {
+  if (!filtered.length) {
+    elements.storySummary.textContent = 'Adjust filters or upload data to generate fresh insights.';
+    elements.anomalyHighlights.innerHTML = '';
+    return;
+  }
+
+  const { byDate } = aggregateData(filtered);
+  const metricKey = state.metric === 'Attendance' ? 'attendance' : 'kids';
+  const total = byDate.reduce((sum, item) => sum + item[metricKey], 0);
+  const average = byDate.length ? total / byDate.length : 0;
+  const services = new Set(filtered.map((row) => row.Service)).size;
+  const sites = new Set(filtered.map((row) => row.Site)).size;
+  const peak = byDate.reduce((acc, item) => (item[metricKey] > acc[metricKey] ? item : acc));
+
+  elements.storySummary.textContent = `${state.metric} averaged ${formatNumber(average, {
+    decimals: 1
+  })} per week across ${services} service${services === 1 ? '' : 's'} at ${sites} site${sites === 1 ? '' : 's'}. Peak reached ${formatNumber(
+    peak[metricKey]
+  )} on ${formatDateLabel(peak.date)} (ISO Week ${peak.isoWeek}).`;
+
+  const highlights = [];
+  const { monthly } = aggregateData(filtered);
+  if (monthly.length) {
+    const lastEntry = monthly[monthly.length - 1];
+    const availableYears = Array.from(lastEntry.totals.keys()).sort((a, b) =>
+      String(a).localeCompare(String(b), undefined, { numeric: true })
+    );
+    const currentYear = getActiveSelections('year').includes('All')
+      ? availableYears[availableYears.length - 1]
+      : getActiveSelections('year')[0];
+    if (currentYear && lastEntry.totals.has(currentYear)) {
+      const currentTotals = lastEntry.totals.get(currentYear);
+      const currentValue = state.metric === 'Attendance' ? currentTotals.attendance : currentTotals.kids;
+      const previousMonth = monthly[monthly.length - 2];
+      if (previousMonth && previousMonth.totals.has(currentYear)) {
+        const previousTotals = previousMonth.totals.get(currentYear);
+        const previousValue = state.metric === 'Attendance' ? previousTotals.attendance : previousTotals.kids;
+        if (previousValue > 0) {
+          const delta = ((currentValue - previousValue) / previousValue) * 100;
+          highlights.push(`${formatNumber(delta, { decimals: 1 })}% vs last month (${lastEntry.month}).`);
+        }
+      }
+      const priorYearTotals = lastEntry.totals.get(String(Number(currentYear) - 1));
+      if (priorYearTotals) {
+        const priorValue = state.metric === 'Attendance' ? priorYearTotals.attendance : priorYearTotals.kids;
+        if (priorValue > 0) {
+          const yoy = ((currentValue - priorValue) / priorValue) * 100;
+          highlights.push(`${formatNumber(yoy, { decimals: 1 })}% vs same month last year.`);
+        }
+      }
     }
-  } else if (yearSelections.length === 1) {
-    yearLabel = `the year ${yearSelections[0]}`;
-  } else {
-    yearLabel = `the years ${formatList(yearSelections)}`;
   }
 
-  const availableSites = Array.from(new Set(dataset.map((row) => row.Site))).sort();
-  let siteLabel;
-  if (!siteSelections.length || siteSelections.includes('All')) {
-    if (availableSites.length > 1) {
-      siteLabel = 'all sites';
-    } else if (availableSites.length === 1) {
-      siteLabel = `${availableSites[0]} site`;
-    } else {
-      siteLabel = 'available sites';
-    }
-  } else if (siteSelections.length === 1) {
-    siteLabel = `${siteSelections[0]} site`;
-  } else {
-    siteLabel = `${formatList(siteSelections)} sites`;
-  }
+  elements.anomalyHighlights.innerHTML = '';
+  highlights.slice(0, 2).forEach((text) => {
+    const li = document.createElement('li');
+    li.textContent = text;
+    elements.anomalyHighlights.appendChild(li);
+  });
+}
 
-  let serviceLabel;
-  if (!serviceSelections.length || serviceSelections.includes('All')) {
-    serviceLabel = 'all services';
-  } else if (serviceSelections.length === 1) {
-    serviceLabel = `${serviceSelections[0]} service`;
-  } else {
-    serviceLabel = `${formatList(serviceSelections)} services`;
-  }
-  const metricLabel = getMetricDescription(state.metric);
-
-  elements.activeFilters.textContent = `Showing ${metricLabel} for ${serviceLabel} at ${siteLabel} across ${yearLabel}.`;
+function updateChartAriaLabel(canvas, description) {
+  if (!canvas) return;
+  canvas.setAttribute('aria-label', description);
 }
 
 function updateDashboard() {
-  const filtered = filterData();
-  const metricKey = state.metric;
-
-  updateSummaries(filtered, metricKey);
-  updateTrendChart(filtered, metricKey);
-  updateMonthlyChart(filtered, metricKey);
-  updateDistributionChart(filtered, metricKey);
+  const filtered = getFilteredRows();
+  updateSummaries(filtered);
+  updateMetricHeaders();
+  updateTrendChart(filtered);
+  updateMonthlyChart(filtered);
+  updateDistributionChart(filtered);
   updateTable(filtered);
   updateActiveFilters();
+  updateStory(filtered);
+  persistState();
 }
 
-function registerSingleSelectToggle(container, stateKey, { onChange } = {}) {
+function parseCsvOffMainThread(text) {
+  return new Promise((resolve, reject) => {
+    try {
+      const worker = getCsvWorker();
+      const handleMessage = (event) => {
+        const { data } = event;
+        if (!data) {
+          reject(new Error('Failed to parse CSV file.'));
+          return;
+        }
+        if (data.type === 'success') {
+          resolve(data.payload);
+        } else {
+          reject(new Error(data.message || 'Failed to parse CSV file.'));
+        }
+      };
+      worker.addEventListener('message', handleMessage, { once: true });
+      worker.postMessage({ text });
+    } catch (error) {
+      reject(error);
+    }
+  });
+}
+
+function handleDatasetUpload(event) {
+  const input = event.target;
+  const file = input.files && input.files[0];
+  if (!file) {
+    return;
+  }
+
+  if (!file.name.toLowerCase().endsWith('.csv')) {
+    setDatasetStatus('Please choose a CSV file.', 'error');
+    input.value = '';
+    return;
+  }
+
+  if (file.size === 0) {
+    setDatasetStatus('The selected file is empty.', 'error');
+    input.value = '';
+    return;
+  }
+
+  if (file.size > MAX_FILE_SIZE_BYTES) {
+    setDatasetStatus(
+      `The selected file is too large. The maximum supported size is ${describeFileSize(MAX_FILE_SIZE_BYTES)}.`,
+      'error'
+    );
+    input.value = '';
+    return;
+  }
+
+  const reader = new FileReader();
+
+  reader.onload = async () => {
+    try {
+      if (typeof reader.result !== 'string') {
+        throw new Error('Unable to read the file as text.');
+      }
+      setDatasetStatus('Parsing CSV…');
+      let parsed;
+      try {
+        parsed = await parseCsvOffMainThread(reader.result);
+      } catch (workerError) {
+        console.warn('Falling back to main-thread parser', workerError);
+        parsed = parseCsv(reader.result);
+      }
+      ingestDataset(parsed, {
+        message: `Loaded ${formatNumber(parsed.length)} rows from ${file.name}.`,
+        type: 'success'
+      });
+    } catch (error) {
+      console.error('Failed to parse uploaded dataset', error);
+      setDatasetStatus(error.message, 'error');
+      input.value = '';
+    }
+  };
+
+  reader.onerror = () => {
+    console.error('Failed to read uploaded dataset', reader.error);
+    setDatasetStatus('Unable to read the selected file. Please try again.', 'error');
+    input.value = '';
+  };
+
+  reader.readAsText(file);
+}
+
+function loadPlaceholderDataset(feedbackType = 'info') {
+  setDatasetStatus('Loading placeholder dataset…');
+  fetch('data/attendance.json', { cache: 'no-store' })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(`Request failed with status ${response.status}`);
+      }
+      return response.json();
+    })
+    .then((data) => {
+      ingestDataset(data, {
+        message: `Using placeholder dataset generated for demonstration across multiple sites and years. Rows available: ${formatNumber(
+          data.length
+        )}.`,
+        type: feedbackType
+      });
+    })
+    .catch((error) => {
+      console.error('Failed to load placeholder dataset', error);
+      setDatasetStatus('Unable to load the placeholder dataset. Upload a CSV file to continue.', 'error');
+      toggleEmptyState(true);
+    });
+}
+
+function handleControlClicks(event) {
+  const button = event.target.closest('.control-action');
+  if (!button) return;
+  const target = button.dataset.target;
+  const action = button.dataset.action;
+  const container = elements[`${target}Toggle`];
+  if (!container) return;
+  const options = Array.from(container.querySelectorAll('.toggle-button')).map((btn) => btn.dataset.value);
+  if (!options.length) return;
+
+  if (action === 'select') {
+    const selections = options.filter((value) => value !== 'All');
+    applySelection(target, selections, options);
+  } else if (action === 'clear') {
+    applySelection(target, ['All'], options);
+  }
+
+  updateMultiToggleSelection(container, target);
+  if (target === 'site') {
+    updateServiceOptions();
+  }
+  persistState();
+  updateDashboard();
+}
+
+function attachEventListeners() {
+  if (elements.controlsSection) {
+    elements.controlsSection.addEventListener('click', handleControlClicks);
+  }
+
+  if (elements.yearToggle) {
+    registerMultiSelectToggle(elements.yearToggle, 'year');
+  }
+
+  if (elements.siteToggle) {
+    registerMultiSelectToggle(elements.siteToggle, 'site', {
+      onChange: () => {
+        updateServiceOptions();
+      }
+    });
+  }
+
+  if (elements.serviceToggle) {
+    registerMultiSelectToggle(elements.serviceToggle, 'service');
+  }
+
+  registerSingleSelectToggle(elements.distributionToggle, 'distributionDimension');
+  registerSingleSelectToggle(elements.distributionViewToggle, 'distributionView');
+  registerSingleSelectToggle(elements.monthlyModeToggle, 'monthlyMode');
+
+  elements.metricRadios.forEach((radio) => {
+    radio.addEventListener('change', (event) => {
+      state.metric = event.target.value;
+      persistState();
+      updateDashboard();
+    });
+  });
+
+  elements.trendMetricToggles.forEach((checkbox) => {
+    checkbox.addEventListener('change', () => {
+      const active = Array.from(elements.trendMetricToggles)
+        .filter((input) => input.checked)
+        .map((input) => input.value);
+      state.trendMetrics = active.length ? active : [...DEFAULT_TREND_METRICS];
+      persistState();
+      updateDashboard();
+    });
+  });
+
+  if (elements.quickSearch) {
+    elements.quickSearch.addEventListener('input', (event) => {
+      state.search = event.target.value;
+      persistState();
+      updateDashboard();
+    });
+  }
+
+  if (elements.includeZeros) {
+    elements.includeZeros.addEventListener('change', (event) => {
+      state.includeZeros = event.target.checked;
+      persistState();
+      updateDashboard();
+    });
+  }
+
+  if (elements.datasetUpload) {
+    elements.datasetUpload.addEventListener('change', handleDatasetUpload);
+  }
+
+  if (elements.resetDataset) {
+    elements.resetDataset.addEventListener('click', () => {
+      loadPlaceholderDataset('success');
+    });
+  }
+
+  if (elements.tablePageSize) {
+    elements.tablePageSize.addEventListener('change', (event) => {
+      const value = Number(event.target.value);
+      state.tableLimit = Number.isNaN(value) ? defaultState.tableLimit : value;
+      persistState();
+      updateDashboard();
+    });
+  }
+
+  elements.tableHeaderCells.forEach((th) => {
+    th.addEventListener('click', () => {
+      const key = th.dataset.key;
+      if (!key) return;
+      if (state.tableSort.key === key) {
+        state.tableSort.direction = state.tableSort.direction === 'asc' ? 'desc' : 'asc';
+      } else {
+        state.tableSort.key = key;
+        state.tableSort.direction = key === 'Date' ? 'desc' : 'asc';
+      }
+      persistState();
+      updateDashboard();
+    });
+  });
+
+  elements.chartExportButtons.forEach((button) => {
+    button.addEventListener('click', handleChartExport);
+  });
+
+  document.addEventListener('keydown', handleKeyboardShortcuts);
+}
+
+function registerSingleSelectToggle(container, stateKey) {
   if (!container) return;
 
   container.addEventListener('click', (event) => {
@@ -706,41 +1516,21 @@ function registerSingleSelectToggle(container, stateKey, { onChange } = {}) {
 
     state[stateKey] = value;
     updateToggleGroupSelection(container, value);
-    if (typeof onChange === 'function') {
-      onChange(value);
+    if (stateKey === 'distributionDimension' || stateKey === 'distributionView' || stateKey === 'monthlyMode') {
+      persistState();
+      updateDashboard();
     }
-    button.focus();
-    updateDashboard();
   });
+}
 
-  container.addEventListener('keydown', (event) => {
-    const keys = ['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Home', 'End'];
-    if (!keys.includes(event.key)) {
-      return;
-    }
-    event.preventDefault();
-    const buttons = Array.from(container.querySelectorAll('.toggle-button'));
-    if (!buttons.length) {
-      return;
-    }
-    const currentIndex = buttons.findIndex((btn) => btn.dataset.value === state[stateKey]);
-    let targetIndex = currentIndex >= 0 ? currentIndex : 0;
-
-    if (event.key === 'ArrowLeft' || event.key === 'ArrowUp') {
-      targetIndex = targetIndex <= 0 ? buttons.length - 1 : targetIndex - 1;
-    } else if (event.key === 'ArrowRight' || event.key === 'ArrowDown') {
-      targetIndex = targetIndex === buttons.length - 1 ? 0 : targetIndex + 1;
-    } else if (event.key === 'Home') {
-      targetIndex = 0;
-    } else if (event.key === 'End') {
-      targetIndex = buttons.length - 1;
-    }
-
-    const targetButton = buttons[targetIndex];
-    if (targetButton) {
-      targetButton.focus();
-      targetButton.click();
-    }
+function updateToggleGroupSelection(container, selectedValue) {
+  if (!container) return;
+  const buttons = container.querySelectorAll('.toggle-button');
+  buttons.forEach((button) => {
+    const isActive = button.dataset.value === selectedValue;
+    button.classList.toggle('active', isActive);
+    button.setAttribute('aria-checked', isActive ? 'true' : 'false');
+    button.setAttribute('tabindex', isActive ? '0' : '-1');
   });
 }
 
@@ -785,173 +1575,140 @@ function registerMultiSelectToggle(container, stateKey, { onChange } = {}) {
       onChange(normalized);
     }
 
-    button.focus();
+    persistState();
     updateDashboard();
   });
-
-  container.addEventListener('keydown', (event) => {
-    const keys = ['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Home', 'End'];
-    if (!keys.includes(event.key)) {
-      return;
-    }
-
-    const buttons = Array.from(container.querySelectorAll('.toggle-button'));
-    if (!buttons.length) {
-      return;
-    }
-
-    const currentIndex = buttons.indexOf(document.activeElement);
-    let targetIndex = currentIndex >= 0 ? currentIndex : 0;
-
-    if (event.key === 'ArrowLeft' || event.key === 'ArrowUp') {
-      targetIndex = targetIndex <= 0 ? buttons.length - 1 : targetIndex - 1;
-    } else if (event.key === 'ArrowRight' || event.key === 'ArrowDown') {
-      targetIndex = targetIndex === buttons.length - 1 ? 0 : targetIndex + 1;
-    } else if (event.key === 'Home') {
-      targetIndex = 0;
-    } else if (event.key === 'End') {
-      targetIndex = buttons.length - 1;
-    }
-
-    const targetButton = buttons[targetIndex];
-    if (targetButton) {
-      targetButton.focus();
-    }
-
-    event.preventDefault();
-  });
 }
 
-function attachEventListeners() {
-  registerMultiSelectToggle(elements.yearToggle, 'year');
-  registerMultiSelectToggle(elements.siteToggle, 'site', {
-    onChange: () => {
-      updateServiceOptions();
-    }
+function handleChartExport(event) {
+  const button = event.currentTarget;
+  const chartKey = button.dataset.chart;
+  const exportType = button.dataset.export;
+
+  if (exportType === 'png') {
+    exportChartAsPng(chartKey);
+  } else if (exportType === 'csv') {
+    exportFilteredCsv(chartKey);
+  }
+}
+
+function exportChartAsPng(chartKey) {
+  const chartMap = {
+    trend: trendChart,
+    monthly: monthlyChart,
+    distribution: distributionChart
+  };
+  const chart = chartMap[chartKey];
+  if (!chart) return;
+  const link = document.createElement('a');
+  link.href = chart.toBase64Image();
+  link.download = `${chartKey}-chart.png`;
+  link.click();
+}
+
+function exportFilteredCsv() {
+  const rows = latestFilteredRows;
+  if (!rows.length) return;
+  const headers = [
+    'Week',
+    'IsoWeek',
+    'IsoYear',
+    'YearWeek',
+    'Date',
+    'Year',
+    'Month',
+    'Site',
+    'Service',
+    'Attendance',
+    'Kids Checked-in'
+  ];
+  const csvLines = [headers.join(',')];
+  rows.forEach((row) => {
+    const values = headers.map((header) => {
+      const value = row[header];
+      if (typeof value === 'string' && value.includes(',')) {
+        return `"${value.replace(/"/g, '""')}"`;
+      }
+      return value;
+    });
+    csvLines.push(values.join(','));
   });
-  registerMultiSelectToggle(elements.serviceToggle, 'service');
-  registerSingleSelectToggle(elements.distributionToggle, 'distributionDimension');
+
+  const blob = new Blob([csvLines.join('\n')], { type: 'text/csv;charset=utf-8;' });
+  const link = document.createElement('a');
+  link.href = URL.createObjectURL(blob);
+  link.download = 'filtered-attendance.csv';
+  link.click();
+  URL.revokeObjectURL(link.href);
+}
+
+function handleKeyboardShortcuts(event) {
+  if (event.defaultPrevented) return;
+  const target = event.target;
+  if (target && (target.tagName === 'INPUT' || target.tagName === 'SELECT' || target.tagName === 'TEXTAREA')) {
+    return;
+  }
+
+  if (event.key === '/') {
+    event.preventDefault();
+    if (elements.quickSearch) {
+      elements.quickSearch.focus();
+    }
+  }
+
+  if (event.key.toLowerCase() === 'a') {
+    event.preventDefault();
+    const options = Array.from(elements.serviceToggle.querySelectorAll('.toggle-button')).map((btn) => btn.dataset.value);
+    const selections = options.filter((value) => value !== 'All');
+    applySelection('service', selections, options);
+    updateMultiToggleSelection(elements.serviceToggle, 'service');
+    persistState();
+    updateDashboard();
+  }
+
+  if (event.key.toLowerCase() === 'c') {
+    event.preventDefault();
+    applySelection('service', ['All']);
+    updateMultiToggleSelection(elements.serviceToggle, 'service');
+    persistState();
+    updateDashboard();
+  }
+}
+
+function applyStateToControls() {
+  updateMultiToggleSelection(elements.yearToggle, 'year');
+  updateMultiToggleSelection(elements.siteToggle, 'site');
+  updateMultiToggleSelection(elements.serviceToggle, 'service');
+
   updateToggleGroupSelection(elements.distributionToggle, state.distributionDimension);
+  updateToggleGroupSelection(elements.distributionViewToggle, state.distributionView);
+  updateToggleGroupSelection(elements.monthlyModeToggle, state.monthlyMode);
 
   elements.metricRadios.forEach((radio) => {
-    radio.addEventListener('change', (event) => {
-      state.metric = event.target.value;
-      updateDashboard();
-    });
+    radio.checked = radio.value === state.metric;
   });
 
-  if (elements.datasetUpload) {
-    elements.datasetUpload.addEventListener('change', handleDatasetUpload);
+  elements.trendMetricToggles.forEach((checkbox) => {
+    checkbox.checked = state.trendMetrics.includes(checkbox.value);
+  });
+
+  if (elements.quickSearch) {
+    elements.quickSearch.value = state.search;
   }
 
-  if (elements.resetDataset) {
-    elements.resetDataset.addEventListener('click', () => {
-      loadPlaceholderDataset('success');
-    });
-  }
-}
-
-function applyDataset(data, { message, type = 'info' } = {}) {
-  if (!Array.isArray(data) || data.length === 0) {
-    throw new Error('The dataset must contain at least one row.');
+  if (elements.includeZeros) {
+    elements.includeZeros.checked = state.includeZeros;
   }
 
-  dataset = data;
-  buildServicesBySite(dataset);
-
-  state.year = ['All'];
-  state.site = ['All'];
-  state.service = ['All'];
-
-  populateFilterOptions();
-
-  updateDashboard();
-
-  if (elements.datasetUpload) {
-    elements.datasetUpload.value = '';
-  }
-
-  const defaultMessage = `Loaded ${formatNumber(dataset.length)} rows.`;
-  setDatasetStatus(message || defaultMessage, type);
-}
-
-function handleDatasetUpload(event) {
-  const input = event.target;
-  const file = input.files && input.files[0];
-  if (!file) {
-    return;
-  }
-
-  if (!file.name.toLowerCase().endsWith('.csv')) {
-    setDatasetStatus('Please choose a CSV file.', 'error');
-    input.value = '';
-    return;
-  }
-
-  if (file.size === 0) {
-    setDatasetStatus('The selected file is empty.', 'error');
-    input.value = '';
-    return;
-  }
-
-  if (file.size > MAX_FILE_SIZE_BYTES) {
-    setDatasetStatus(
-      `The selected file is too large. The maximum supported size is ${describeFileSize(MAX_FILE_SIZE_BYTES)}.`,
-      'error'
-    );
-    input.value = '';
-    return;
-  }
-
-  const reader = new FileReader();
-
-  reader.onload = () => {
-    try {
-      if (typeof reader.result !== 'string') {
-        throw new Error('Unable to read the file as text.');
-      }
-      const text = reader.result;
-      const parsed = parseCsv(text);
-      applyDataset(parsed, {
-        message: `Loaded ${formatNumber(parsed.length)} rows from ${file.name}.`,
-        type: 'success'
-      });
-    } catch (error) {
-      console.error('Failed to parse uploaded dataset', error);
-      setDatasetStatus(error.message, 'error');
-      input.value = '';
-    }
-  };
-
-  reader.onerror = () => {
-    console.error('Failed to read uploaded dataset', reader.error);
-    setDatasetStatus('Unable to read the selected file. Please try again.', 'error');
-    input.value = '';
-  };
-
-  reader.readAsText(file);
-}
-
-async function loadPlaceholderDataset(feedbackType = 'info') {
-  try {
-    setDatasetStatus('Loading placeholder dataset…');
-    const response = await fetch('data/attendance.json', { cache: 'no-store' });
-    if (!response.ok) {
-      throw new Error(`Request failed with status ${response.status}`);
-    }
-    const data = await response.json();
-    applyDataset(data, {
-      message: `Using placeholder dataset generated for demonstration across multiple sites and years. Rows available: ${formatNumber(data.length)}.`,
-      type: feedbackType
-    });
-  } catch (error) {
-    console.error('Failed to load placeholder dataset', error);
-    setDatasetStatus('Unable to load the placeholder dataset. Upload a CSV file to continue.', 'error');
+  if (elements.tablePageSize) {
+    elements.tablePageSize.value = String(state.tableLimit);
   }
 }
 
 function initialize() {
   attachEventListeners();
+  applyStateToControls();
+  toggleEmptyState(true);
   loadPlaceholderDataset();
 }
 

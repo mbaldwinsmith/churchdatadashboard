@@ -12,7 +12,6 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   </head>
   <body>
     <header class="page-header">
@@ -29,9 +28,10 @@
       <section class="data-management" aria-labelledby="dataManagementHeading">
         <article class="data-card">
           <h2 id="dataManagementHeading">Data source</h2>
-          <p id="datasetStatus" class="dataset-status" role="status">
+          <p id="datasetStatus" class="dataset-status" role="status" aria-live="polite">
             Using placeholder dataset generated for demonstration across multiple sites and years.
           </p>
+          <div id="ingestNotices" class="ingest-notices" aria-live="polite"></div>
           <div class="data-actions">
             <label class="file-upload">
               <span>Upload CSV dataset</span>
@@ -40,6 +40,20 @@
             <button type="button" id="resetDataset" class="pill-button secondary">Reset to placeholder</button>
             <a class="pill-button" href="data/attendance.csv" download>Download sample CSV</a>
           </div>
+          <details class="help-panel" open>
+            <summary>Need a hand preparing your CSV?</summary>
+            <div class="help-panel__content">
+              <p><strong>Required columns:</strong> Week, Date (YYYY-MM-DD), Year, Month, Site, Service, Attendance, Kids Checked-in.</p>
+              <p>
+                Remove blank rows, keep values numeric, and ensure one row per Site &times; Service &times; Date combination.
+                We'll trim extra spaces, normalize month names, and flag duplicates for you.
+              </p>
+              <p>
+                Having trouble? Common fixes include renaming headers to match exactly, converting Excel dates to text, and
+                saving the file as UTF-8 CSV.
+              </p>
+            </div>
+          </details>
           <details class="guidelines">
             <summary>CSV formatting guidelines</summary>
             <ul>
@@ -55,22 +69,77 @@
           </details>
         </article>
       </section>
-    
+
+      <section id="emptyState" class="empty-state" aria-live="polite" hidden>
+        <div class="empty-state__content">
+          <h2>Load a CSV to begin</h2>
+          <p>Upload your attendance CSV to unlock KPIs, charts, and insights tailored to your filters.</p>
+          <table class="example-row" aria-label="Example CSV row">
+            <thead>
+              <tr>
+                <th>Week</th>
+                <th>Date</th>
+                <th>Year</th>
+                <th>Month</th>
+                <th>Site</th>
+                <th>Service</th>
+                <th>Attendance</th>
+                <th>Kids Checked-in</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>12</td>
+                <td>2024-03-24</td>
+                <td>2024</td>
+                <td>March</td>
+                <td>Downtown</td>
+                <td>9am Gathering</td>
+                <td>142</td>
+                <td>36</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
       <section class="controls">
         <div class="control-group toggle-group">
-          <span class="control-label" id="yearToggleLabel">Year</span>
+          <div class="control-header">
+            <span class="control-label" id="yearToggleLabel">Year</span>
+            <div class="control-actions" aria-hidden="true">
+              <button type="button" class="control-action" data-target="year" data-action="select">Select all</button>
+              <button type="button" class="control-action" data-target="year" data-action="clear">Clear all</button>
+            </div>
+          </div>
           <div class="toggle-options" id="yearToggle" role="group" aria-labelledby="yearToggleLabel"></div>
         </div>
         <div class="control-group toggle-group">
-          <span class="control-label" id="siteToggleLabel">Site</span>
+          <div class="control-header">
+            <span class="control-label" id="siteToggleLabel">Site</span>
+            <div class="control-actions" aria-hidden="true">
+              <button type="button" class="control-action" data-target="site" data-action="select">Select all</button>
+              <button type="button" class="control-action" data-target="site" data-action="clear">Clear all</button>
+            </div>
+          </div>
           <div class="toggle-options" id="siteToggle" role="group" aria-labelledby="siteToggleLabel"></div>
         </div>
         <div class="control-group toggle-group">
-          <span class="control-label" id="serviceToggleLabel">Service</span>
+          <div class="control-header">
+            <span class="control-label" id="serviceToggleLabel">Service</span>
+            <div class="control-actions" aria-hidden="true">
+              <button type="button" class="control-action" data-target="service" data-action="select">Select all</button>
+              <button type="button" class="control-action" data-target="service" data-action="clear">Clear all</button>
+            </div>
+          </div>
           <div class="toggle-options" id="serviceToggle" role="group" aria-labelledby="serviceToggleLabel"></div>
         </div>
+        <div class="control-group search-group">
+          <label for="quickSearch">Quick search</label>
+          <input type="search" id="quickSearch" placeholder="Find a site or service" />
+        </div>
         <div class="control-group metric-toggle">
-          <span>Metric</span>
+          <span>Primary metric</span>
           <label>
             <input type="radio" name="metric" value="Attendance" checked />
             Attendance
@@ -78,6 +147,23 @@
           <label>
             <input type="radio" name="metric" value="Kids Checked-in" />
             Kids Checked-in
+          </label>
+        </div>
+        <div class="control-group metric-toggle">
+          <span>Weekly trend metrics</span>
+          <label>
+            <input type="checkbox" class="trend-metric" value="Attendance" checked />
+            Attendance
+          </label>
+          <label>
+            <input type="checkbox" class="trend-metric" value="Kids Checked-in" />
+            Kids Checked-in
+          </label>
+        </div>
+        <div class="control-group toggle-group include-zero-group">
+          <label class="toggle-inline">
+            <input type="checkbox" id="includeZeros" />
+            Include zero attendance entries
           </label>
         </div>
       </section>
@@ -121,10 +207,24 @@
         </article>
       </section>
 
+      <section class="insight-row">
+        <article class="story-card">
+          <header>
+            <h2>Story</h2>
+          </header>
+          <p id="storySummary">Load a dataset to generate automated insights.</p>
+          <ul id="anomalyHighlights" class="story-highlights" aria-live="polite"></ul>
+        </article>
+      </section>
+
       <section class="charts">
         <article class="chart-card">
           <div class="chart-header">
             <h2>Weekly Trend</h2>
+            <div class="chart-actions">
+              <button type="button" class="pill-button tertiary" data-chart="trend" data-export="png">Export PNG</button>
+              <button type="button" class="pill-button tertiary" data-chart="trend" data-export="csv">Export filtered CSV</button>
+            </div>
             <p>Aggregated by Sunday</p>
           </div>
           <div class="chart-area">
@@ -140,7 +240,19 @@
         <article class="chart-card">
           <div class="chart-header">
             <h2>Monthly Overview</h2>
-            <p>Totals grouped by month</p>
+            <div class="chart-actions">
+              <div class="chart-toggle-group" id="monthlyModeToggle" role="radiogroup" aria-label="Monthly view mode">
+                <button type="button" class="toggle-button small active" data-value="grouped" role="radio" aria-checked="true" tabindex="0">
+                  Grouped
+                </button>
+                <button type="button" class="toggle-button small" data-value="stacked" role="radio" aria-checked="false" tabindex="-1">
+                  Stacked
+                </button>
+              </div>
+              <button type="button" class="pill-button tertiary" data-chart="monthly" data-export="png">Export PNG</button>
+              <button type="button" class="pill-button tertiary" data-chart="monthly" data-export="csv">Export filtered CSV</button>
+            </div>
+            <p>Totals grouped by month across selected years</p>
           </div>
           <div class="chart-area">
             <canvas
@@ -158,42 +270,54 @@
               <h2>Distribution</h2>
               <p id="distributionLabel">Share by service</p>
             </div>
-            <div
-              class="chart-toggle-group"
-              id="distributionToggle"
-              role="radiogroup"
-              aria-label="Show distribution by"
-            >
-              <button
-                type="button"
-                class="toggle-button small active"
-                data-value="Service"
-                role="radio"
-                aria-checked="true"
-                tabindex="0"
+            <div class="chart-actions">
+              <div
+                class="chart-toggle-group"
+                id="distributionToggle"
+                role="radiogroup"
+                aria-label="Show distribution by"
               >
-                Service
-              </button>
-              <button
-                type="button"
-                class="toggle-button small"
-                data-value="Site"
-                role="radio"
-                aria-checked="false"
-                tabindex="-1"
-              >
-                Site
-              </button>
-              <button
-                type="button"
-                class="toggle-button small"
-                data-value="Year"
-                role="radio"
-                aria-checked="false"
-                tabindex="-1"
-              >
-                Year
-              </button>
+                <button
+                  type="button"
+                  class="toggle-button small active"
+                  data-value="Service"
+                  role="radio"
+                  aria-checked="true"
+                  tabindex="0"
+                >
+                  Service
+                </button>
+                <button
+                  type="button"
+                  class="toggle-button small"
+                  data-value="Site"
+                  role="radio"
+                  aria-checked="false"
+                  tabindex="-1"
+                >
+                  Site
+                </button>
+                <button
+                  type="button"
+                  class="toggle-button small"
+                  data-value="Year"
+                  role="radio"
+                  aria-checked="false"
+                  tabindex="-1"
+                >
+                  Year
+                </button>
+              </div>
+              <div class="chart-toggle-group" id="distributionViewToggle" role="radiogroup" aria-label="Distribution view type">
+                <button type="button" class="toggle-button small active" data-value="pie" role="radio" aria-checked="true" tabindex="0">
+                  Pie
+                </button>
+                <button type="button" class="toggle-button small" data-value="bar" role="radio" aria-checked="false" tabindex="-1">
+                  Bars
+                </button>
+              </div>
+              <button type="button" class="pill-button tertiary" data-chart="distribution" data-export="png">Export PNG</button>
+              <button type="button" class="pill-button tertiary" data-chart="distribution" data-export="csv">Export filtered CSV</button>
             </div>
           </div>
           <div class="chart-area">
@@ -211,18 +335,27 @@
       <section class="table-section">
         <div class="table-header">
           <h2>Recent Weeks</h2>
-          <p>Showing the latest 50 entries based on the selected filters.</p>
+          <div class="table-controls">
+            <label for="tablePageSize">Show</label>
+            <select id="tablePageSize">
+              <option value="50" selected>50</option>
+              <option value="100">100</option>
+              <option value="0">All</option>
+            </select>
+            <span>rows</span>
+          </div>
+          <p id="tableDescription">Showing the latest 50 entries based on the selected filters.</p>
         </div>
         <div class="table-wrapper">
           <table>
             <thead>
               <tr>
-                <th>Week</th>
-                <th>Date</th>
-                <th>Site</th>
-                <th>Service</th>
-                <th id="metricHeader">Attendance</th>
-                <th id="secondaryMetricHeader">Kids Checked-in</th>
+                <th data-key="IsoWeek" scope="col">ISO Week</th>
+                <th data-key="Date" scope="col">Date</th>
+                <th data-key="Site" scope="col">Site</th>
+                <th data-key="Service" scope="col">Service</th>
+                <th id="metricHeader" data-key="Attendance" scope="col">Attendance</th>
+                <th id="secondaryMetricHeader" data-key="Kids Checked-in" scope="col">Kids Checked-in</th>
               </tr>
             </thead>
             <tbody id="tableBody"></tbody>
