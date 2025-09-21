@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Church Attendance Dashboard</title>
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
     <link rel="stylesheet" href="assets/styles.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -15,7 +16,7 @@
   </head>
   <body>
     <header class="page-header">
-      <div>
+      <div class="layout-shell">
         <h1>Church Attendance Dashboard</h1>
         <p class="subtitle">
           Explore weekly attendance and kids check-in trends tailored to the
@@ -24,7 +25,7 @@
       </div>
     </header>
 
-    <main>
+    <main class="layout-shell main-content">
       <section class="data-management" aria-labelledby="dataManagementHeading">
         <article class="data-card">
           <h2 id="dataManagementHeading">Data source</h2>
@@ -86,23 +87,35 @@
       </section>
 
       <section class="summaries" aria-live="polite">
-        <article class="summary-card">
-          <h2>Total</h2>
+        <article class="summary-card summary-total">
+          <div class="summary-card__header">
+            <span class="summary-card__icon" aria-hidden="true">📈</span>
+            <h2>Total</h2>
+          </div>
           <p id="summaryTotal" class="summary-value">0</p>
           <p class="summary-label" id="summaryTotalLabel">Total Attendance</p>
         </article>
-        <article class="summary-card">
-          <h2>Average per Week</h2>
+        <article class="summary-card summary-average">
+          <div class="summary-card__header">
+            <span class="summary-card__icon" aria-hidden="true">📊</span>
+            <h2>Average per Week</h2>
+          </div>
           <p id="summaryAverage" class="summary-value">0</p>
           <p class="summary-label">Based on available Sundays</p>
         </article>
-        <article class="summary-card">
-          <h2>Peak Week</h2>
+        <article class="summary-card summary-peak">
+          <div class="summary-card__header">
+            <span class="summary-card__icon" aria-hidden="true">🚀</span>
+            <h2>Peak Week</h2>
+          </div>
           <p id="summaryPeak" class="summary-value">0</p>
           <p class="summary-label" id="summaryPeakLabel"></p>
         </article>
-        <article class="summary-card">
-          <h2>Top Group</h2>
+        <article class="summary-card summary-top-group">
+          <div class="summary-card__header">
+            <span class="summary-card__icon" aria-hidden="true">🏆</span>
+            <h2>Top Group</h2>
+          </div>
           <p id="summaryTopGroup" class="summary-value">0</p>
           <p class="summary-label" id="summaryTopGroupLabel"></p>
         </article>
@@ -200,8 +213,10 @@
       </section>
     </main>
 
-    <footer>
-      <p>Placeholder data generated for demonstration purposes.</p>
+    <footer class="page-footer">
+      <div class="layout-shell">
+        <p>Placeholder data generated for demonstration purposes.</p>
+      </div>
     </footer>
 
     <script type="module" src="assets/main.js"></script>
