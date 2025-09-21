@@ -29,7 +29,7 @@
         <article class="data-card">
           <h2 id="dataManagementHeading">Data source</h2>
           <p id="datasetStatus" class="dataset-status" role="status">
-            Using placeholder dataset generated for Central and North sites (2022–2024).
+            Using placeholder dataset generated for demonstration across multiple sites and years.
           </p>
           <div class="data-actions">
             <label class="file-upload">
@@ -56,17 +56,17 @@
       </section>
     
       <section class="controls">
-        <div class="control-group">
-          <label for="yearSelect">Year</label>
-          <select id="yearSelect"></select>
+        <div class="control-group toggle-group">
+          <span class="control-label" id="yearToggleLabel">Year</span>
+          <div class="toggle-options" id="yearToggle" role="radiogroup" aria-labelledby="yearToggleLabel"></div>
         </div>
-        <div class="control-group">
-          <label for="siteSelect">Site</label>
-          <select id="siteSelect"></select>
+        <div class="control-group toggle-group">
+          <span class="control-label" id="siteToggleLabel">Site</span>
+          <div class="toggle-options" id="siteToggle" role="radiogroup" aria-labelledby="siteToggleLabel"></div>
         </div>
-        <div class="control-group">
-          <label for="serviceSelect">Service</label>
-          <select id="serviceSelect"></select>
+        <div class="control-group toggle-group">
+          <span class="control-label" id="serviceToggleLabel">Service</span>
+          <div class="toggle-options" id="serviceToggle" role="radiogroup" aria-labelledby="serviceToggleLabel"></div>
         </div>
         <div class="control-group metric-toggle">
           <span>Metric</span>
@@ -129,8 +129,47 @@
         </article>
         <article class="chart-card">
           <div class="chart-header">
-            <h2>Distribution</h2>
-            <p id="distributionLabel">Share by service</p>
+            <div class="chart-title">
+              <h2>Distribution</h2>
+              <p id="distributionLabel">Share by service</p>
+            </div>
+            <div
+              class="chart-toggle-group"
+              id="distributionToggle"
+              role="radiogroup"
+              aria-label="Show distribution by"
+            >
+              <button
+                type="button"
+                class="toggle-button small active"
+                data-value="Service"
+                role="radio"
+                aria-checked="true"
+                tabindex="0"
+              >
+                Service
+              </button>
+              <button
+                type="button"
+                class="toggle-button small"
+                data-value="Site"
+                role="radio"
+                aria-checked="false"
+                tabindex="-1"
+              >
+                Site
+              </button>
+              <button
+                type="button"
+                class="toggle-button small"
+                data-value="Year"
+                role="radio"
+                aria-checked="false"
+                tabindex="-1"
+              >
+                Year
+              </button>
+            </div>
           </div>
           <div class="chart-area">
             <canvas id="distributionChart"></canvas>

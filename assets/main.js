@@ -2,7 +2,8 @@ const state = {
   year: 'All',
   site: 'All',
   service: 'All',
-  metric: 'Attendance'
+  metric: 'Attendance',
+  distributionDimension: 'Service'
 };
 
 const monthNames = [
@@ -26,13 +27,14 @@ const monthRank = monthNames.reduce((acc, name, index) => {
 }, {});
 
 const elements = {
-  yearSelect: document.getElementById('yearSelect'),
-  siteSelect: document.getElementById('siteSelect'),
-  serviceSelect: document.getElementById('serviceSelect'),
+  yearToggle: document.getElementById('yearToggle'),
+  siteToggle: document.getElementById('siteToggle'),
+  serviceToggle: document.getElementById('serviceToggle'),
   metricRadios: document.querySelectorAll("input[name='metric']"),
   datasetStatus: document.getElementById('datasetStatus'),
   datasetUpload: document.getElementById('datasetUpload'),
   resetDataset: document.getElementById('resetDataset'),
+  distributionToggle: document.getElementById('distributionToggle'),
   summaryTotal: document.getElementById('summaryTotal'),
   summaryTotalLabel: document.getElementById('summaryTotalLabel'),
   summaryAverage: document.getElementById('summaryAverage'),
@@ -247,22 +249,50 @@ function buildServicesBySite(data) {
   servicesBySite = new Map(Array.from(map.entries()).map(([site, services]) => [site, Array.from(services).sort()]));
 }
 
-function setSelectOptions(select, options, selectedValue) {
-  const opts = options
-    .map((option) => `<option value="${option}">${option}</option>`)
-    .join('');
-  select.innerHTML = opts;
-  if (selectedValue && options.includes(selectedValue)) {
-    select.value = selectedValue;
+function updateToggleGroupSelection(container, selectedValue) {
+  if (!container) return;
+  const buttons = container.querySelectorAll('.toggle-button');
+  buttons.forEach((button) => {
+    const isActive = button.dataset.value === selectedValue;
+    button.classList.toggle('active', isActive);
+    button.setAttribute('aria-checked', isActive ? 'true' : 'false');
+    button.setAttribute('tabindex', isActive ? '0' : '-1');
+  });
+}
+
+function renderToggleOptions(container, options, stateKey) {
+  if (!container) return;
+  if (!options.length) {
+    container.innerHTML = '';
+    return;
   }
+
+  let selectedValue = state[stateKey];
+  if (!options.includes(selectedValue)) {
+    selectedValue = options[0];
+    state[stateKey] = selectedValue;
+  }
+
+  container.innerHTML = '';
+  options.forEach((option) => {
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'toggle-button';
+    button.dataset.value = option;
+    button.textContent = option;
+    button.setAttribute('role', 'radio');
+    container.appendChild(button);
+  });
+
+  updateToggleGroupSelection(container, selectedValue);
 }
 
 function populateFilterOptions() {
   const uniqueYears = Array.from(new Set(dataset.map((row) => row.Year))).sort();
-  setSelectOptions(elements.yearSelect, ['All', ...uniqueYears], state.year);
+  renderToggleOptions(elements.yearToggle, ['All', ...uniqueYears], 'year');
 
   const uniqueSites = Array.from(new Set(dataset.map((row) => row.Site))).sort();
-  setSelectOptions(elements.siteSelect, ['All', ...uniqueSites], state.site);
+  renderToggleOptions(elements.siteToggle, ['All', ...uniqueSites], 'site');
 
   updateServiceOptions(state.site);
 }
@@ -277,12 +307,7 @@ function updateServiceOptions(site) {
     services = servicesBySite.get(site) || [];
   }
   const options = ['All', ...services];
-  const prevService = state.service;
-  setSelectOptions(elements.serviceSelect, options, prevService);
-  if (!options.includes(prevService)) {
-    state.service = 'All';
-    elements.serviceSelect.value = 'All';
-  }
+  renderToggleOptions(elements.serviceToggle, options, 'service');
 }
 
 function filterData() {
@@ -325,25 +350,18 @@ function aggregateMonthly(rows, metricKey) {
   return Array.from(map.values()).sort((a, b) => (a.sortKey > b.sortKey ? 1 : -1));
 }
 
-function getDistributionData(rows, metricKey) {
-  if (!rows.length) {
-    return { labels: [], values: [], dimension: 'Service' };
-  }
+function getDistributionData(rows, metricKey, requestedDimension = 'Service') {
+  const dimensionMap = new Map([
+    ['Service', (row) => row.Service],
+    ['Site', (row) => row.Site],
+    ['Year', (row) => row.Year]
+  ]);
 
-  let dimension;
-  let groupFn;
-  if (state.service === 'All') {
-    dimension = 'Service';
-    groupFn = (row) => row.Service;
-  } else if (state.site === 'All') {
-    dimension = 'Site';
-    groupFn = (row) => row.Site;
-  } else if (state.year === 'All') {
-    dimension = 'Year';
-    groupFn = (row) => row.Year;
-  } else {
-    dimension = 'Month';
-    groupFn = (row) => row.Month;
+  const dimension = dimensionMap.has(requestedDimension) ? requestedDimension : 'Service';
+  const groupFn = dimensionMap.get(dimension);
+
+  if (!rows.length || !groupFn) {
+    return { labels: [], values: [], dimension };
   }
 
   const map = new Map();
@@ -356,10 +374,10 @@ function getDistributionData(rows, metricKey) {
   });
 
   const entries = Array.from(map.entries()).sort((a, b) => {
-    if (dimension === 'Month') {
-      return monthRank[a[0]] - monthRank[b[0]];
+    if (dimension === 'Year') {
+      return a[0].localeCompare(b[0], undefined, { numeric: true });
     }
-    return a[0] > b[0] ? 1 : -1;
+    return String(a[0]).localeCompare(String(b[0]), undefined, { numeric: true, sensitivity: 'base' });
   });
 
   return {
@@ -387,7 +405,7 @@ function updateSummaries(filtered, metricKey) {
     elements.summaryPeakLabel.textContent = 'No data available';
   }
 
-  const distribution = getDistributionData(filtered, metricKey);
+  const distribution = getDistributionData(filtered, metricKey, state.distributionDimension);
   if (distribution.values.length) {
     let maxIndex = 0;
     distribution.values.forEach((value, index) => {
@@ -399,7 +417,7 @@ function updateSummaries(filtered, metricKey) {
     elements.summaryTopGroupLabel.textContent = `${distribution.dimension}: ${distribution.labels[maxIndex]}`;
   } else {
     elements.summaryTopGroup.textContent = '0';
-    elements.summaryTopGroupLabel.textContent = 'No grouping available';
+    elements.summaryTopGroupLabel.textContent = 'No data for selected grouping';
   }
 }
 
@@ -558,7 +576,7 @@ function updateMonthlyChart(filtered, metricKey) {
 }
 
 function updateDistributionChart(filtered, metricKey) {
-  const distribution = getDistributionData(filtered, metricKey);
+  const distribution = getDistributionData(filtered, metricKey, state.distributionDimension);
   elements.distributionLabel.textContent = `Share by ${distribution.dimension.toLowerCase()}`;
 
   const chartData = {
@@ -683,22 +701,69 @@ function updateDashboard() {
   updateActiveFilters();
 }
 
+function registerFilterToggle(container, stateKey, { onChange } = {}) {
+  if (!container) return;
+
+  container.addEventListener('click', (event) => {
+    const button = event.target.closest('.toggle-button');
+    if (!button || !container.contains(button)) {
+      return;
+    }
+    const value = button.dataset.value;
+    if (!value || state[stateKey] === value) {
+      return;
+    }
+
+    state[stateKey] = value;
+    updateToggleGroupSelection(container, value);
+    if (typeof onChange === 'function') {
+      onChange(value);
+    }
+    button.focus();
+    updateDashboard();
+  });
+
+  container.addEventListener('keydown', (event) => {
+    const keys = ['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Home', 'End'];
+    if (!keys.includes(event.key)) {
+      return;
+    }
+    event.preventDefault();
+    const buttons = Array.from(container.querySelectorAll('.toggle-button'));
+    if (!buttons.length) {
+      return;
+    }
+    const currentIndex = buttons.findIndex((btn) => btn.dataset.value === state[stateKey]);
+    let targetIndex = currentIndex >= 0 ? currentIndex : 0;
+
+    if (event.key === 'ArrowLeft' || event.key === 'ArrowUp') {
+      targetIndex = targetIndex <= 0 ? buttons.length - 1 : targetIndex - 1;
+    } else if (event.key === 'ArrowRight' || event.key === 'ArrowDown') {
+      targetIndex = targetIndex === buttons.length - 1 ? 0 : targetIndex + 1;
+    } else if (event.key === 'Home') {
+      targetIndex = 0;
+    } else if (event.key === 'End') {
+      targetIndex = buttons.length - 1;
+    }
+
+    const targetButton = buttons[targetIndex];
+    if (targetButton) {
+      targetButton.focus();
+      targetButton.click();
+    }
+  });
+}
+
 function attachEventListeners() {
-  elements.yearSelect.addEventListener('change', (event) => {
-    state.year = event.target.value;
-    updateDashboard();
+  registerFilterToggle(elements.yearToggle, 'year');
+  registerFilterToggle(elements.siteToggle, 'site', {
+    onChange: () => {
+      updateServiceOptions(state.site);
+    }
   });
-
-  elements.siteSelect.addEventListener('change', (event) => {
-    state.site = event.target.value;
-    updateServiceOptions(state.site);
-    updateDashboard();
-  });
-
-  elements.serviceSelect.addEventListener('change', (event) => {
-    state.service = event.target.value;
-    updateDashboard();
-  });
+  registerFilterToggle(elements.serviceToggle, 'service');
+  registerFilterToggle(elements.distributionToggle, 'distributionDimension');
+  updateToggleGroupSelection(elements.distributionToggle, state.distributionDimension);
 
   elements.metricRadios.forEach((radio) => {
     radio.addEventListener('change', (event) => {
@@ -731,9 +796,6 @@ function applyDataset(data, { message, type = 'info' } = {}) {
   state.service = 'All';
 
   populateFilterOptions();
-  elements.yearSelect.value = 'All';
-  elements.siteSelect.value = 'All';
-  elements.serviceSelect.value = 'All';
 
   updateDashboard();
 
@@ -796,7 +858,7 @@ async function loadPlaceholderDataset(feedbackType = 'info') {
     }
     const data = await response.json();
     applyDataset(data, {
-      message: `Using placeholder dataset generated for Central and North sites (2022–2024). Rows available: ${formatNumber(data.length)}.`,
+      message: `Using placeholder dataset generated for demonstration across multiple sites and years. Rows available: ${formatNumber(data.length)}.`,
       type: feedbackType
     });
   } catch (error) {
