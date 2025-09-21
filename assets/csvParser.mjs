@@ -67,18 +67,7 @@ function normalizeMonth(value, date) {
   return monthNames[date.getMonth()];
 }
 
-export function computeIsoWeek(date) {
-  const temp = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
-  const dayNumber = (temp.getUTCDay() + 6) % 7;
-  temp.setUTCDate(temp.getUTCDate() - dayNumber + 3);
-  const firstThursday = new Date(Date.UTC(temp.getUTCFullYear(), 0, 4));
-  const week =
-    1 + Math.round((temp.getTime() - firstThursday.getTime()) / (7 * 24 * 60 * 60 * 1000));
-  const isoYear = temp.getUTCFullYear();
-  return { isoWeek: week, isoYear };
-}
-
-export function normalizeCsvRow(entry) {
+function normalizeCsvRow(entry) {
   const weekValue = Number(entry.Week);
   if (!Number.isFinite(weekValue)) {
     throw new Error('Week must be a number.');
@@ -118,9 +107,6 @@ export function normalizeCsvRow(entry) {
   const monthInput = sanitizeTextValue(entry.Month, 'Month');
   const monthValue = normalizeMonth(monthInput, parsedDate);
 
-  const { isoWeek, isoYear } = computeIsoWeek(parsedDate);
-  const isoWeekIndex = String(isoWeek).padStart(2, '0');
-
   return {
     Week: week,
     Date: entry.Date,
@@ -129,10 +115,7 @@ export function normalizeCsvRow(entry) {
     Site: site,
     Service: service,
     Attendance: attendance,
-    'Kids Checked-in': kids,
-    IsoWeek: isoWeek,
-    IsoYear: String(isoYear),
-    YearWeek: `${isoYear}-${isoWeekIndex}`
+    'Kids Checked-in': kids
   };
 }
 
