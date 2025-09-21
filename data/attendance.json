@@ -1,0 +1,6242 @@
+[
+  {
+    "Week": 1,
+    "Date": "2022-01-02",
+    "Year": "2022",
+    "Month": "January",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 212,
+    "Kids Checked-in": 59
+  },
+  {
+    "Week": 2,
+    "Date": "2022-01-09",
+    "Year": "2022",
+    "Month": "January",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 183,
+    "Kids Checked-in": 49
+  },
+  {
+    "Week": 3,
+    "Date": "2022-01-16",
+    "Year": "2022",
+    "Month": "January",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 214,
+    "Kids Checked-in": 52
+  },
+  {
+    "Week": 4,
+    "Date": "2022-01-23",
+    "Year": "2022",
+    "Month": "January",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 206,
+    "Kids Checked-in": 54
+  },
+  {
+    "Week": 5,
+    "Date": "2022-01-30",
+    "Year": "2022",
+    "Month": "January",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 180,
+    "Kids Checked-in": 54
+  },
+  {
+    "Week": 6,
+    "Date": "2022-02-06",
+    "Year": "2022",
+    "Month": "February",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 229,
+    "Kids Checked-in": 50
+  },
+  {
+    "Week": 7,
+    "Date": "2022-02-13",
+    "Year": "2022",
+    "Month": "February",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 208,
+    "Kids Checked-in": 51
+  },
+  {
+    "Week": 8,
+    "Date": "2022-02-20",
+    "Year": "2022",
+    "Month": "February",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 208,
+    "Kids Checked-in": 52
+  },
+  {
+    "Week": 9,
+    "Date": "2022-02-27",
+    "Year": "2022",
+    "Month": "February",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 200,
+    "Kids Checked-in": 59
+  },
+  {
+    "Week": 10,
+    "Date": "2022-03-06",
+    "Year": "2022",
+    "Month": "March",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 198,
+    "Kids Checked-in": 62
+  },
+  {
+    "Week": 11,
+    "Date": "2022-03-13",
+    "Year": "2022",
+    "Month": "March",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 213,
+    "Kids Checked-in": 51
+  },
+  {
+    "Week": 12,
+    "Date": "2022-03-20",
+    "Year": "2022",
+    "Month": "March",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 189,
+    "Kids Checked-in": 55
+  },
+  {
+    "Week": 13,
+    "Date": "2022-03-27",
+    "Year": "2022",
+    "Month": "March",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 219,
+    "Kids Checked-in": 41
+  },
+  {
+    "Week": 14,
+    "Date": "2022-04-03",
+    "Year": "2022",
+    "Month": "April",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 208,
+    "Kids Checked-in": 52
+  },
+  {
+    "Week": 15,
+    "Date": "2022-04-10",
+    "Year": "2022",
+    "Month": "April",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 223,
+    "Kids Checked-in": 65
+  },
+  {
+    "Week": 16,
+    "Date": "2022-04-17",
+    "Year": "2022",
+    "Month": "April",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 261,
+    "Kids Checked-in": 62
+  },
+  {
+    "Week": 17,
+    "Date": "2022-04-24",
+    "Year": "2022",
+    "Month": "April",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 230,
+    "Kids Checked-in": 65
+  },
+  {
+    "Week": 18,
+    "Date": "2022-05-01",
+    "Year": "2022",
+    "Month": "May",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 194,
+    "Kids Checked-in": 53
+  },
+  {
+    "Week": 19,
+    "Date": "2022-05-08",
+    "Year": "2022",
+    "Month": "May",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 223,
+    "Kids Checked-in": 54
+  },
+  {
+    "Week": 20,
+    "Date": "2022-05-15",
+    "Year": "2022",
+    "Month": "May",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 216,
+    "Kids Checked-in": 59
+  },
+  {
+    "Week": 21,
+    "Date": "2022-05-22",
+    "Year": "2022",
+    "Month": "May",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 200,
+    "Kids Checked-in": 61
+  },
+  {
+    "Week": 22,
+    "Date": "2022-05-29",
+    "Year": "2022",
+    "Month": "May",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 225,
+    "Kids Checked-in": 48
+  },
+  {
+    "Week": 23,
+    "Date": "2022-06-05",
+    "Year": "2022",
+    "Month": "June",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 189,
+    "Kids Checked-in": 47
+  },
+  {
+    "Week": 24,
+    "Date": "2022-06-12",
+    "Year": "2022",
+    "Month": "June",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 182,
+    "Kids Checked-in": 47
+  },
+  {
+    "Week": 25,
+    "Date": "2022-06-19",
+    "Year": "2022",
+    "Month": "June",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 194,
+    "Kids Checked-in": 45
+  },
+  {
+    "Week": 26,
+    "Date": "2022-06-26",
+    "Year": "2022",
+    "Month": "June",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 161,
+    "Kids Checked-in": 44
+  },
+  {
+    "Week": 27,
+    "Date": "2022-07-03",
+    "Year": "2022",
+    "Month": "July",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 211,
+    "Kids Checked-in": 41
+  },
+  {
+    "Week": 28,
+    "Date": "2022-07-10",
+    "Year": "2022",
+    "Month": "July",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 192,
+    "Kids Checked-in": 49
+  },
+  {
+    "Week": 29,
+    "Date": "2022-07-17",
+    "Year": "2022",
+    "Month": "July",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 195,
+    "Kids Checked-in": 42
+  },
+  {
+    "Week": 30,
+    "Date": "2022-07-24",
+    "Year": "2022",
+    "Month": "July",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 186,
+    "Kids Checked-in": 50
+  },
+  {
+    "Week": 31,
+    "Date": "2022-07-31",
+    "Year": "2022",
+    "Month": "July",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 195,
+    "Kids Checked-in": 46
+  },
+  {
+    "Week": 32,
+    "Date": "2022-08-07",
+    "Year": "2022",
+    "Month": "August",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 178,
+    "Kids Checked-in": 46
+  },
+  {
+    "Week": 33,
+    "Date": "2022-08-14",
+    "Year": "2022",
+    "Month": "August",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 195,
+    "Kids Checked-in": 55
+  },
+  {
+    "Week": 34,
+    "Date": "2022-08-21",
+    "Year": "2022",
+    "Month": "August",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 177,
+    "Kids Checked-in": 51
+  },
+  {
+    "Week": 35,
+    "Date": "2022-08-28",
+    "Year": "2022",
+    "Month": "August",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 201,
+    "Kids Checked-in": 47
+  },
+  {
+    "Week": 36,
+    "Date": "2022-09-04",
+    "Year": "2022",
+    "Month": "September",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 216,
+    "Kids Checked-in": 47
+  },
+  {
+    "Week": 37,
+    "Date": "2022-09-11",
+    "Year": "2022",
+    "Month": "September",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 223,
+    "Kids Checked-in": 49
+  },
+  {
+    "Week": 38,
+    "Date": "2022-09-18",
+    "Year": "2022",
+    "Month": "September",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 186,
+    "Kids Checked-in": 59
+  },
+  {
+    "Week": 39,
+    "Date": "2022-09-25",
+    "Year": "2022",
+    "Month": "September",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 213,
+    "Kids Checked-in": 53
+  },
+  {
+    "Week": 40,
+    "Date": "2022-10-02",
+    "Year": "2022",
+    "Month": "October",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 223,
+    "Kids Checked-in": 56
+  },
+  {
+    "Week": 41,
+    "Date": "2022-10-09",
+    "Year": "2022",
+    "Month": "October",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 235,
+    "Kids Checked-in": 59
+  },
+  {
+    "Week": 42,
+    "Date": "2022-10-16",
+    "Year": "2022",
+    "Month": "October",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 206,
+    "Kids Checked-in": 52
+  },
+  {
+    "Week": 43,
+    "Date": "2022-10-23",
+    "Year": "2022",
+    "Month": "October",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 226,
+    "Kids Checked-in": 56
+  },
+  {
+    "Week": 44,
+    "Date": "2022-10-30",
+    "Year": "2022",
+    "Month": "October",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 221,
+    "Kids Checked-in": 65
+  },
+  {
+    "Week": 45,
+    "Date": "2022-11-06",
+    "Year": "2022",
+    "Month": "November",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 204,
+    "Kids Checked-in": 59
+  },
+  {
+    "Week": 46,
+    "Date": "2022-11-13",
+    "Year": "2022",
+    "Month": "November",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 210,
+    "Kids Checked-in": 45
+  },
+  {
+    "Week": 47,
+    "Date": "2022-11-20",
+    "Year": "2022",
+    "Month": "November",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 235,
+    "Kids Checked-in": 60
+  },
+  {
+    "Week": 48,
+    "Date": "2022-11-27",
+    "Year": "2022",
+    "Month": "November",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 222,
+    "Kids Checked-in": 51
+  },
+  {
+    "Week": 49,
+    "Date": "2022-12-04",
+    "Year": "2022",
+    "Month": "December",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 217,
+    "Kids Checked-in": 63
+  },
+  {
+    "Week": 50,
+    "Date": "2022-12-11",
+    "Year": "2022",
+    "Month": "December",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 228,
+    "Kids Checked-in": 63
+  },
+  {
+    "Week": 51,
+    "Date": "2022-12-18",
+    "Year": "2022",
+    "Month": "December",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 300,
+    "Kids Checked-in": 63
+  },
+  {
+    "Week": 52,
+    "Date": "2022-12-25",
+    "Year": "2022",
+    "Month": "December",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 318,
+    "Kids Checked-in": 77
+  },
+  {
+    "Week": 1,
+    "Date": "2022-01-02",
+    "Year": "2022",
+    "Month": "January",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 192,
+    "Kids Checked-in": 36
+  },
+  {
+    "Week": 2,
+    "Date": "2022-01-09",
+    "Year": "2022",
+    "Month": "January",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 180,
+    "Kids Checked-in": 31
+  },
+  {
+    "Week": 3,
+    "Date": "2022-01-16",
+    "Year": "2022",
+    "Month": "January",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 184,
+    "Kids Checked-in": 33
+  },
+  {
+    "Week": 4,
+    "Date": "2022-01-23",
+    "Year": "2022",
+    "Month": "January",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 164,
+    "Kids Checked-in": 29
+  },
+  {
+    "Week": 5,
+    "Date": "2022-01-30",
+    "Year": "2022",
+    "Month": "January",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 188,
+    "Kids Checked-in": 30
+  },
+  {
+    "Week": 6,
+    "Date": "2022-02-06",
+    "Year": "2022",
+    "Month": "February",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 145,
+    "Kids Checked-in": 31
+  },
+  {
+    "Week": 7,
+    "Date": "2022-02-13",
+    "Year": "2022",
+    "Month": "February",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 171,
+    "Kids Checked-in": 31
+  },
+  {
+    "Week": 8,
+    "Date": "2022-02-20",
+    "Year": "2022",
+    "Month": "February",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 178,
+    "Kids Checked-in": 26
+  },
+  {
+    "Week": 9,
+    "Date": "2022-02-27",
+    "Year": "2022",
+    "Month": "February",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 188,
+    "Kids Checked-in": 27
+  },
+  {
+    "Week": 10,
+    "Date": "2022-03-06",
+    "Year": "2022",
+    "Month": "March",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 177,
+    "Kids Checked-in": 32
+  },
+  {
+    "Week": 11,
+    "Date": "2022-03-13",
+    "Year": "2022",
+    "Month": "March",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 205,
+    "Kids Checked-in": 31
+  },
+  {
+    "Week": 12,
+    "Date": "2022-03-20",
+    "Year": "2022",
+    "Month": "March",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 188,
+    "Kids Checked-in": 33
+  },
+  {
+    "Week": 13,
+    "Date": "2022-03-27",
+    "Year": "2022",
+    "Month": "March",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 186,
+    "Kids Checked-in": 29
+  },
+  {
+    "Week": 14,
+    "Date": "2022-04-03",
+    "Year": "2022",
+    "Month": "April",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 190,
+    "Kids Checked-in": 31
+  },
+  {
+    "Week": 15,
+    "Date": "2022-04-10",
+    "Year": "2022",
+    "Month": "April",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 208,
+    "Kids Checked-in": 31
+  },
+  {
+    "Week": 16,
+    "Date": "2022-04-17",
+    "Year": "2022",
+    "Month": "April",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 227,
+    "Kids Checked-in": 43
+  },
+  {
+    "Week": 17,
+    "Date": "2022-04-24",
+    "Year": "2022",
+    "Month": "April",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 214,
+    "Kids Checked-in": 35
+  },
+  {
+    "Week": 18,
+    "Date": "2022-05-01",
+    "Year": "2022",
+    "Month": "May",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 171,
+    "Kids Checked-in": 34
+  },
+  {
+    "Week": 19,
+    "Date": "2022-05-08",
+    "Year": "2022",
+    "Month": "May",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 171,
+    "Kids Checked-in": 31
+  },
+  {
+    "Week": 20,
+    "Date": "2022-05-15",
+    "Year": "2022",
+    "Month": "May",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 184,
+    "Kids Checked-in": 30
+  },
+  {
+    "Week": 21,
+    "Date": "2022-05-22",
+    "Year": "2022",
+    "Month": "May",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 202,
+    "Kids Checked-in": 35
+  },
+  {
+    "Week": 22,
+    "Date": "2022-05-29",
+    "Year": "2022",
+    "Month": "May",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 160,
+    "Kids Checked-in": 27
+  },
+  {
+    "Week": 23,
+    "Date": "2022-06-05",
+    "Year": "2022",
+    "Month": "June",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 177,
+    "Kids Checked-in": 31
+  },
+  {
+    "Week": 24,
+    "Date": "2022-06-12",
+    "Year": "2022",
+    "Month": "June",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 168,
+    "Kids Checked-in": 28
+  },
+  {
+    "Week": 25,
+    "Date": "2022-06-19",
+    "Year": "2022",
+    "Month": "June",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 156,
+    "Kids Checked-in": 35
+  },
+  {
+    "Week": 26,
+    "Date": "2022-06-26",
+    "Year": "2022",
+    "Month": "June",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 153,
+    "Kids Checked-in": 28
+  },
+  {
+    "Week": 27,
+    "Date": "2022-07-03",
+    "Year": "2022",
+    "Month": "July",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 185,
+    "Kids Checked-in": 21
+  },
+  {
+    "Week": 28,
+    "Date": "2022-07-10",
+    "Year": "2022",
+    "Month": "July",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 157,
+    "Kids Checked-in": 31
+  },
+  {
+    "Week": 29,
+    "Date": "2022-07-17",
+    "Year": "2022",
+    "Month": "July",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 175,
+    "Kids Checked-in": 29
+  },
+  {
+    "Week": 30,
+    "Date": "2022-07-24",
+    "Year": "2022",
+    "Month": "July",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 185,
+    "Kids Checked-in": 27
+  },
+  {
+    "Week": 31,
+    "Date": "2022-07-31",
+    "Year": "2022",
+    "Month": "July",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 158,
+    "Kids Checked-in": 28
+  },
+  {
+    "Week": 32,
+    "Date": "2022-08-07",
+    "Year": "2022",
+    "Month": "August",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 170,
+    "Kids Checked-in": 26
+  },
+  {
+    "Week": 33,
+    "Date": "2022-08-14",
+    "Year": "2022",
+    "Month": "August",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 188,
+    "Kids Checked-in": 30
+  },
+  {
+    "Week": 34,
+    "Date": "2022-08-21",
+    "Year": "2022",
+    "Month": "August",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 181,
+    "Kids Checked-in": 26
+  },
+  {
+    "Week": 35,
+    "Date": "2022-08-28",
+    "Year": "2022",
+    "Month": "August",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 186,
+    "Kids Checked-in": 26
+  },
+  {
+    "Week": 36,
+    "Date": "2022-09-04",
+    "Year": "2022",
+    "Month": "September",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 173,
+    "Kids Checked-in": 33
+  },
+  {
+    "Week": 37,
+    "Date": "2022-09-11",
+    "Year": "2022",
+    "Month": "September",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 165,
+    "Kids Checked-in": 32
+  },
+  {
+    "Week": 38,
+    "Date": "2022-09-18",
+    "Year": "2022",
+    "Month": "September",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 191,
+    "Kids Checked-in": 36
+  },
+  {
+    "Week": 39,
+    "Date": "2022-09-25",
+    "Year": "2022",
+    "Month": "September",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 187,
+    "Kids Checked-in": 32
+  },
+  {
+    "Week": 40,
+    "Date": "2022-10-02",
+    "Year": "2022",
+    "Month": "October",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 202,
+    "Kids Checked-in": 35
+  },
+  {
+    "Week": 41,
+    "Date": "2022-10-09",
+    "Year": "2022",
+    "Month": "October",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 210,
+    "Kids Checked-in": 38
+  },
+  {
+    "Week": 42,
+    "Date": "2022-10-16",
+    "Year": "2022",
+    "Month": "October",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 228,
+    "Kids Checked-in": 31
+  },
+  {
+    "Week": 43,
+    "Date": "2022-10-23",
+    "Year": "2022",
+    "Month": "October",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 194,
+    "Kids Checked-in": 34
+  },
+  {
+    "Week": 44,
+    "Date": "2022-10-30",
+    "Year": "2022",
+    "Month": "October",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 181,
+    "Kids Checked-in": 30
+  },
+  {
+    "Week": 45,
+    "Date": "2022-11-06",
+    "Year": "2022",
+    "Month": "November",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 214,
+    "Kids Checked-in": 34
+  },
+  {
+    "Week": 46,
+    "Date": "2022-11-13",
+    "Year": "2022",
+    "Month": "November",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 198,
+    "Kids Checked-in": 32
+  },
+  {
+    "Week": 47,
+    "Date": "2022-11-20",
+    "Year": "2022",
+    "Month": "November",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 205,
+    "Kids Checked-in": 38
+  },
+  {
+    "Week": 48,
+    "Date": "2022-11-27",
+    "Year": "2022",
+    "Month": "November",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 212,
+    "Kids Checked-in": 33
+  },
+  {
+    "Week": 49,
+    "Date": "2022-12-04",
+    "Year": "2022",
+    "Month": "December",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 225,
+    "Kids Checked-in": 35
+  },
+  {
+    "Week": 50,
+    "Date": "2022-12-11",
+    "Year": "2022",
+    "Month": "December",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 230,
+    "Kids Checked-in": 41
+  },
+  {
+    "Week": 51,
+    "Date": "2022-12-18",
+    "Year": "2022",
+    "Month": "December",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 265,
+    "Kids Checked-in": 43
+  },
+  {
+    "Week": 52,
+    "Date": "2022-12-25",
+    "Year": "2022",
+    "Month": "December",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 271,
+    "Kids Checked-in": 41
+  },
+  {
+    "Week": 1,
+    "Date": "2022-01-02",
+    "Year": "2022",
+    "Month": "January",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 60,
+    "Kids Checked-in": 6
+  },
+  {
+    "Week": 2,
+    "Date": "2022-01-09",
+    "Year": "2022",
+    "Month": "January",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 63,
+    "Kids Checked-in": 5
+  },
+  {
+    "Week": 3,
+    "Date": "2022-01-16",
+    "Year": "2022",
+    "Month": "January",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 67,
+    "Kids Checked-in": 5
+  },
+  {
+    "Week": 4,
+    "Date": "2022-01-23",
+    "Year": "2022",
+    "Month": "January",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 67,
+    "Kids Checked-in": 5
+  },
+  {
+    "Week": 5,
+    "Date": "2022-01-30",
+    "Year": "2022",
+    "Month": "January",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 56,
+    "Kids Checked-in": 4
+  },
+  {
+    "Week": 6,
+    "Date": "2022-02-06",
+    "Year": "2022",
+    "Month": "February",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 57,
+    "Kids Checked-in": 5
+  },
+  {
+    "Week": 7,
+    "Date": "2022-02-13",
+    "Year": "2022",
+    "Month": "February",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 61,
+    "Kids Checked-in": 5
+  },
+  {
+    "Week": 8,
+    "Date": "2022-02-20",
+    "Year": "2022",
+    "Month": "February",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 60,
+    "Kids Checked-in": 5
+  },
+  {
+    "Week": 9,
+    "Date": "2022-02-27",
+    "Year": "2022",
+    "Month": "February",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 52,
+    "Kids Checked-in": 5
+  },
+  {
+    "Week": 10,
+    "Date": "2022-03-06",
+    "Year": "2022",
+    "Month": "March",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 71,
+    "Kids Checked-in": 4
+  },
+  {
+    "Week": 11,
+    "Date": "2022-03-13",
+    "Year": "2022",
+    "Month": "March",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 57,
+    "Kids Checked-in": 4
+  },
+  {
+    "Week": 12,
+    "Date": "2022-03-20",
+    "Year": "2022",
+    "Month": "March",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 57,
+    "Kids Checked-in": 5
+  },
+  {
+    "Week": 13,
+    "Date": "2022-03-27",
+    "Year": "2022",
+    "Month": "March",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 62,
+    "Kids Checked-in": 5
+  },
+  {
+    "Week": 14,
+    "Date": "2022-04-03",
+    "Year": "2022",
+    "Month": "April",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 66,
+    "Kids Checked-in": 6
+  },
+  {
+    "Week": 15,
+    "Date": "2022-04-10",
+    "Year": "2022",
+    "Month": "April",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 75,
+    "Kids Checked-in": 5
+  },
+  {
+    "Week": 16,
+    "Date": "2022-04-17",
+    "Year": "2022",
+    "Month": "April",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 79,
+    "Kids Checked-in": 7
+  },
+  {
+    "Week": 17,
+    "Date": "2022-04-24",
+    "Year": "2022",
+    "Month": "April",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 71,
+    "Kids Checked-in": 6
+  },
+  {
+    "Week": 18,
+    "Date": "2022-05-01",
+    "Year": "2022",
+    "Month": "May",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 68,
+    "Kids Checked-in": 6
+  },
+  {
+    "Week": 19,
+    "Date": "2022-05-08",
+    "Year": "2022",
+    "Month": "May",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 66,
+    "Kids Checked-in": 5
+  },
+  {
+    "Week": 20,
+    "Date": "2022-05-15",
+    "Year": "2022",
+    "Month": "May",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 61,
+    "Kids Checked-in": 6
+  },
+  {
+    "Week": 21,
+    "Date": "2022-05-22",
+    "Year": "2022",
+    "Month": "May",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 63,
+    "Kids Checked-in": 6
+  },
+  {
+    "Week": 22,
+    "Date": "2022-05-29",
+    "Year": "2022",
+    "Month": "May",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 66,
+    "Kids Checked-in": 5
+  },
+  {
+    "Week": 23,
+    "Date": "2022-06-05",
+    "Year": "2022",
+    "Month": "June",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 52,
+    "Kids Checked-in": 4
+  },
+  {
+    "Week": 24,
+    "Date": "2022-06-12",
+    "Year": "2022",
+    "Month": "June",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 59,
+    "Kids Checked-in": 5
+  },
+  {
+    "Week": 25,
+    "Date": "2022-06-19",
+    "Year": "2022",
+    "Month": "June",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 59,
+    "Kids Checked-in": 4
+  },
+  {
+    "Week": 26,
+    "Date": "2022-06-26",
+    "Year": "2022",
+    "Month": "June",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 47,
+    "Kids Checked-in": 5
+  },
+  {
+    "Week": 27,
+    "Date": "2022-07-03",
+    "Year": "2022",
+    "Month": "July",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 57,
+    "Kids Checked-in": 4
+  },
+  {
+    "Week": 28,
+    "Date": "2022-07-10",
+    "Year": "2022",
+    "Month": "July",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 56,
+    "Kids Checked-in": 5
+  },
+  {
+    "Week": 29,
+    "Date": "2022-07-17",
+    "Year": "2022",
+    "Month": "July",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 54,
+    "Kids Checked-in": 6
+  },
+  {
+    "Week": 30,
+    "Date": "2022-07-24",
+    "Year": "2022",
+    "Month": "July",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 52,
+    "Kids Checked-in": 5
+  },
+  {
+    "Week": 31,
+    "Date": "2022-07-31",
+    "Year": "2022",
+    "Month": "July",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 50,
+    "Kids Checked-in": 5
+  },
+  {
+    "Week": 32,
+    "Date": "2022-08-07",
+    "Year": "2022",
+    "Month": "August",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 63,
+    "Kids Checked-in": 5
+  },
+  {
+    "Week": 33,
+    "Date": "2022-08-14",
+    "Year": "2022",
+    "Month": "August",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 54,
+    "Kids Checked-in": 5
+  },
+  {
+    "Week": 34,
+    "Date": "2022-08-21",
+    "Year": "2022",
+    "Month": "August",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 54,
+    "Kids Checked-in": 5
+  },
+  {
+    "Week": 35,
+    "Date": "2022-08-28",
+    "Year": "2022",
+    "Month": "August",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 58,
+    "Kids Checked-in": 5
+  },
+  {
+    "Week": 36,
+    "Date": "2022-09-04",
+    "Year": "2022",
+    "Month": "September",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 60,
+    "Kids Checked-in": 5
+  },
+  {
+    "Week": 37,
+    "Date": "2022-09-11",
+    "Year": "2022",
+    "Month": "September",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 53,
+    "Kids Checked-in": 6
+  },
+  {
+    "Week": 38,
+    "Date": "2022-09-18",
+    "Year": "2022",
+    "Month": "September",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 65,
+    "Kids Checked-in": 6
+  },
+  {
+    "Week": 39,
+    "Date": "2022-09-25",
+    "Year": "2022",
+    "Month": "September",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 62,
+    "Kids Checked-in": 5
+  },
+  {
+    "Week": 40,
+    "Date": "2022-10-02",
+    "Year": "2022",
+    "Month": "October",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 62,
+    "Kids Checked-in": 6
+  },
+  {
+    "Week": 41,
+    "Date": "2022-10-09",
+    "Year": "2022",
+    "Month": "October",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 67,
+    "Kids Checked-in": 6
+  },
+  {
+    "Week": 42,
+    "Date": "2022-10-16",
+    "Year": "2022",
+    "Month": "October",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 67,
+    "Kids Checked-in": 5
+  },
+  {
+    "Week": 43,
+    "Date": "2022-10-23",
+    "Year": "2022",
+    "Month": "October",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 64,
+    "Kids Checked-in": 6
+  },
+  {
+    "Week": 44,
+    "Date": "2022-10-30",
+    "Year": "2022",
+    "Month": "October",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 72,
+    "Kids Checked-in": 5
+  },
+  {
+    "Week": 45,
+    "Date": "2022-11-06",
+    "Year": "2022",
+    "Month": "November",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 71,
+    "Kids Checked-in": 4
+  },
+  {
+    "Week": 46,
+    "Date": "2022-11-13",
+    "Year": "2022",
+    "Month": "November",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 70,
+    "Kids Checked-in": 5
+  },
+  {
+    "Week": 47,
+    "Date": "2022-11-20",
+    "Year": "2022",
+    "Month": "November",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 71,
+    "Kids Checked-in": 5
+  },
+  {
+    "Week": 48,
+    "Date": "2022-11-27",
+    "Year": "2022",
+    "Month": "November",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 64,
+    "Kids Checked-in": 6
+  },
+  {
+    "Week": 49,
+    "Date": "2022-12-04",
+    "Year": "2022",
+    "Month": "December",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 72,
+    "Kids Checked-in": 6
+  },
+  {
+    "Week": 50,
+    "Date": "2022-12-11",
+    "Year": "2022",
+    "Month": "December",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 69,
+    "Kids Checked-in": 5
+  },
+  {
+    "Week": 51,
+    "Date": "2022-12-18",
+    "Year": "2022",
+    "Month": "December",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 82,
+    "Kids Checked-in": 6
+  },
+  {
+    "Week": 52,
+    "Date": "2022-12-25",
+    "Year": "2022",
+    "Month": "December",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 88,
+    "Kids Checked-in": 7
+  },
+  {
+    "Week": 1,
+    "Date": "2022-01-02",
+    "Year": "2022",
+    "Month": "January",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 83,
+    "Kids Checked-in": 18
+  },
+  {
+    "Week": 2,
+    "Date": "2022-01-09",
+    "Year": "2022",
+    "Month": "January",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 80,
+    "Kids Checked-in": 23
+  },
+  {
+    "Week": 3,
+    "Date": "2022-01-16",
+    "Year": "2022",
+    "Month": "January",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 78,
+    "Kids Checked-in": 22
+  },
+  {
+    "Week": 4,
+    "Date": "2022-01-23",
+    "Year": "2022",
+    "Month": "January",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 87,
+    "Kids Checked-in": 21
+  },
+  {
+    "Week": 5,
+    "Date": "2022-01-30",
+    "Year": "2022",
+    "Month": "January",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 87,
+    "Kids Checked-in": 17
+  },
+  {
+    "Week": 6,
+    "Date": "2022-02-06",
+    "Year": "2022",
+    "Month": "February",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 84,
+    "Kids Checked-in": 20
+  },
+  {
+    "Week": 7,
+    "Date": "2022-02-13",
+    "Year": "2022",
+    "Month": "February",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 77,
+    "Kids Checked-in": 19
+  },
+  {
+    "Week": 8,
+    "Date": "2022-02-20",
+    "Year": "2022",
+    "Month": "February",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 82,
+    "Kids Checked-in": 19
+  },
+  {
+    "Week": 9,
+    "Date": "2022-02-27",
+    "Year": "2022",
+    "Month": "February",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 84,
+    "Kids Checked-in": 19
+  },
+  {
+    "Week": 10,
+    "Date": "2022-03-06",
+    "Year": "2022",
+    "Month": "March",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 85,
+    "Kids Checked-in": 18
+  },
+  {
+    "Week": 11,
+    "Date": "2022-03-13",
+    "Year": "2022",
+    "Month": "March",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 86,
+    "Kids Checked-in": 21
+  },
+  {
+    "Week": 12,
+    "Date": "2022-03-20",
+    "Year": "2022",
+    "Month": "March",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 87,
+    "Kids Checked-in": 19
+  },
+  {
+    "Week": 13,
+    "Date": "2022-03-27",
+    "Year": "2022",
+    "Month": "March",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 90,
+    "Kids Checked-in": 21
+  },
+  {
+    "Week": 14,
+    "Date": "2022-04-03",
+    "Year": "2022",
+    "Month": "April",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 87,
+    "Kids Checked-in": 23
+  },
+  {
+    "Week": 15,
+    "Date": "2022-04-10",
+    "Year": "2022",
+    "Month": "April",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 93,
+    "Kids Checked-in": 27
+  },
+  {
+    "Week": 16,
+    "Date": "2022-04-17",
+    "Year": "2022",
+    "Month": "April",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 116,
+    "Kids Checked-in": 26
+  },
+  {
+    "Week": 17,
+    "Date": "2022-04-24",
+    "Year": "2022",
+    "Month": "April",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 91,
+    "Kids Checked-in": 22
+  },
+  {
+    "Week": 18,
+    "Date": "2022-05-01",
+    "Year": "2022",
+    "Month": "May",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 88,
+    "Kids Checked-in": 19
+  },
+  {
+    "Week": 19,
+    "Date": "2022-05-08",
+    "Year": "2022",
+    "Month": "May",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 85,
+    "Kids Checked-in": 24
+  },
+  {
+    "Week": 20,
+    "Date": "2022-05-15",
+    "Year": "2022",
+    "Month": "May",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 75,
+    "Kids Checked-in": 19
+  },
+  {
+    "Week": 21,
+    "Date": "2022-05-22",
+    "Year": "2022",
+    "Month": "May",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 83,
+    "Kids Checked-in": 19
+  },
+  {
+    "Week": 22,
+    "Date": "2022-05-29",
+    "Year": "2022",
+    "Month": "May",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 89,
+    "Kids Checked-in": 21
+  },
+  {
+    "Week": 23,
+    "Date": "2022-06-05",
+    "Year": "2022",
+    "Month": "June",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 76,
+    "Kids Checked-in": 19
+  },
+  {
+    "Week": 24,
+    "Date": "2022-06-12",
+    "Year": "2022",
+    "Month": "June",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 87,
+    "Kids Checked-in": 22
+  },
+  {
+    "Week": 25,
+    "Date": "2022-06-19",
+    "Year": "2022",
+    "Month": "June",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 74,
+    "Kids Checked-in": 20
+  },
+  {
+    "Week": 26,
+    "Date": "2022-06-26",
+    "Year": "2022",
+    "Month": "June",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 80,
+    "Kids Checked-in": 18
+  },
+  {
+    "Week": 27,
+    "Date": "2022-07-03",
+    "Year": "2022",
+    "Month": "July",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 73,
+    "Kids Checked-in": 19
+  },
+  {
+    "Week": 28,
+    "Date": "2022-07-10",
+    "Year": "2022",
+    "Month": "July",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 84,
+    "Kids Checked-in": 20
+  },
+  {
+    "Week": 29,
+    "Date": "2022-07-17",
+    "Year": "2022",
+    "Month": "July",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 80,
+    "Kids Checked-in": 21
+  },
+  {
+    "Week": 30,
+    "Date": "2022-07-24",
+    "Year": "2022",
+    "Month": "July",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 83,
+    "Kids Checked-in": 18
+  },
+  {
+    "Week": 31,
+    "Date": "2022-07-31",
+    "Year": "2022",
+    "Month": "July",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 72,
+    "Kids Checked-in": 18
+  },
+  {
+    "Week": 32,
+    "Date": "2022-08-07",
+    "Year": "2022",
+    "Month": "August",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 83,
+    "Kids Checked-in": 18
+  },
+  {
+    "Week": 33,
+    "Date": "2022-08-14",
+    "Year": "2022",
+    "Month": "August",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 74,
+    "Kids Checked-in": 20
+  },
+  {
+    "Week": 34,
+    "Date": "2022-08-21",
+    "Year": "2022",
+    "Month": "August",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 79,
+    "Kids Checked-in": 22
+  },
+  {
+    "Week": 35,
+    "Date": "2022-08-28",
+    "Year": "2022",
+    "Month": "August",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 80,
+    "Kids Checked-in": 19
+  },
+  {
+    "Week": 36,
+    "Date": "2022-09-04",
+    "Year": "2022",
+    "Month": "September",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 81,
+    "Kids Checked-in": 18
+  },
+  {
+    "Week": 37,
+    "Date": "2022-09-11",
+    "Year": "2022",
+    "Month": "September",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 79,
+    "Kids Checked-in": 20
+  },
+  {
+    "Week": 38,
+    "Date": "2022-09-18",
+    "Year": "2022",
+    "Month": "September",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 89,
+    "Kids Checked-in": 21
+  },
+  {
+    "Week": 39,
+    "Date": "2022-09-25",
+    "Year": "2022",
+    "Month": "September",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 90,
+    "Kids Checked-in": 23
+  },
+  {
+    "Week": 40,
+    "Date": "2022-10-02",
+    "Year": "2022",
+    "Month": "October",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 88,
+    "Kids Checked-in": 22
+  },
+  {
+    "Week": 41,
+    "Date": "2022-10-09",
+    "Year": "2022",
+    "Month": "October",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 92,
+    "Kids Checked-in": 21
+  },
+  {
+    "Week": 42,
+    "Date": "2022-10-16",
+    "Year": "2022",
+    "Month": "October",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 93,
+    "Kids Checked-in": 19
+  },
+  {
+    "Week": 43,
+    "Date": "2022-10-23",
+    "Year": "2022",
+    "Month": "October",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 87,
+    "Kids Checked-in": 19
+  },
+  {
+    "Week": 44,
+    "Date": "2022-10-30",
+    "Year": "2022",
+    "Month": "October",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 92,
+    "Kids Checked-in": 23
+  },
+  {
+    "Week": 45,
+    "Date": "2022-11-06",
+    "Year": "2022",
+    "Month": "November",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 85,
+    "Kids Checked-in": 23
+  },
+  {
+    "Week": 46,
+    "Date": "2022-11-13",
+    "Year": "2022",
+    "Month": "November",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 91,
+    "Kids Checked-in": 27
+  },
+  {
+    "Week": 47,
+    "Date": "2022-11-20",
+    "Year": "2022",
+    "Month": "November",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 92,
+    "Kids Checked-in": 25
+  },
+  {
+    "Week": 48,
+    "Date": "2022-11-27",
+    "Year": "2022",
+    "Month": "November",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 90,
+    "Kids Checked-in": 22
+  },
+  {
+    "Week": 49,
+    "Date": "2022-12-04",
+    "Year": "2022",
+    "Month": "December",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 95,
+    "Kids Checked-in": 25
+  },
+  {
+    "Week": 50,
+    "Date": "2022-12-11",
+    "Year": "2022",
+    "Month": "December",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 86,
+    "Kids Checked-in": 24
+  },
+  {
+    "Week": 51,
+    "Date": "2022-12-18",
+    "Year": "2022",
+    "Month": "December",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 98,
+    "Kids Checked-in": 28
+  },
+  {
+    "Week": 52,
+    "Date": "2022-12-25",
+    "Year": "2022",
+    "Month": "December",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 113,
+    "Kids Checked-in": 32
+  },
+  {
+    "Week": 1,
+    "Date": "2023-01-01",
+    "Year": "2023",
+    "Month": "January",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 202,
+    "Kids Checked-in": 56
+  },
+  {
+    "Week": 2,
+    "Date": "2023-01-08",
+    "Year": "2023",
+    "Month": "January",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 228,
+    "Kids Checked-in": 58
+  },
+  {
+    "Week": 3,
+    "Date": "2023-01-15",
+    "Year": "2023",
+    "Month": "January",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 201,
+    "Kids Checked-in": 54
+  },
+  {
+    "Week": 4,
+    "Date": "2023-01-22",
+    "Year": "2023",
+    "Month": "January",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 221,
+    "Kids Checked-in": 62
+  },
+  {
+    "Week": 5,
+    "Date": "2023-01-29",
+    "Year": "2023",
+    "Month": "January",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 232,
+    "Kids Checked-in": 54
+  },
+  {
+    "Week": 6,
+    "Date": "2023-02-05",
+    "Year": "2023",
+    "Month": "February",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 192,
+    "Kids Checked-in": 63
+  },
+  {
+    "Week": 7,
+    "Date": "2023-02-12",
+    "Year": "2023",
+    "Month": "February",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 220,
+    "Kids Checked-in": 59
+  },
+  {
+    "Week": 8,
+    "Date": "2023-02-19",
+    "Year": "2023",
+    "Month": "February",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 219,
+    "Kids Checked-in": 67
+  },
+  {
+    "Week": 9,
+    "Date": "2023-02-26",
+    "Year": "2023",
+    "Month": "February",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 211,
+    "Kids Checked-in": 57
+  },
+  {
+    "Week": 10,
+    "Date": "2023-03-05",
+    "Year": "2023",
+    "Month": "March",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 248,
+    "Kids Checked-in": 56
+  },
+  {
+    "Week": 11,
+    "Date": "2023-03-12",
+    "Year": "2023",
+    "Month": "March",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 245,
+    "Kids Checked-in": 57
+  },
+  {
+    "Week": 12,
+    "Date": "2023-03-19",
+    "Year": "2023",
+    "Month": "March",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 209,
+    "Kids Checked-in": 55
+  },
+  {
+    "Week": 13,
+    "Date": "2023-03-26",
+    "Year": "2023",
+    "Month": "March",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 251,
+    "Kids Checked-in": 64
+  },
+  {
+    "Week": 14,
+    "Date": "2023-04-02",
+    "Year": "2023",
+    "Month": "April",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 262,
+    "Kids Checked-in": 64
+  },
+  {
+    "Week": 15,
+    "Date": "2023-04-09",
+    "Year": "2023",
+    "Month": "April",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 310,
+    "Kids Checked-in": 67
+  },
+  {
+    "Week": 16,
+    "Date": "2023-04-16",
+    "Year": "2023",
+    "Month": "April",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 280,
+    "Kids Checked-in": 68
+  },
+  {
+    "Week": 17,
+    "Date": "2023-04-23",
+    "Year": "2023",
+    "Month": "April",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 269,
+    "Kids Checked-in": 75
+  },
+  {
+    "Week": 18,
+    "Date": "2023-04-30",
+    "Year": "2023",
+    "Month": "April",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 228,
+    "Kids Checked-in": 61
+  },
+  {
+    "Week": 19,
+    "Date": "2023-05-07",
+    "Year": "2023",
+    "Month": "May",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 247,
+    "Kids Checked-in": 57
+  },
+  {
+    "Week": 20,
+    "Date": "2023-05-14",
+    "Year": "2023",
+    "Month": "May",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 258,
+    "Kids Checked-in": 55
+  },
+  {
+    "Week": 21,
+    "Date": "2023-05-21",
+    "Year": "2023",
+    "Month": "May",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 226,
+    "Kids Checked-in": 53
+  },
+  {
+    "Week": 22,
+    "Date": "2023-05-28",
+    "Year": "2023",
+    "Month": "May",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 216,
+    "Kids Checked-in": 63
+  },
+  {
+    "Week": 23,
+    "Date": "2023-06-04",
+    "Year": "2023",
+    "Month": "June",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 216,
+    "Kids Checked-in": 55
+  },
+  {
+    "Week": 24,
+    "Date": "2023-06-11",
+    "Year": "2023",
+    "Month": "June",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 217,
+    "Kids Checked-in": 52
+  },
+  {
+    "Week": 25,
+    "Date": "2023-06-18",
+    "Year": "2023",
+    "Month": "June",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 223,
+    "Kids Checked-in": 58
+  },
+  {
+    "Week": 26,
+    "Date": "2023-06-25",
+    "Year": "2023",
+    "Month": "June",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 170,
+    "Kids Checked-in": 57
+  },
+  {
+    "Week": 27,
+    "Date": "2023-07-02",
+    "Year": "2023",
+    "Month": "July",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 225,
+    "Kids Checked-in": 58
+  },
+  {
+    "Week": 28,
+    "Date": "2023-07-09",
+    "Year": "2023",
+    "Month": "July",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 233,
+    "Kids Checked-in": 58
+  },
+  {
+    "Week": 29,
+    "Date": "2023-07-16",
+    "Year": "2023",
+    "Month": "July",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 196,
+    "Kids Checked-in": 51
+  },
+  {
+    "Week": 30,
+    "Date": "2023-07-23",
+    "Year": "2023",
+    "Month": "July",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 183,
+    "Kids Checked-in": 49
+  },
+  {
+    "Week": 31,
+    "Date": "2023-07-30",
+    "Year": "2023",
+    "Month": "July",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 206,
+    "Kids Checked-in": 58
+  },
+  {
+    "Week": 32,
+    "Date": "2023-08-06",
+    "Year": "2023",
+    "Month": "August",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 207,
+    "Kids Checked-in": 50
+  },
+  {
+    "Week": 33,
+    "Date": "2023-08-13",
+    "Year": "2023",
+    "Month": "August",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 217,
+    "Kids Checked-in": 49
+  },
+  {
+    "Week": 34,
+    "Date": "2023-08-20",
+    "Year": "2023",
+    "Month": "August",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 219,
+    "Kids Checked-in": 54
+  },
+  {
+    "Week": 35,
+    "Date": "2023-08-27",
+    "Year": "2023",
+    "Month": "August",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 217,
+    "Kids Checked-in": 57
+  },
+  {
+    "Week": 36,
+    "Date": "2023-09-03",
+    "Year": "2023",
+    "Month": "September",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 212,
+    "Kids Checked-in": 66
+  },
+  {
+    "Week": 37,
+    "Date": "2023-09-10",
+    "Year": "2023",
+    "Month": "September",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 246,
+    "Kids Checked-in": 56
+  },
+  {
+    "Week": 38,
+    "Date": "2023-09-17",
+    "Year": "2023",
+    "Month": "September",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 240,
+    "Kids Checked-in": 58
+  },
+  {
+    "Week": 39,
+    "Date": "2023-09-24",
+    "Year": "2023",
+    "Month": "September",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 224,
+    "Kids Checked-in": 59
+  },
+  {
+    "Week": 40,
+    "Date": "2023-10-01",
+    "Year": "2023",
+    "Month": "October",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 274,
+    "Kids Checked-in": 59
+  },
+  {
+    "Week": 41,
+    "Date": "2023-10-08",
+    "Year": "2023",
+    "Month": "October",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 256,
+    "Kids Checked-in": 53
+  },
+  {
+    "Week": 42,
+    "Date": "2023-10-15",
+    "Year": "2023",
+    "Month": "October",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 261,
+    "Kids Checked-in": 66
+  },
+  {
+    "Week": 43,
+    "Date": "2023-10-22",
+    "Year": "2023",
+    "Month": "October",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 258,
+    "Kids Checked-in": 67
+  },
+  {
+    "Week": 44,
+    "Date": "2023-10-29",
+    "Year": "2023",
+    "Month": "October",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 257,
+    "Kids Checked-in": 64
+  },
+  {
+    "Week": 45,
+    "Date": "2023-11-05",
+    "Year": "2023",
+    "Month": "November",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 273,
+    "Kids Checked-in": 72
+  },
+  {
+    "Week": 46,
+    "Date": "2023-11-12",
+    "Year": "2023",
+    "Month": "November",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 229,
+    "Kids Checked-in": 66
+  },
+  {
+    "Week": 47,
+    "Date": "2023-11-19",
+    "Year": "2023",
+    "Month": "November",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 242,
+    "Kids Checked-in": 64
+  },
+  {
+    "Week": 48,
+    "Date": "2023-11-26",
+    "Year": "2023",
+    "Month": "November",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 234,
+    "Kids Checked-in": 59
+  },
+  {
+    "Week": 49,
+    "Date": "2023-12-03",
+    "Year": "2023",
+    "Month": "December",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 298,
+    "Kids Checked-in": 61
+  },
+  {
+    "Week": 50,
+    "Date": "2023-12-10",
+    "Year": "2023",
+    "Month": "December",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 236,
+    "Kids Checked-in": 74
+  },
+  {
+    "Week": 51,
+    "Date": "2023-12-17",
+    "Year": "2023",
+    "Month": "December",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 297,
+    "Kids Checked-in": 74
+  },
+  {
+    "Week": 52,
+    "Date": "2023-12-24",
+    "Year": "2023",
+    "Month": "December",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 343,
+    "Kids Checked-in": 86
+  },
+  {
+    "Week": 1,
+    "Date": "2023-01-01",
+    "Year": "2023",
+    "Month": "January",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 241,
+    "Kids Checked-in": 29
+  },
+  {
+    "Week": 2,
+    "Date": "2023-01-08",
+    "Year": "2023",
+    "Month": "January",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 183,
+    "Kids Checked-in": 36
+  },
+  {
+    "Week": 3,
+    "Date": "2023-01-15",
+    "Year": "2023",
+    "Month": "January",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 207,
+    "Kids Checked-in": 34
+  },
+  {
+    "Week": 4,
+    "Date": "2023-01-22",
+    "Year": "2023",
+    "Month": "January",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 210,
+    "Kids Checked-in": 36
+  },
+  {
+    "Week": 5,
+    "Date": "2023-01-29",
+    "Year": "2023",
+    "Month": "January",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 207,
+    "Kids Checked-in": 30
+  },
+  {
+    "Week": 6,
+    "Date": "2023-02-05",
+    "Year": "2023",
+    "Month": "February",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 208,
+    "Kids Checked-in": 36
+  },
+  {
+    "Week": 7,
+    "Date": "2023-02-12",
+    "Year": "2023",
+    "Month": "February",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 187,
+    "Kids Checked-in": 38
+  },
+  {
+    "Week": 8,
+    "Date": "2023-02-19",
+    "Year": "2023",
+    "Month": "February",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 196,
+    "Kids Checked-in": 35
+  },
+  {
+    "Week": 9,
+    "Date": "2023-02-26",
+    "Year": "2023",
+    "Month": "February",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 205,
+    "Kids Checked-in": 33
+  },
+  {
+    "Week": 10,
+    "Date": "2023-03-05",
+    "Year": "2023",
+    "Month": "March",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 228,
+    "Kids Checked-in": 32
+  },
+  {
+    "Week": 11,
+    "Date": "2023-03-12",
+    "Year": "2023",
+    "Month": "March",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 195,
+    "Kids Checked-in": 38
+  },
+  {
+    "Week": 12,
+    "Date": "2023-03-19",
+    "Year": "2023",
+    "Month": "March",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 207,
+    "Kids Checked-in": 38
+  },
+  {
+    "Week": 13,
+    "Date": "2023-03-26",
+    "Year": "2023",
+    "Month": "March",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 219,
+    "Kids Checked-in": 34
+  },
+  {
+    "Week": 14,
+    "Date": "2023-04-02",
+    "Year": "2023",
+    "Month": "April",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 238,
+    "Kids Checked-in": 39
+  },
+  {
+    "Week": 15,
+    "Date": "2023-04-09",
+    "Year": "2023",
+    "Month": "April",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 289,
+    "Kids Checked-in": 45
+  },
+  {
+    "Week": 16,
+    "Date": "2023-04-16",
+    "Year": "2023",
+    "Month": "April",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 207,
+    "Kids Checked-in": 40
+  },
+  {
+    "Week": 17,
+    "Date": "2023-04-23",
+    "Year": "2023",
+    "Month": "April",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 209,
+    "Kids Checked-in": 33
+  },
+  {
+    "Week": 18,
+    "Date": "2023-04-30",
+    "Year": "2023",
+    "Month": "April",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 202,
+    "Kids Checked-in": 39
+  },
+  {
+    "Week": 19,
+    "Date": "2023-05-07",
+    "Year": "2023",
+    "Month": "May",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 209,
+    "Kids Checked-in": 32
+  },
+  {
+    "Week": 20,
+    "Date": "2023-05-14",
+    "Year": "2023",
+    "Month": "May",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 212,
+    "Kids Checked-in": 35
+  },
+  {
+    "Week": 21,
+    "Date": "2023-05-21",
+    "Year": "2023",
+    "Month": "May",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 215,
+    "Kids Checked-in": 38
+  },
+  {
+    "Week": 22,
+    "Date": "2023-05-28",
+    "Year": "2023",
+    "Month": "May",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 198,
+    "Kids Checked-in": 32
+  },
+  {
+    "Week": 23,
+    "Date": "2023-06-04",
+    "Year": "2023",
+    "Month": "June",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 171,
+    "Kids Checked-in": 30
+  },
+  {
+    "Week": 24,
+    "Date": "2023-06-11",
+    "Year": "2023",
+    "Month": "June",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 182,
+    "Kids Checked-in": 30
+  },
+  {
+    "Week": 25,
+    "Date": "2023-06-18",
+    "Year": "2023",
+    "Month": "June",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 189,
+    "Kids Checked-in": 33
+  },
+  {
+    "Week": 26,
+    "Date": "2023-06-25",
+    "Year": "2023",
+    "Month": "June",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 181,
+    "Kids Checked-in": 35
+  },
+  {
+    "Week": 27,
+    "Date": "2023-07-02",
+    "Year": "2023",
+    "Month": "July",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 170,
+    "Kids Checked-in": 32
+  },
+  {
+    "Week": 28,
+    "Date": "2023-07-09",
+    "Year": "2023",
+    "Month": "July",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 215,
+    "Kids Checked-in": 36
+  },
+  {
+    "Week": 29,
+    "Date": "2023-07-16",
+    "Year": "2023",
+    "Month": "July",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 180,
+    "Kids Checked-in": 31
+  },
+  {
+    "Week": 30,
+    "Date": "2023-07-23",
+    "Year": "2023",
+    "Month": "July",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 201,
+    "Kids Checked-in": 29
+  },
+  {
+    "Week": 31,
+    "Date": "2023-07-30",
+    "Year": "2023",
+    "Month": "July",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 188,
+    "Kids Checked-in": 39
+  },
+  {
+    "Week": 32,
+    "Date": "2023-08-06",
+    "Year": "2023",
+    "Month": "August",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 188,
+    "Kids Checked-in": 30
+  },
+  {
+    "Week": 33,
+    "Date": "2023-08-13",
+    "Year": "2023",
+    "Month": "August",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 211,
+    "Kids Checked-in": 36
+  },
+  {
+    "Week": 34,
+    "Date": "2023-08-20",
+    "Year": "2023",
+    "Month": "August",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 185,
+    "Kids Checked-in": 35
+  },
+  {
+    "Week": 35,
+    "Date": "2023-08-27",
+    "Year": "2023",
+    "Month": "August",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 204,
+    "Kids Checked-in": 36
+  },
+  {
+    "Week": 36,
+    "Date": "2023-09-03",
+    "Year": "2023",
+    "Month": "September",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 250,
+    "Kids Checked-in": 35
+  },
+  {
+    "Week": 37,
+    "Date": "2023-09-10",
+    "Year": "2023",
+    "Month": "September",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 214,
+    "Kids Checked-in": 35
+  },
+  {
+    "Week": 38,
+    "Date": "2023-09-17",
+    "Year": "2023",
+    "Month": "September",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 224,
+    "Kids Checked-in": 28
+  },
+  {
+    "Week": 39,
+    "Date": "2023-09-24",
+    "Year": "2023",
+    "Month": "September",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 165,
+    "Kids Checked-in": 36
+  },
+  {
+    "Week": 40,
+    "Date": "2023-10-01",
+    "Year": "2023",
+    "Month": "October",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 224,
+    "Kids Checked-in": 37
+  },
+  {
+    "Week": 41,
+    "Date": "2023-10-08",
+    "Year": "2023",
+    "Month": "October",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 232,
+    "Kids Checked-in": 38
+  },
+  {
+    "Week": 42,
+    "Date": "2023-10-15",
+    "Year": "2023",
+    "Month": "October",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 241,
+    "Kids Checked-in": 39
+  },
+  {
+    "Week": 43,
+    "Date": "2023-10-22",
+    "Year": "2023",
+    "Month": "October",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 208,
+    "Kids Checked-in": 38
+  },
+  {
+    "Week": 44,
+    "Date": "2023-10-29",
+    "Year": "2023",
+    "Month": "October",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 206,
+    "Kids Checked-in": 40
+  },
+  {
+    "Week": 45,
+    "Date": "2023-11-05",
+    "Year": "2023",
+    "Month": "November",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 233,
+    "Kids Checked-in": 44
+  },
+  {
+    "Week": 46,
+    "Date": "2023-11-12",
+    "Year": "2023",
+    "Month": "November",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 229,
+    "Kids Checked-in": 44
+  },
+  {
+    "Week": 47,
+    "Date": "2023-11-19",
+    "Year": "2023",
+    "Month": "November",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 227,
+    "Kids Checked-in": 37
+  },
+  {
+    "Week": 48,
+    "Date": "2023-11-26",
+    "Year": "2023",
+    "Month": "November",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 218,
+    "Kids Checked-in": 45
+  },
+  {
+    "Week": 49,
+    "Date": "2023-12-03",
+    "Year": "2023",
+    "Month": "December",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 239,
+    "Kids Checked-in": 32
+  },
+  {
+    "Week": 50,
+    "Date": "2023-12-10",
+    "Year": "2023",
+    "Month": "December",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 213,
+    "Kids Checked-in": 41
+  },
+  {
+    "Week": 51,
+    "Date": "2023-12-17",
+    "Year": "2023",
+    "Month": "December",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 263,
+    "Kids Checked-in": 45
+  },
+  {
+    "Week": 52,
+    "Date": "2023-12-24",
+    "Year": "2023",
+    "Month": "December",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 291,
+    "Kids Checked-in": 54
+  },
+  {
+    "Week": 1,
+    "Date": "2023-01-01",
+    "Year": "2023",
+    "Month": "January",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 65,
+    "Kids Checked-in": 6
+  },
+  {
+    "Week": 2,
+    "Date": "2023-01-08",
+    "Year": "2023",
+    "Month": "January",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 77,
+    "Kids Checked-in": 6
+  },
+  {
+    "Week": 3,
+    "Date": "2023-01-15",
+    "Year": "2023",
+    "Month": "January",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 63,
+    "Kids Checked-in": 5
+  },
+  {
+    "Week": 4,
+    "Date": "2023-01-22",
+    "Year": "2023",
+    "Month": "January",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 66,
+    "Kids Checked-in": 6
+  },
+  {
+    "Week": 5,
+    "Date": "2023-01-29",
+    "Year": "2023",
+    "Month": "January",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 64,
+    "Kids Checked-in": 6
+  },
+  {
+    "Week": 6,
+    "Date": "2023-02-05",
+    "Year": "2023",
+    "Month": "February",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 66,
+    "Kids Checked-in": 5
+  },
+  {
+    "Week": 7,
+    "Date": "2023-02-12",
+    "Year": "2023",
+    "Month": "February",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 71,
+    "Kids Checked-in": 6
+  },
+  {
+    "Week": 8,
+    "Date": "2023-02-19",
+    "Year": "2023",
+    "Month": "February",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 71,
+    "Kids Checked-in": 6
+  },
+  {
+    "Week": 9,
+    "Date": "2023-02-26",
+    "Year": "2023",
+    "Month": "February",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 66,
+    "Kids Checked-in": 6
+  },
+  {
+    "Week": 10,
+    "Date": "2023-03-05",
+    "Year": "2023",
+    "Month": "March",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 72,
+    "Kids Checked-in": 5
+  },
+  {
+    "Week": 11,
+    "Date": "2023-03-12",
+    "Year": "2023",
+    "Month": "March",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 80,
+    "Kids Checked-in": 5
+  },
+  {
+    "Week": 12,
+    "Date": "2023-03-19",
+    "Year": "2023",
+    "Month": "March",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 68,
+    "Kids Checked-in": 5
+  },
+  {
+    "Week": 13,
+    "Date": "2023-03-26",
+    "Year": "2023",
+    "Month": "March",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 75,
+    "Kids Checked-in": 6
+  },
+  {
+    "Week": 14,
+    "Date": "2023-04-02",
+    "Year": "2023",
+    "Month": "April",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 80,
+    "Kids Checked-in": 8
+  },
+  {
+    "Week": 15,
+    "Date": "2023-04-09",
+    "Year": "2023",
+    "Month": "April",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 85,
+    "Kids Checked-in": 7
+  },
+  {
+    "Week": 16,
+    "Date": "2023-04-16",
+    "Year": "2023",
+    "Month": "April",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 86,
+    "Kids Checked-in": 6
+  },
+  {
+    "Week": 17,
+    "Date": "2023-04-23",
+    "Year": "2023",
+    "Month": "April",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 73,
+    "Kids Checked-in": 6
+  },
+  {
+    "Week": 18,
+    "Date": "2023-04-30",
+    "Year": "2023",
+    "Month": "April",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 69,
+    "Kids Checked-in": 6
+  },
+  {
+    "Week": 19,
+    "Date": "2023-05-07",
+    "Year": "2023",
+    "Month": "May",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 75,
+    "Kids Checked-in": 6
+  },
+  {
+    "Week": 20,
+    "Date": "2023-05-14",
+    "Year": "2023",
+    "Month": "May",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 68,
+    "Kids Checked-in": 6
+  },
+  {
+    "Week": 21,
+    "Date": "2023-05-21",
+    "Year": "2023",
+    "Month": "May",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 74,
+    "Kids Checked-in": 6
+  },
+  {
+    "Week": 22,
+    "Date": "2023-05-28",
+    "Year": "2023",
+    "Month": "May",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 68,
+    "Kids Checked-in": 6
+  },
+  {
+    "Week": 23,
+    "Date": "2023-06-04",
+    "Year": "2023",
+    "Month": "June",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 66,
+    "Kids Checked-in": 5
+  },
+  {
+    "Week": 24,
+    "Date": "2023-06-11",
+    "Year": "2023",
+    "Month": "June",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 66,
+    "Kids Checked-in": 5
+  },
+  {
+    "Week": 25,
+    "Date": "2023-06-18",
+    "Year": "2023",
+    "Month": "June",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 58,
+    "Kids Checked-in": 5
+  },
+  {
+    "Week": 26,
+    "Date": "2023-06-25",
+    "Year": "2023",
+    "Month": "June",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 63,
+    "Kids Checked-in": 6
+  },
+  {
+    "Week": 27,
+    "Date": "2023-07-02",
+    "Year": "2023",
+    "Month": "July",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 67,
+    "Kids Checked-in": 6
+  },
+  {
+    "Week": 28,
+    "Date": "2023-07-09",
+    "Year": "2023",
+    "Month": "July",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 59,
+    "Kids Checked-in": 5
+  },
+  {
+    "Week": 29,
+    "Date": "2023-07-16",
+    "Year": "2023",
+    "Month": "July",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 66,
+    "Kids Checked-in": 7
+  },
+  {
+    "Week": 30,
+    "Date": "2023-07-23",
+    "Year": "2023",
+    "Month": "July",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 60,
+    "Kids Checked-in": 6
+  },
+  {
+    "Week": 31,
+    "Date": "2023-07-30",
+    "Year": "2023",
+    "Month": "July",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 56,
+    "Kids Checked-in": 6
+  },
+  {
+    "Week": 32,
+    "Date": "2023-08-06",
+    "Year": "2023",
+    "Month": "August",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 71,
+    "Kids Checked-in": 6
+  },
+  {
+    "Week": 33,
+    "Date": "2023-08-13",
+    "Year": "2023",
+    "Month": "August",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 65,
+    "Kids Checked-in": 5
+  },
+  {
+    "Week": 34,
+    "Date": "2023-08-20",
+    "Year": "2023",
+    "Month": "August",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 63,
+    "Kids Checked-in": 6
+  },
+  {
+    "Week": 35,
+    "Date": "2023-08-27",
+    "Year": "2023",
+    "Month": "August",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 60,
+    "Kids Checked-in": 6
+  },
+  {
+    "Week": 36,
+    "Date": "2023-09-03",
+    "Year": "2023",
+    "Month": "September",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 73,
+    "Kids Checked-in": 6
+  },
+  {
+    "Week": 37,
+    "Date": "2023-09-10",
+    "Year": "2023",
+    "Month": "September",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 74,
+    "Kids Checked-in": 7
+  },
+  {
+    "Week": 38,
+    "Date": "2023-09-17",
+    "Year": "2023",
+    "Month": "September",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 71,
+    "Kids Checked-in": 5
+  },
+  {
+    "Week": 39,
+    "Date": "2023-09-24",
+    "Year": "2023",
+    "Month": "September",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 70,
+    "Kids Checked-in": 7
+  },
+  {
+    "Week": 40,
+    "Date": "2023-10-01",
+    "Year": "2023",
+    "Month": "October",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 80,
+    "Kids Checked-in": 6
+  },
+  {
+    "Week": 41,
+    "Date": "2023-10-08",
+    "Year": "2023",
+    "Month": "October",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 80,
+    "Kids Checked-in": 6
+  },
+  {
+    "Week": 42,
+    "Date": "2023-10-15",
+    "Year": "2023",
+    "Month": "October",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 66,
+    "Kids Checked-in": 7
+  },
+  {
+    "Week": 43,
+    "Date": "2023-10-22",
+    "Year": "2023",
+    "Month": "October",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 78,
+    "Kids Checked-in": 6
+  },
+  {
+    "Week": 44,
+    "Date": "2023-10-29",
+    "Year": "2023",
+    "Month": "October",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 69,
+    "Kids Checked-in": 7
+  },
+  {
+    "Week": 45,
+    "Date": "2023-11-05",
+    "Year": "2023",
+    "Month": "November",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 72,
+    "Kids Checked-in": 7
+  },
+  {
+    "Week": 46,
+    "Date": "2023-11-12",
+    "Year": "2023",
+    "Month": "November",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 75,
+    "Kids Checked-in": 7
+  },
+  {
+    "Week": 47,
+    "Date": "2023-11-19",
+    "Year": "2023",
+    "Month": "November",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 84,
+    "Kids Checked-in": 7
+  },
+  {
+    "Week": 48,
+    "Date": "2023-11-26",
+    "Year": "2023",
+    "Month": "November",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 76,
+    "Kids Checked-in": 7
+  },
+  {
+    "Week": 49,
+    "Date": "2023-12-03",
+    "Year": "2023",
+    "Month": "December",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 73,
+    "Kids Checked-in": 7
+  },
+  {
+    "Week": 50,
+    "Date": "2023-12-10",
+    "Year": "2023",
+    "Month": "December",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 83,
+    "Kids Checked-in": 6
+  },
+  {
+    "Week": 51,
+    "Date": "2023-12-17",
+    "Year": "2023",
+    "Month": "December",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 89,
+    "Kids Checked-in": 8
+  },
+  {
+    "Week": 52,
+    "Date": "2023-12-24",
+    "Year": "2023",
+    "Month": "December",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 101,
+    "Kids Checked-in": 9
+  },
+  {
+    "Week": 1,
+    "Date": "2023-01-01",
+    "Year": "2023",
+    "Month": "January",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 90,
+    "Kids Checked-in": 25
+  },
+  {
+    "Week": 2,
+    "Date": "2023-01-08",
+    "Year": "2023",
+    "Month": "January",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 84,
+    "Kids Checked-in": 24
+  },
+  {
+    "Week": 3,
+    "Date": "2023-01-15",
+    "Year": "2023",
+    "Month": "January",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 77,
+    "Kids Checked-in": 22
+  },
+  {
+    "Week": 4,
+    "Date": "2023-01-22",
+    "Year": "2023",
+    "Month": "January",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 96,
+    "Kids Checked-in": 26
+  },
+  {
+    "Week": 5,
+    "Date": "2023-01-29",
+    "Year": "2023",
+    "Month": "January",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 85,
+    "Kids Checked-in": 26
+  },
+  {
+    "Week": 6,
+    "Date": "2023-02-05",
+    "Year": "2023",
+    "Month": "February",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 87,
+    "Kids Checked-in": 23
+  },
+  {
+    "Week": 7,
+    "Date": "2023-02-12",
+    "Year": "2023",
+    "Month": "February",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 91,
+    "Kids Checked-in": 22
+  },
+  {
+    "Week": 8,
+    "Date": "2023-02-19",
+    "Year": "2023",
+    "Month": "February",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 93,
+    "Kids Checked-in": 21
+  },
+  {
+    "Week": 9,
+    "Date": "2023-02-26",
+    "Year": "2023",
+    "Month": "February",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 94,
+    "Kids Checked-in": 25
+  },
+  {
+    "Week": 10,
+    "Date": "2023-03-05",
+    "Year": "2023",
+    "Month": "March",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 103,
+    "Kids Checked-in": 24
+  },
+  {
+    "Week": 11,
+    "Date": "2023-03-12",
+    "Year": "2023",
+    "Month": "March",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 100,
+    "Kids Checked-in": 25
+  },
+  {
+    "Week": 12,
+    "Date": "2023-03-19",
+    "Year": "2023",
+    "Month": "March",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 83,
+    "Kids Checked-in": 22
+  },
+  {
+    "Week": 13,
+    "Date": "2023-03-26",
+    "Year": "2023",
+    "Month": "March",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 96,
+    "Kids Checked-in": 27
+  },
+  {
+    "Week": 14,
+    "Date": "2023-04-02",
+    "Year": "2023",
+    "Month": "April",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 100,
+    "Kids Checked-in": 26
+  },
+  {
+    "Week": 15,
+    "Date": "2023-04-09",
+    "Year": "2023",
+    "Month": "April",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 125,
+    "Kids Checked-in": 31
+  },
+  {
+    "Week": 16,
+    "Date": "2023-04-16",
+    "Year": "2023",
+    "Month": "April",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 103,
+    "Kids Checked-in": 24
+  },
+  {
+    "Week": 17,
+    "Date": "2023-04-23",
+    "Year": "2023",
+    "Month": "April",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 89,
+    "Kids Checked-in": 23
+  },
+  {
+    "Week": 18,
+    "Date": "2023-04-30",
+    "Year": "2023",
+    "Month": "April",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 105,
+    "Kids Checked-in": 24
+  },
+  {
+    "Week": 19,
+    "Date": "2023-05-07",
+    "Year": "2023",
+    "Month": "May",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 97,
+    "Kids Checked-in": 24
+  },
+  {
+    "Week": 20,
+    "Date": "2023-05-14",
+    "Year": "2023",
+    "Month": "May",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 84,
+    "Kids Checked-in": 23
+  },
+  {
+    "Week": 21,
+    "Date": "2023-05-21",
+    "Year": "2023",
+    "Month": "May",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 102,
+    "Kids Checked-in": 25
+  },
+  {
+    "Week": 22,
+    "Date": "2023-05-28",
+    "Year": "2023",
+    "Month": "May",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 96,
+    "Kids Checked-in": 24
+  },
+  {
+    "Week": 23,
+    "Date": "2023-06-04",
+    "Year": "2023",
+    "Month": "June",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 87,
+    "Kids Checked-in": 19
+  },
+  {
+    "Week": 24,
+    "Date": "2023-06-11",
+    "Year": "2023",
+    "Month": "June",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 92,
+    "Kids Checked-in": 22
+  },
+  {
+    "Week": 25,
+    "Date": "2023-06-18",
+    "Year": "2023",
+    "Month": "June",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 81,
+    "Kids Checked-in": 21
+  },
+  {
+    "Week": 26,
+    "Date": "2023-06-25",
+    "Year": "2023",
+    "Month": "June",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 78,
+    "Kids Checked-in": 23
+  },
+  {
+    "Week": 27,
+    "Date": "2023-07-02",
+    "Year": "2023",
+    "Month": "July",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 90,
+    "Kids Checked-in": 21
+  },
+  {
+    "Week": 28,
+    "Date": "2023-07-09",
+    "Year": "2023",
+    "Month": "July",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 97,
+    "Kids Checked-in": 22
+  },
+  {
+    "Week": 29,
+    "Date": "2023-07-16",
+    "Year": "2023",
+    "Month": "July",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 86,
+    "Kids Checked-in": 23
+  },
+  {
+    "Week": 30,
+    "Date": "2023-07-23",
+    "Year": "2023",
+    "Month": "July",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 86,
+    "Kids Checked-in": 22
+  },
+  {
+    "Week": 31,
+    "Date": "2023-07-30",
+    "Year": "2023",
+    "Month": "July",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 72,
+    "Kids Checked-in": 22
+  },
+  {
+    "Week": 32,
+    "Date": "2023-08-06",
+    "Year": "2023",
+    "Month": "August",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 91,
+    "Kids Checked-in": 22
+  },
+  {
+    "Week": 33,
+    "Date": "2023-08-13",
+    "Year": "2023",
+    "Month": "August",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 84,
+    "Kids Checked-in": 21
+  },
+  {
+    "Week": 34,
+    "Date": "2023-08-20",
+    "Year": "2023",
+    "Month": "August",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 82,
+    "Kids Checked-in": 22
+  },
+  {
+    "Week": 35,
+    "Date": "2023-08-27",
+    "Year": "2023",
+    "Month": "August",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 89,
+    "Kids Checked-in": 20
+  },
+  {
+    "Week": 36,
+    "Date": "2023-09-03",
+    "Year": "2023",
+    "Month": "September",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 96,
+    "Kids Checked-in": 26
+  },
+  {
+    "Week": 37,
+    "Date": "2023-09-10",
+    "Year": "2023",
+    "Month": "September",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 101,
+    "Kids Checked-in": 22
+  },
+  {
+    "Week": 38,
+    "Date": "2023-09-17",
+    "Year": "2023",
+    "Month": "September",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 85,
+    "Kids Checked-in": 23
+  },
+  {
+    "Week": 39,
+    "Date": "2023-09-24",
+    "Year": "2023",
+    "Month": "September",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 90,
+    "Kids Checked-in": 22
+  },
+  {
+    "Week": 40,
+    "Date": "2023-10-01",
+    "Year": "2023",
+    "Month": "October",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 100,
+    "Kids Checked-in": 30
+  },
+  {
+    "Week": 41,
+    "Date": "2023-10-08",
+    "Year": "2023",
+    "Month": "October",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 105,
+    "Kids Checked-in": 25
+  },
+  {
+    "Week": 42,
+    "Date": "2023-10-15",
+    "Year": "2023",
+    "Month": "October",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 95,
+    "Kids Checked-in": 25
+  },
+  {
+    "Week": 43,
+    "Date": "2023-10-22",
+    "Year": "2023",
+    "Month": "October",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 106,
+    "Kids Checked-in": 26
+  },
+  {
+    "Week": 44,
+    "Date": "2023-10-29",
+    "Year": "2023",
+    "Month": "October",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 97,
+    "Kids Checked-in": 26
+  },
+  {
+    "Week": 45,
+    "Date": "2023-11-05",
+    "Year": "2023",
+    "Month": "November",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 103,
+    "Kids Checked-in": 26
+  },
+  {
+    "Week": 46,
+    "Date": "2023-11-12",
+    "Year": "2023",
+    "Month": "November",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 92,
+    "Kids Checked-in": 28
+  },
+  {
+    "Week": 47,
+    "Date": "2023-11-19",
+    "Year": "2023",
+    "Month": "November",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 101,
+    "Kids Checked-in": 25
+  },
+  {
+    "Week": 48,
+    "Date": "2023-11-26",
+    "Year": "2023",
+    "Month": "November",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 94,
+    "Kids Checked-in": 27
+  },
+  {
+    "Week": 49,
+    "Date": "2023-12-03",
+    "Year": "2023",
+    "Month": "December",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 101,
+    "Kids Checked-in": 25
+  },
+  {
+    "Week": 50,
+    "Date": "2023-12-10",
+    "Year": "2023",
+    "Month": "December",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 95,
+    "Kids Checked-in": 22
+  },
+  {
+    "Week": 51,
+    "Date": "2023-12-17",
+    "Year": "2023",
+    "Month": "December",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 110,
+    "Kids Checked-in": 33
+  },
+  {
+    "Week": 52,
+    "Date": "2023-12-24",
+    "Year": "2023",
+    "Month": "December",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 129,
+    "Kids Checked-in": 30
+  },
+  {
+    "Week": 1,
+    "Date": "2024-01-07",
+    "Year": "2024",
+    "Month": "January",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 232,
+    "Kids Checked-in": 65
+  },
+  {
+    "Week": 2,
+    "Date": "2024-01-14",
+    "Year": "2024",
+    "Month": "January",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 236,
+    "Kids Checked-in": 74
+  },
+  {
+    "Week": 3,
+    "Date": "2024-01-21",
+    "Year": "2024",
+    "Month": "January",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 250,
+    "Kids Checked-in": 63
+  },
+  {
+    "Week": 4,
+    "Date": "2024-01-28",
+    "Year": "2024",
+    "Month": "January",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 240,
+    "Kids Checked-in": 55
+  },
+  {
+    "Week": 5,
+    "Date": "2024-02-04",
+    "Year": "2024",
+    "Month": "February",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 245,
+    "Kids Checked-in": 63
+  },
+  {
+    "Week": 6,
+    "Date": "2024-02-11",
+    "Year": "2024",
+    "Month": "February",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 252,
+    "Kids Checked-in": 65
+  },
+  {
+    "Week": 7,
+    "Date": "2024-02-18",
+    "Year": "2024",
+    "Month": "February",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 224,
+    "Kids Checked-in": 70
+  },
+  {
+    "Week": 8,
+    "Date": "2024-02-25",
+    "Year": "2024",
+    "Month": "February",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 253,
+    "Kids Checked-in": 70
+  },
+  {
+    "Week": 9,
+    "Date": "2024-03-03",
+    "Year": "2024",
+    "Month": "March",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 284,
+    "Kids Checked-in": 67
+  },
+  {
+    "Week": 10,
+    "Date": "2024-03-10",
+    "Year": "2024",
+    "Month": "March",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 264,
+    "Kids Checked-in": 69
+  },
+  {
+    "Week": 11,
+    "Date": "2024-03-17",
+    "Year": "2024",
+    "Month": "March",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 266,
+    "Kids Checked-in": 66
+  },
+  {
+    "Week": 12,
+    "Date": "2024-03-24",
+    "Year": "2024",
+    "Month": "March",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 304,
+    "Kids Checked-in": 85
+  },
+  {
+    "Week": 13,
+    "Date": "2024-03-31",
+    "Year": "2024",
+    "Month": "March",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 346,
+    "Kids Checked-in": 84
+  },
+  {
+    "Week": 14,
+    "Date": "2024-04-07",
+    "Year": "2024",
+    "Month": "April",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 284,
+    "Kids Checked-in": 85
+  },
+  {
+    "Week": 15,
+    "Date": "2024-04-14",
+    "Year": "2024",
+    "Month": "April",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 269,
+    "Kids Checked-in": 73
+  },
+  {
+    "Week": 16,
+    "Date": "2024-04-21",
+    "Year": "2024",
+    "Month": "April",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 262,
+    "Kids Checked-in": 64
+  },
+  {
+    "Week": 17,
+    "Date": "2024-04-28",
+    "Year": "2024",
+    "Month": "April",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 287,
+    "Kids Checked-in": 61
+  },
+  {
+    "Week": 18,
+    "Date": "2024-05-05",
+    "Year": "2024",
+    "Month": "May",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 267,
+    "Kids Checked-in": 62
+  },
+  {
+    "Week": 19,
+    "Date": "2024-05-12",
+    "Year": "2024",
+    "Month": "May",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 248,
+    "Kids Checked-in": 76
+  },
+  {
+    "Week": 20,
+    "Date": "2024-05-19",
+    "Year": "2024",
+    "Month": "May",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 274,
+    "Kids Checked-in": 75
+  },
+  {
+    "Week": 21,
+    "Date": "2024-05-26",
+    "Year": "2024",
+    "Month": "May",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 262,
+    "Kids Checked-in": 70
+  },
+  {
+    "Week": 22,
+    "Date": "2024-06-02",
+    "Year": "2024",
+    "Month": "June",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 243,
+    "Kids Checked-in": 62
+  },
+  {
+    "Week": 23,
+    "Date": "2024-06-09",
+    "Year": "2024",
+    "Month": "June",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 243,
+    "Kids Checked-in": 65
+  },
+  {
+    "Week": 24,
+    "Date": "2024-06-16",
+    "Year": "2024",
+    "Month": "June",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 235,
+    "Kids Checked-in": 62
+  },
+  {
+    "Week": 25,
+    "Date": "2024-06-23",
+    "Year": "2024",
+    "Month": "June",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 251,
+    "Kids Checked-in": 63
+  },
+  {
+    "Week": 26,
+    "Date": "2024-06-30",
+    "Year": "2024",
+    "Month": "June",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 276,
+    "Kids Checked-in": 70
+  },
+  {
+    "Week": 27,
+    "Date": "2024-07-07",
+    "Year": "2024",
+    "Month": "July",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 242,
+    "Kids Checked-in": 64
+  },
+  {
+    "Week": 28,
+    "Date": "2024-07-14",
+    "Year": "2024",
+    "Month": "July",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 237,
+    "Kids Checked-in": 63
+  },
+  {
+    "Week": 29,
+    "Date": "2024-07-21",
+    "Year": "2024",
+    "Month": "July",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 240,
+    "Kids Checked-in": 65
+  },
+  {
+    "Week": 30,
+    "Date": "2024-07-28",
+    "Year": "2024",
+    "Month": "July",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 256,
+    "Kids Checked-in": 64
+  },
+  {
+    "Week": 31,
+    "Date": "2024-08-04",
+    "Year": "2024",
+    "Month": "August",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 225,
+    "Kids Checked-in": 68
+  },
+  {
+    "Week": 32,
+    "Date": "2024-08-11",
+    "Year": "2024",
+    "Month": "August",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 220,
+    "Kids Checked-in": 57
+  },
+  {
+    "Week": 33,
+    "Date": "2024-08-18",
+    "Year": "2024",
+    "Month": "August",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 226,
+    "Kids Checked-in": 67
+  },
+  {
+    "Week": 34,
+    "Date": "2024-08-25",
+    "Year": "2024",
+    "Month": "August",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 272,
+    "Kids Checked-in": 57
+  },
+  {
+    "Week": 35,
+    "Date": "2024-09-01",
+    "Year": "2024",
+    "Month": "September",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 237,
+    "Kids Checked-in": 71
+  },
+  {
+    "Week": 36,
+    "Date": "2024-09-08",
+    "Year": "2024",
+    "Month": "September",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 288,
+    "Kids Checked-in": 79
+  },
+  {
+    "Week": 37,
+    "Date": "2024-09-15",
+    "Year": "2024",
+    "Month": "September",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 275,
+    "Kids Checked-in": 64
+  },
+  {
+    "Week": 38,
+    "Date": "2024-09-22",
+    "Year": "2024",
+    "Month": "September",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 259,
+    "Kids Checked-in": 68
+  },
+  {
+    "Week": 39,
+    "Date": "2024-09-29",
+    "Year": "2024",
+    "Month": "September",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 278,
+    "Kids Checked-in": 59
+  },
+  {
+    "Week": 40,
+    "Date": "2024-10-06",
+    "Year": "2024",
+    "Month": "October",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 255,
+    "Kids Checked-in": 82
+  },
+  {
+    "Week": 41,
+    "Date": "2024-10-13",
+    "Year": "2024",
+    "Month": "October",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 271,
+    "Kids Checked-in": 81
+  },
+  {
+    "Week": 42,
+    "Date": "2024-10-20",
+    "Year": "2024",
+    "Month": "October",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 309,
+    "Kids Checked-in": 78
+  },
+  {
+    "Week": 43,
+    "Date": "2024-10-27",
+    "Year": "2024",
+    "Month": "October",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 306,
+    "Kids Checked-in": 65
+  },
+  {
+    "Week": 44,
+    "Date": "2024-11-03",
+    "Year": "2024",
+    "Month": "November",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 310,
+    "Kids Checked-in": 72
+  },
+  {
+    "Week": 45,
+    "Date": "2024-11-10",
+    "Year": "2024",
+    "Month": "November",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 282,
+    "Kids Checked-in": 79
+  },
+  {
+    "Week": 46,
+    "Date": "2024-11-17",
+    "Year": "2024",
+    "Month": "November",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 277,
+    "Kids Checked-in": 65
+  },
+  {
+    "Week": 47,
+    "Date": "2024-11-24",
+    "Year": "2024",
+    "Month": "November",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 262,
+    "Kids Checked-in": 72
+  },
+  {
+    "Week": 48,
+    "Date": "2024-12-01",
+    "Year": "2024",
+    "Month": "December",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 275,
+    "Kids Checked-in": 74
+  },
+  {
+    "Week": 49,
+    "Date": "2024-12-08",
+    "Year": "2024",
+    "Month": "December",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 280,
+    "Kids Checked-in": 66
+  },
+  {
+    "Week": 50,
+    "Date": "2024-12-15",
+    "Year": "2024",
+    "Month": "December",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 290,
+    "Kids Checked-in": 92
+  },
+  {
+    "Week": 51,
+    "Date": "2024-12-22",
+    "Year": "2024",
+    "Month": "December",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 358,
+    "Kids Checked-in": 99
+  },
+  {
+    "Week": 52,
+    "Date": "2024-12-29",
+    "Year": "2024",
+    "Month": "December",
+    "Site": "Central",
+    "Service": "9am",
+    "Attendance": 334,
+    "Kids Checked-in": 80
+  },
+  {
+    "Week": 1,
+    "Date": "2024-01-07",
+    "Year": "2024",
+    "Month": "January",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 246,
+    "Kids Checked-in": 36
+  },
+  {
+    "Week": 2,
+    "Date": "2024-01-14",
+    "Year": "2024",
+    "Month": "January",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 221,
+    "Kids Checked-in": 32
+  },
+  {
+    "Week": 3,
+    "Date": "2024-01-21",
+    "Year": "2024",
+    "Month": "January",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 242,
+    "Kids Checked-in": 40
+  },
+  {
+    "Week": 4,
+    "Date": "2024-01-28",
+    "Year": "2024",
+    "Month": "January",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 202,
+    "Kids Checked-in": 41
+  },
+  {
+    "Week": 5,
+    "Date": "2024-02-04",
+    "Year": "2024",
+    "Month": "February",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 195,
+    "Kids Checked-in": 39
+  },
+  {
+    "Week": 6,
+    "Date": "2024-02-11",
+    "Year": "2024",
+    "Month": "February",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 247,
+    "Kids Checked-in": 38
+  },
+  {
+    "Week": 7,
+    "Date": "2024-02-18",
+    "Year": "2024",
+    "Month": "February",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 237,
+    "Kids Checked-in": 41
+  },
+  {
+    "Week": 8,
+    "Date": "2024-02-25",
+    "Year": "2024",
+    "Month": "February",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 257,
+    "Kids Checked-in": 38
+  },
+  {
+    "Week": 9,
+    "Date": "2024-03-03",
+    "Year": "2024",
+    "Month": "March",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 239,
+    "Kids Checked-in": 40
+  },
+  {
+    "Week": 10,
+    "Date": "2024-03-10",
+    "Year": "2024",
+    "Month": "March",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 211,
+    "Kids Checked-in": 42
+  },
+  {
+    "Week": 11,
+    "Date": "2024-03-17",
+    "Year": "2024",
+    "Month": "March",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 260,
+    "Kids Checked-in": 38
+  },
+  {
+    "Week": 12,
+    "Date": "2024-03-24",
+    "Year": "2024",
+    "Month": "March",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 268,
+    "Kids Checked-in": 49
+  },
+  {
+    "Week": 13,
+    "Date": "2024-03-31",
+    "Year": "2024",
+    "Month": "March",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 282,
+    "Kids Checked-in": 50
+  },
+  {
+    "Week": 14,
+    "Date": "2024-04-07",
+    "Year": "2024",
+    "Month": "April",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 259,
+    "Kids Checked-in": 42
+  },
+  {
+    "Week": 15,
+    "Date": "2024-04-14",
+    "Year": "2024",
+    "Month": "April",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 190,
+    "Kids Checked-in": 42
+  },
+  {
+    "Week": 16,
+    "Date": "2024-04-21",
+    "Year": "2024",
+    "Month": "April",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 250,
+    "Kids Checked-in": 36
+  },
+  {
+    "Week": 17,
+    "Date": "2024-04-28",
+    "Year": "2024",
+    "Month": "April",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 227,
+    "Kids Checked-in": 38
+  },
+  {
+    "Week": 18,
+    "Date": "2024-05-05",
+    "Year": "2024",
+    "Month": "May",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 260,
+    "Kids Checked-in": 37
+  },
+  {
+    "Week": 19,
+    "Date": "2024-05-12",
+    "Year": "2024",
+    "Month": "May",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 248,
+    "Kids Checked-in": 41
+  },
+  {
+    "Week": 20,
+    "Date": "2024-05-19",
+    "Year": "2024",
+    "Month": "May",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 214,
+    "Kids Checked-in": 42
+  },
+  {
+    "Week": 21,
+    "Date": "2024-05-26",
+    "Year": "2024",
+    "Month": "May",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 255,
+    "Kids Checked-in": 44
+  },
+  {
+    "Week": 22,
+    "Date": "2024-06-02",
+    "Year": "2024",
+    "Month": "June",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 203,
+    "Kids Checked-in": 34
+  },
+  {
+    "Week": 23,
+    "Date": "2024-06-09",
+    "Year": "2024",
+    "Month": "June",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 217,
+    "Kids Checked-in": 36
+  },
+  {
+    "Week": 24,
+    "Date": "2024-06-16",
+    "Year": "2024",
+    "Month": "June",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 204,
+    "Kids Checked-in": 31
+  },
+  {
+    "Week": 25,
+    "Date": "2024-06-23",
+    "Year": "2024",
+    "Month": "June",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 217,
+    "Kids Checked-in": 39
+  },
+  {
+    "Week": 26,
+    "Date": "2024-06-30",
+    "Year": "2024",
+    "Month": "June",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 203,
+    "Kids Checked-in": 34
+  },
+  {
+    "Week": 27,
+    "Date": "2024-07-07",
+    "Year": "2024",
+    "Month": "July",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 211,
+    "Kids Checked-in": 39
+  },
+  {
+    "Week": 28,
+    "Date": "2024-07-14",
+    "Year": "2024",
+    "Month": "July",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 222,
+    "Kids Checked-in": 34
+  },
+  {
+    "Week": 29,
+    "Date": "2024-07-21",
+    "Year": "2024",
+    "Month": "July",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 226,
+    "Kids Checked-in": 38
+  },
+  {
+    "Week": 30,
+    "Date": "2024-07-28",
+    "Year": "2024",
+    "Month": "July",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 213,
+    "Kids Checked-in": 37
+  },
+  {
+    "Week": 31,
+    "Date": "2024-08-04",
+    "Year": "2024",
+    "Month": "August",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 214,
+    "Kids Checked-in": 29
+  },
+  {
+    "Week": 32,
+    "Date": "2024-08-11",
+    "Year": "2024",
+    "Month": "August",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 206,
+    "Kids Checked-in": 38
+  },
+  {
+    "Week": 33,
+    "Date": "2024-08-18",
+    "Year": "2024",
+    "Month": "August",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 214,
+    "Kids Checked-in": 35
+  },
+  {
+    "Week": 34,
+    "Date": "2024-08-25",
+    "Year": "2024",
+    "Month": "August",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 218,
+    "Kids Checked-in": 37
+  },
+  {
+    "Week": 35,
+    "Date": "2024-09-01",
+    "Year": "2024",
+    "Month": "September",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 241,
+    "Kids Checked-in": 43
+  },
+  {
+    "Week": 36,
+    "Date": "2024-09-08",
+    "Year": "2024",
+    "Month": "September",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 257,
+    "Kids Checked-in": 39
+  },
+  {
+    "Week": 37,
+    "Date": "2024-09-15",
+    "Year": "2024",
+    "Month": "September",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 230,
+    "Kids Checked-in": 42
+  },
+  {
+    "Week": 38,
+    "Date": "2024-09-22",
+    "Year": "2024",
+    "Month": "September",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 223,
+    "Kids Checked-in": 41
+  },
+  {
+    "Week": 39,
+    "Date": "2024-09-29",
+    "Year": "2024",
+    "Month": "September",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 240,
+    "Kids Checked-in": 49
+  },
+  {
+    "Week": 40,
+    "Date": "2024-10-06",
+    "Year": "2024",
+    "Month": "October",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 248,
+    "Kids Checked-in": 43
+  },
+  {
+    "Week": 41,
+    "Date": "2024-10-13",
+    "Year": "2024",
+    "Month": "October",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 242,
+    "Kids Checked-in": 42
+  },
+  {
+    "Week": 42,
+    "Date": "2024-10-20",
+    "Year": "2024",
+    "Month": "October",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 254,
+    "Kids Checked-in": 48
+  },
+  {
+    "Week": 43,
+    "Date": "2024-10-27",
+    "Year": "2024",
+    "Month": "October",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 274,
+    "Kids Checked-in": 43
+  },
+  {
+    "Week": 44,
+    "Date": "2024-11-03",
+    "Year": "2024",
+    "Month": "November",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 248,
+    "Kids Checked-in": 42
+  },
+  {
+    "Week": 45,
+    "Date": "2024-11-10",
+    "Year": "2024",
+    "Month": "November",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 237,
+    "Kids Checked-in": 47
+  },
+  {
+    "Week": 46,
+    "Date": "2024-11-17",
+    "Year": "2024",
+    "Month": "November",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 263,
+    "Kids Checked-in": 42
+  },
+  {
+    "Week": 47,
+    "Date": "2024-11-24",
+    "Year": "2024",
+    "Month": "November",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 265,
+    "Kids Checked-in": 47
+  },
+  {
+    "Week": 48,
+    "Date": "2024-12-01",
+    "Year": "2024",
+    "Month": "December",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 266,
+    "Kids Checked-in": 47
+  },
+  {
+    "Week": 49,
+    "Date": "2024-12-08",
+    "Year": "2024",
+    "Month": "December",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 286,
+    "Kids Checked-in": 45
+  },
+  {
+    "Week": 50,
+    "Date": "2024-12-15",
+    "Year": "2024",
+    "Month": "December",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 284,
+    "Kids Checked-in": 49
+  },
+  {
+    "Week": 51,
+    "Date": "2024-12-22",
+    "Year": "2024",
+    "Month": "December",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 302,
+    "Kids Checked-in": 55
+  },
+  {
+    "Week": 52,
+    "Date": "2024-12-29",
+    "Year": "2024",
+    "Month": "December",
+    "Site": "Central",
+    "Service": "11am",
+    "Attendance": 290,
+    "Kids Checked-in": 47
+  },
+  {
+    "Week": 1,
+    "Date": "2024-01-07",
+    "Year": "2024",
+    "Month": "January",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 70,
+    "Kids Checked-in": 6
+  },
+  {
+    "Week": 2,
+    "Date": "2024-01-14",
+    "Year": "2024",
+    "Month": "January",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 76,
+    "Kids Checked-in": 6
+  },
+  {
+    "Week": 3,
+    "Date": "2024-01-21",
+    "Year": "2024",
+    "Month": "January",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 72,
+    "Kids Checked-in": 6
+  },
+  {
+    "Week": 4,
+    "Date": "2024-01-28",
+    "Year": "2024",
+    "Month": "January",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 81,
+    "Kids Checked-in": 6
+  },
+  {
+    "Week": 5,
+    "Date": "2024-02-04",
+    "Year": "2024",
+    "Month": "February",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 84,
+    "Kids Checked-in": 7
+  },
+  {
+    "Week": 6,
+    "Date": "2024-02-11",
+    "Year": "2024",
+    "Month": "February",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 79,
+    "Kids Checked-in": 7
+  },
+  {
+    "Week": 7,
+    "Date": "2024-02-18",
+    "Year": "2024",
+    "Month": "February",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 84,
+    "Kids Checked-in": 7
+  },
+  {
+    "Week": 8,
+    "Date": "2024-02-25",
+    "Year": "2024",
+    "Month": "February",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 81,
+    "Kids Checked-in": 8
+  },
+  {
+    "Week": 9,
+    "Date": "2024-03-03",
+    "Year": "2024",
+    "Month": "March",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 84,
+    "Kids Checked-in": 7
+  },
+  {
+    "Week": 10,
+    "Date": "2024-03-10",
+    "Year": "2024",
+    "Month": "March",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 79,
+    "Kids Checked-in": 7
+  },
+  {
+    "Week": 11,
+    "Date": "2024-03-17",
+    "Year": "2024",
+    "Month": "March",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 77,
+    "Kids Checked-in": 8
+  },
+  {
+    "Week": 12,
+    "Date": "2024-03-24",
+    "Year": "2024",
+    "Month": "March",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 100,
+    "Kids Checked-in": 9
+  },
+  {
+    "Week": 13,
+    "Date": "2024-03-31",
+    "Year": "2024",
+    "Month": "March",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 97,
+    "Kids Checked-in": 9
+  },
+  {
+    "Week": 14,
+    "Date": "2024-04-07",
+    "Year": "2024",
+    "Month": "April",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 92,
+    "Kids Checked-in": 7
+  },
+  {
+    "Week": 15,
+    "Date": "2024-04-14",
+    "Year": "2024",
+    "Month": "April",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 78,
+    "Kids Checked-in": 7
+  },
+  {
+    "Week": 16,
+    "Date": "2024-04-21",
+    "Year": "2024",
+    "Month": "April",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 77,
+    "Kids Checked-in": 7
+  },
+  {
+    "Week": 17,
+    "Date": "2024-04-28",
+    "Year": "2024",
+    "Month": "April",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 80,
+    "Kids Checked-in": 7
+  },
+  {
+    "Week": 18,
+    "Date": "2024-05-05",
+    "Year": "2024",
+    "Month": "May",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 84,
+    "Kids Checked-in": 7
+  },
+  {
+    "Week": 19,
+    "Date": "2024-05-12",
+    "Year": "2024",
+    "Month": "May",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 75,
+    "Kids Checked-in": 8
+  },
+  {
+    "Week": 20,
+    "Date": "2024-05-19",
+    "Year": "2024",
+    "Month": "May",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 75,
+    "Kids Checked-in": 8
+  },
+  {
+    "Week": 21,
+    "Date": "2024-05-26",
+    "Year": "2024",
+    "Month": "May",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 78,
+    "Kids Checked-in": 6
+  },
+  {
+    "Week": 22,
+    "Date": "2024-06-02",
+    "Year": "2024",
+    "Month": "June",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 64,
+    "Kids Checked-in": 6
+  },
+  {
+    "Week": 23,
+    "Date": "2024-06-09",
+    "Year": "2024",
+    "Month": "June",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 70,
+    "Kids Checked-in": 6
+  },
+  {
+    "Week": 24,
+    "Date": "2024-06-16",
+    "Year": "2024",
+    "Month": "June",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 72,
+    "Kids Checked-in": 7
+  },
+  {
+    "Week": 25,
+    "Date": "2024-06-23",
+    "Year": "2024",
+    "Month": "June",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 72,
+    "Kids Checked-in": 7
+  },
+  {
+    "Week": 26,
+    "Date": "2024-06-30",
+    "Year": "2024",
+    "Month": "June",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 76,
+    "Kids Checked-in": 6
+  },
+  {
+    "Week": 27,
+    "Date": "2024-07-07",
+    "Year": "2024",
+    "Month": "July",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 66,
+    "Kids Checked-in": 6
+  },
+  {
+    "Week": 28,
+    "Date": "2024-07-14",
+    "Year": "2024",
+    "Month": "July",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 69,
+    "Kids Checked-in": 6
+  },
+  {
+    "Week": 29,
+    "Date": "2024-07-21",
+    "Year": "2024",
+    "Month": "July",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 74,
+    "Kids Checked-in": 6
+  },
+  {
+    "Week": 30,
+    "Date": "2024-07-28",
+    "Year": "2024",
+    "Month": "July",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 69,
+    "Kids Checked-in": 7
+  },
+  {
+    "Week": 31,
+    "Date": "2024-08-04",
+    "Year": "2024",
+    "Month": "August",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 74,
+    "Kids Checked-in": 6
+  },
+  {
+    "Week": 32,
+    "Date": "2024-08-11",
+    "Year": "2024",
+    "Month": "August",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 69,
+    "Kids Checked-in": 6
+  },
+  {
+    "Week": 33,
+    "Date": "2024-08-18",
+    "Year": "2024",
+    "Month": "August",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 76,
+    "Kids Checked-in": 6
+  },
+  {
+    "Week": 34,
+    "Date": "2024-08-25",
+    "Year": "2024",
+    "Month": "August",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 65,
+    "Kids Checked-in": 7
+  },
+  {
+    "Week": 35,
+    "Date": "2024-09-01",
+    "Year": "2024",
+    "Month": "September",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 77,
+    "Kids Checked-in": 7
+  },
+  {
+    "Week": 36,
+    "Date": "2024-09-08",
+    "Year": "2024",
+    "Month": "September",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 89,
+    "Kids Checked-in": 7
+  },
+  {
+    "Week": 37,
+    "Date": "2024-09-15",
+    "Year": "2024",
+    "Month": "September",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 71,
+    "Kids Checked-in": 7
+  },
+  {
+    "Week": 38,
+    "Date": "2024-09-22",
+    "Year": "2024",
+    "Month": "September",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 84,
+    "Kids Checked-in": 6
+  },
+  {
+    "Week": 39,
+    "Date": "2024-09-29",
+    "Year": "2024",
+    "Month": "September",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 71,
+    "Kids Checked-in": 6
+  },
+  {
+    "Week": 40,
+    "Date": "2024-10-06",
+    "Year": "2024",
+    "Month": "October",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 77,
+    "Kids Checked-in": 8
+  },
+  {
+    "Week": 41,
+    "Date": "2024-10-13",
+    "Year": "2024",
+    "Month": "October",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 86,
+    "Kids Checked-in": 6
+  },
+  {
+    "Week": 42,
+    "Date": "2024-10-20",
+    "Year": "2024",
+    "Month": "October",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 84,
+    "Kids Checked-in": 9
+  },
+  {
+    "Week": 43,
+    "Date": "2024-10-27",
+    "Year": "2024",
+    "Month": "October",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 82,
+    "Kids Checked-in": 7
+  },
+  {
+    "Week": 44,
+    "Date": "2024-11-03",
+    "Year": "2024",
+    "Month": "November",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 71,
+    "Kids Checked-in": 7
+  },
+  {
+    "Week": 45,
+    "Date": "2024-11-10",
+    "Year": "2024",
+    "Month": "November",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 95,
+    "Kids Checked-in": 8
+  },
+  {
+    "Week": 46,
+    "Date": "2024-11-17",
+    "Year": "2024",
+    "Month": "November",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 83,
+    "Kids Checked-in": 7
+  },
+  {
+    "Week": 47,
+    "Date": "2024-11-24",
+    "Year": "2024",
+    "Month": "November",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 81,
+    "Kids Checked-in": 7
+  },
+  {
+    "Week": 48,
+    "Date": "2024-12-01",
+    "Year": "2024",
+    "Month": "December",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 80,
+    "Kids Checked-in": 7
+  },
+  {
+    "Week": 49,
+    "Date": "2024-12-08",
+    "Year": "2024",
+    "Month": "December",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 90,
+    "Kids Checked-in": 9
+  },
+  {
+    "Week": 50,
+    "Date": "2024-12-15",
+    "Year": "2024",
+    "Month": "December",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 92,
+    "Kids Checked-in": 7
+  },
+  {
+    "Week": 51,
+    "Date": "2024-12-22",
+    "Year": "2024",
+    "Month": "December",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 102,
+    "Kids Checked-in": 10
+  },
+  {
+    "Week": 52,
+    "Date": "2024-12-29",
+    "Year": "2024",
+    "Month": "December",
+    "Site": "Central",
+    "Service": "6pm",
+    "Attendance": 106,
+    "Kids Checked-in": 9
+  },
+  {
+    "Week": 1,
+    "Date": "2024-01-07",
+    "Year": "2024",
+    "Month": "January",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 103,
+    "Kids Checked-in": 28
+  },
+  {
+    "Week": 2,
+    "Date": "2024-01-14",
+    "Year": "2024",
+    "Month": "January",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 99,
+    "Kids Checked-in": 28
+  },
+  {
+    "Week": 3,
+    "Date": "2024-01-21",
+    "Year": "2024",
+    "Month": "January",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 89,
+    "Kids Checked-in": 29
+  },
+  {
+    "Week": 4,
+    "Date": "2024-01-28",
+    "Year": "2024",
+    "Month": "January",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 98,
+    "Kids Checked-in": 30
+  },
+  {
+    "Week": 5,
+    "Date": "2024-02-04",
+    "Year": "2024",
+    "Month": "February",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 110,
+    "Kids Checked-in": 26
+  },
+  {
+    "Week": 6,
+    "Date": "2024-02-11",
+    "Year": "2024",
+    "Month": "February",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 105,
+    "Kids Checked-in": 27
+  },
+  {
+    "Week": 7,
+    "Date": "2024-02-18",
+    "Year": "2024",
+    "Month": "February",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 104,
+    "Kids Checked-in": 28
+  },
+  {
+    "Week": 8,
+    "Date": "2024-02-25",
+    "Year": "2024",
+    "Month": "February",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 102,
+    "Kids Checked-in": 24
+  },
+  {
+    "Week": 9,
+    "Date": "2024-03-03",
+    "Year": "2024",
+    "Month": "March",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 108,
+    "Kids Checked-in": 27
+  },
+  {
+    "Week": 10,
+    "Date": "2024-03-10",
+    "Year": "2024",
+    "Month": "March",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 101,
+    "Kids Checked-in": 25
+  },
+  {
+    "Week": 11,
+    "Date": "2024-03-17",
+    "Year": "2024",
+    "Month": "March",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 112,
+    "Kids Checked-in": 28
+  },
+  {
+    "Week": 12,
+    "Date": "2024-03-24",
+    "Year": "2024",
+    "Month": "March",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 118,
+    "Kids Checked-in": 34
+  },
+  {
+    "Week": 13,
+    "Date": "2024-03-31",
+    "Year": "2024",
+    "Month": "March",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 121,
+    "Kids Checked-in": 37
+  },
+  {
+    "Week": 14,
+    "Date": "2024-04-07",
+    "Year": "2024",
+    "Month": "April",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 115,
+    "Kids Checked-in": 30
+  },
+  {
+    "Week": 15,
+    "Date": "2024-04-14",
+    "Year": "2024",
+    "Month": "April",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 105,
+    "Kids Checked-in": 30
+  },
+  {
+    "Week": 16,
+    "Date": "2024-04-21",
+    "Year": "2024",
+    "Month": "April",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 105,
+    "Kids Checked-in": 28
+  },
+  {
+    "Week": 17,
+    "Date": "2024-04-28",
+    "Year": "2024",
+    "Month": "April",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 113,
+    "Kids Checked-in": 27
+  },
+  {
+    "Week": 18,
+    "Date": "2024-05-05",
+    "Year": "2024",
+    "Month": "May",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 106,
+    "Kids Checked-in": 29
+  },
+  {
+    "Week": 19,
+    "Date": "2024-05-12",
+    "Year": "2024",
+    "Month": "May",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 105,
+    "Kids Checked-in": 27
+  },
+  {
+    "Week": 20,
+    "Date": "2024-05-19",
+    "Year": "2024",
+    "Month": "May",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 111,
+    "Kids Checked-in": 25
+  },
+  {
+    "Week": 21,
+    "Date": "2024-05-26",
+    "Year": "2024",
+    "Month": "May",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 112,
+    "Kids Checked-in": 28
+  },
+  {
+    "Week": 22,
+    "Date": "2024-06-02",
+    "Year": "2024",
+    "Month": "June",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 89,
+    "Kids Checked-in": 23
+  },
+  {
+    "Week": 23,
+    "Date": "2024-06-09",
+    "Year": "2024",
+    "Month": "June",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 88,
+    "Kids Checked-in": 25
+  },
+  {
+    "Week": 24,
+    "Date": "2024-06-16",
+    "Year": "2024",
+    "Month": "June",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 95,
+    "Kids Checked-in": 23
+  },
+  {
+    "Week": 25,
+    "Date": "2024-06-23",
+    "Year": "2024",
+    "Month": "June",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 88,
+    "Kids Checked-in": 28
+  },
+  {
+    "Week": 26,
+    "Date": "2024-06-30",
+    "Year": "2024",
+    "Month": "June",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 103,
+    "Kids Checked-in": 27
+  },
+  {
+    "Week": 27,
+    "Date": "2024-07-07",
+    "Year": "2024",
+    "Month": "July",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 97,
+    "Kids Checked-in": 29
+  },
+  {
+    "Week": 28,
+    "Date": "2024-07-14",
+    "Year": "2024",
+    "Month": "July",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 97,
+    "Kids Checked-in": 23
+  },
+  {
+    "Week": 29,
+    "Date": "2024-07-21",
+    "Year": "2024",
+    "Month": "July",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 96,
+    "Kids Checked-in": 29
+  },
+  {
+    "Week": 30,
+    "Date": "2024-07-28",
+    "Year": "2024",
+    "Month": "July",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 98,
+    "Kids Checked-in": 26
+  },
+  {
+    "Week": 31,
+    "Date": "2024-08-04",
+    "Year": "2024",
+    "Month": "August",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 89,
+    "Kids Checked-in": 22
+  },
+  {
+    "Week": 32,
+    "Date": "2024-08-11",
+    "Year": "2024",
+    "Month": "August",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 91,
+    "Kids Checked-in": 23
+  },
+  {
+    "Week": 33,
+    "Date": "2024-08-18",
+    "Year": "2024",
+    "Month": "August",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 100,
+    "Kids Checked-in": 26
+  },
+  {
+    "Week": 34,
+    "Date": "2024-08-25",
+    "Year": "2024",
+    "Month": "August",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 91,
+    "Kids Checked-in": 25
+  },
+  {
+    "Week": 35,
+    "Date": "2024-09-01",
+    "Year": "2024",
+    "Month": "September",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 89,
+    "Kids Checked-in": 29
+  },
+  {
+    "Week": 36,
+    "Date": "2024-09-08",
+    "Year": "2024",
+    "Month": "September",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 105,
+    "Kids Checked-in": 25
+  },
+  {
+    "Week": 37,
+    "Date": "2024-09-15",
+    "Year": "2024",
+    "Month": "September",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 102,
+    "Kids Checked-in": 31
+  },
+  {
+    "Week": 38,
+    "Date": "2024-09-22",
+    "Year": "2024",
+    "Month": "September",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 104,
+    "Kids Checked-in": 28
+  },
+  {
+    "Week": 39,
+    "Date": "2024-09-29",
+    "Year": "2024",
+    "Month": "September",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 114,
+    "Kids Checked-in": 34
+  },
+  {
+    "Week": 40,
+    "Date": "2024-10-06",
+    "Year": "2024",
+    "Month": "October",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 110,
+    "Kids Checked-in": 25
+  },
+  {
+    "Week": 41,
+    "Date": "2024-10-13",
+    "Year": "2024",
+    "Month": "October",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 113,
+    "Kids Checked-in": 29
+  },
+  {
+    "Week": 42,
+    "Date": "2024-10-20",
+    "Year": "2024",
+    "Month": "October",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 111,
+    "Kids Checked-in": 22
+  },
+  {
+    "Week": 43,
+    "Date": "2024-10-27",
+    "Year": "2024",
+    "Month": "October",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 118,
+    "Kids Checked-in": 32
+  },
+  {
+    "Week": 44,
+    "Date": "2024-11-03",
+    "Year": "2024",
+    "Month": "November",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 131,
+    "Kids Checked-in": 28
+  },
+  {
+    "Week": 45,
+    "Date": "2024-11-10",
+    "Year": "2024",
+    "Month": "November",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 106,
+    "Kids Checked-in": 31
+  },
+  {
+    "Week": 46,
+    "Date": "2024-11-17",
+    "Year": "2024",
+    "Month": "November",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 117,
+    "Kids Checked-in": 35
+  },
+  {
+    "Week": 47,
+    "Date": "2024-11-24",
+    "Year": "2024",
+    "Month": "November",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 119,
+    "Kids Checked-in": 27
+  },
+  {
+    "Week": 48,
+    "Date": "2024-12-01",
+    "Year": "2024",
+    "Month": "December",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 109,
+    "Kids Checked-in": 28
+  },
+  {
+    "Week": 49,
+    "Date": "2024-12-08",
+    "Year": "2024",
+    "Month": "December",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 121,
+    "Kids Checked-in": 31
+  },
+  {
+    "Week": 50,
+    "Date": "2024-12-15",
+    "Year": "2024",
+    "Month": "December",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 127,
+    "Kids Checked-in": 34
+  },
+  {
+    "Week": 51,
+    "Date": "2024-12-22",
+    "Year": "2024",
+    "Month": "December",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 151,
+    "Kids Checked-in": 35
+  },
+  {
+    "Week": 52,
+    "Date": "2024-12-29",
+    "Year": "2024",
+    "Month": "December",
+    "Site": "North",
+    "Service": "10am",
+    "Attendance": 156,
+    "Kids Checked-in": 36
+  }
+]
