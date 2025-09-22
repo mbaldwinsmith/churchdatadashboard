@@ -218,9 +218,9 @@ body {
 }
 
 .controls {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem 2rem;
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   background: var(--surface);
   padding: 1.5rem;
   border-radius: 1rem;
@@ -231,7 +231,7 @@ body {
   display: flex;
   flex-direction: column;
   gap: 0.4rem;
-  min-width: 160px;
+  min-width: 0;
 }
 
 .toggle-group {
@@ -451,9 +451,9 @@ body {
 }
 
 .charts {
-  display: flex;
-  flex-direction: column;
+  display: grid;
   gap: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
 }
 
 .chart-card {
@@ -461,6 +461,9 @@ body {
   padding: 1.5rem;
   border-radius: 1rem;
   box-shadow: 0 16px 32px rgba(31, 41, 51, 0.08);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 .chart-area {
@@ -616,7 +619,7 @@ tbody tr:hover {
 
 @media (max-width: 768px) {
   .controls {
-    flex-direction: column;
+    grid-template-columns: 1fr;
   }
 
   .metric-toggle {
