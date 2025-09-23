@@ -296,34 +296,56 @@ function aggregateByDate(rows, metricKey) {
 
 function calculateAverageGrowth(aggregated) {
   if (!Array.isArray(aggregated) || !aggregated.length) {
-    return { value: 0, periods: 0, startDate: null, endDate: null };
+    return {
+      value: 0,
+      periods: 0,
+      startDate: null,
+      endDate: null,
+      hasBaseline: false,
+      hasRange: false
+    };
   }
 
-  const startDate = aggregated[0].date;
-  const endDate = aggregated[aggregated.length - 1].date;
+  const firstEntry = aggregated[0];
+  const lastEntry = aggregated[aggregated.length - 1];
+  const baselineIndex = aggregated.findIndex((item) => item.value > 0);
+  const hasBaseline = baselineIndex !== -1;
 
-  if (aggregated.length < 2) {
-    return { value: 0, periods: 0, startDate, endDate };
+  if (!hasBaseline) {
+    return {
+      value: 0,
+      periods: 0,
+      startDate: firstEntry.date,
+      endDate: lastEntry.date,
+      hasBaseline: false,
+      hasRange: aggregated.length > 1
+    };
   }
 
-  let totalChange = 0;
-  let periods = 0;
+  const baselineEntry = aggregated[baselineIndex];
+  const periods = aggregated.length - 1 - baselineIndex;
 
-  for (let index = 1; index < aggregated.length; index += 1) {
-    const previous = aggregated[index - 1].value;
-    const current = aggregated[index].value;
-
-    if (previous > 0) {
-      totalChange += ((current - previous) / previous) * 100;
-      periods += 1;
-    }
+  if (periods <= 0) {
+    return {
+      value: 0,
+      periods: 0,
+      startDate: baselineEntry.date,
+      endDate: lastEntry.date,
+      hasBaseline: true,
+      hasRange: false
+    };
   }
 
-  if (!periods) {
-    return { value: 0, periods: 0, startDate, endDate };
-  }
+  const change = ((lastEntry.value - baselineEntry.value) / baselineEntry.value) * 100;
 
-  return { value: totalChange / periods, periods, startDate, endDate };
+  return {
+    value: change,
+    periods,
+    startDate: baselineEntry.date,
+    endDate: lastEntry.date,
+    hasBaseline: true,
+    hasRange: true
+  };
 }
 
 function aggregateMonthly(rows, metricKey) {
@@ -408,20 +430,29 @@ function updateSummaries(filtered, metricKey) {
     elements.summaryAverageGrowth.textContent = `${sign}${formattedValue}%`;
 
     if (startLabel && endLabel) {
-      elements.summaryAverageGrowthLabel.textContent = `Average weekly change from ${startLabel} to ${endLabel}`;
+      elements.summaryAverageGrowthLabel.textContent = `Change from ${startLabel} to ${endLabel}`;
     } else {
-      elements.summaryAverageGrowthLabel.textContent = 'Average weekly change for selected period';
+      elements.summaryAverageGrowthLabel.textContent = 'Change across the selected period';
     }
   } else {
-    const hasRange = aggregated.length >= 2;
     elements.summaryAverageGrowth.textContent = '0%';
 
-    if (hasRange && startLabel && endLabel) {
-      elements.summaryAverageGrowthLabel.textContent = `Average weekly change from ${startLabel} to ${endLabel} requires non-zero attendance in the prior week`;
-    } else if (hasRange) {
-      elements.summaryAverageGrowthLabel.textContent = 'Average weekly change requires non-zero attendance';
+    if (aggregated.length < 2) {
+      elements.summaryAverageGrowthLabel.textContent = 'Select at least two weeks to see change';
+    } else if (!growthStats.hasBaseline) {
+      if (startLabel && endLabel) {
+        elements.summaryAverageGrowthLabel.textContent = `Change from ${startLabel} to ${endLabel} requires a non-zero starting week`;
+      } else {
+        elements.summaryAverageGrowthLabel.textContent = 'Change requires a non-zero starting week';
+      }
+    } else if (!growthStats.hasRange) {
+      if (startLabel && endLabel) {
+        elements.summaryAverageGrowthLabel.textContent = `Change from ${startLabel} to ${endLabel} requires additional weeks of data`;
+      } else {
+        elements.summaryAverageGrowthLabel.textContent = 'Change requires additional weeks of data';
+      }
     } else {
-      elements.summaryAverageGrowthLabel.textContent = 'Select at least two weeks to see growth';
+      elements.summaryAverageGrowthLabel.textContent = 'Change not available for the selected period';
     }
   }
 }
