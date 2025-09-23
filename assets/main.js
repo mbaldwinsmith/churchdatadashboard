@@ -306,44 +306,47 @@ function calculateAverageGrowth(aggregated) {
     };
   }
 
-  const firstEntry = aggregated[0];
   const lastEntry = aggregated[aggregated.length - 1];
-  const baselineIndex = aggregated.findIndex((item) => item.value > 0);
-  const hasBaseline = baselineIndex !== -1;
+  const changes = [];
+  let firstValidIndex = -1;
 
-  if (!hasBaseline) {
-    return {
-      value: 0,
-      periods: 0,
-      startDate: firstEntry.date,
-      endDate: lastEntry.date,
-      hasBaseline: false,
-      hasRange: aggregated.length > 1
-    };
+  for (let index = 1; index < aggregated.length; index += 1) {
+    const previous = aggregated[index - 1];
+    const current = aggregated[index];
+
+    if (previous.value > 0 && firstValidIndex === -1) {
+      firstValidIndex = index - 1;
+    }
+
+    if (previous.value > 0) {
+      const change = ((current.value - previous.value) / previous.value) * 100;
+      changes.push(change);
+    }
   }
 
-  const baselineEntry = aggregated[baselineIndex];
-  const periods = aggregated.length - 1 - baselineIndex;
+  const hasBaseline = firstValidIndex !== -1;
+  const startEntry = hasBaseline ? aggregated[firstValidIndex] : aggregated[0];
 
-  if (periods <= 0) {
+  if (!changes.length) {
     return {
       value: 0,
       periods: 0,
-      startDate: baselineEntry.date,
+      startDate: startEntry.date,
       endDate: lastEntry.date,
-      hasBaseline: true,
+      hasBaseline,
       hasRange: false
     };
   }
 
-  const change = ((lastEntry.value - baselineEntry.value) / baselineEntry.value) * 100;
+  const totalChange = changes.reduce((sum, value) => sum + value, 0);
+  const averageChange = totalChange / changes.length;
 
   return {
-    value: change,
-    periods,
-    startDate: baselineEntry.date,
+    value: averageChange,
+    periods: changes.length,
+    startDate: startEntry.date,
     endDate: lastEntry.date,
-    hasBaseline: true,
+    hasBaseline,
     hasRange: true
   };
 }
@@ -430,29 +433,29 @@ function updateSummaries(filtered, metricKey) {
     elements.summaryAverageGrowth.textContent = `${sign}${formattedValue}%`;
 
     if (startLabel && endLabel) {
-      elements.summaryAverageGrowthLabel.textContent = `Change from ${startLabel} to ${endLabel}`;
+      elements.summaryAverageGrowthLabel.textContent = `Average week-to-week change from ${startLabel} to ${endLabel}`;
     } else {
-      elements.summaryAverageGrowthLabel.textContent = 'Change across the selected period';
+      elements.summaryAverageGrowthLabel.textContent = 'Average week-to-week change across the selected period';
     }
   } else {
     elements.summaryAverageGrowth.textContent = '0%';
 
     if (aggregated.length < 2) {
-      elements.summaryAverageGrowthLabel.textContent = 'Select at least two weeks to see change';
+      elements.summaryAverageGrowthLabel.textContent = 'Select at least two weeks to see average change';
     } else if (!growthStats.hasBaseline) {
       if (startLabel && endLabel) {
-        elements.summaryAverageGrowthLabel.textContent = `Change from ${startLabel} to ${endLabel} requires a non-zero starting week`;
+        elements.summaryAverageGrowthLabel.textContent = `Average change from ${startLabel} to ${endLabel} requires a non-zero starting week`;
       } else {
-        elements.summaryAverageGrowthLabel.textContent = 'Change requires a non-zero starting week';
+        elements.summaryAverageGrowthLabel.textContent = 'Average change requires a non-zero starting week';
       }
     } else if (!growthStats.hasRange) {
       if (startLabel && endLabel) {
-        elements.summaryAverageGrowthLabel.textContent = `Change from ${startLabel} to ${endLabel} requires additional weeks of data`;
+        elements.summaryAverageGrowthLabel.textContent = `Average change from ${startLabel} to ${endLabel} requires additional week-over-week data`;
       } else {
-        elements.summaryAverageGrowthLabel.textContent = 'Change requires additional weeks of data';
+        elements.summaryAverageGrowthLabel.textContent = 'Average change requires additional week-over-week data';
       }
     } else {
-      elements.summaryAverageGrowthLabel.textContent = 'Change not available for the selected period';
+      elements.summaryAverageGrowthLabel.textContent = 'Average change not available for the selected period';
     }
   }
 }
