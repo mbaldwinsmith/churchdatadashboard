@@ -32,13 +32,30 @@ const elements = {
   tableBody: document.getElementById('tableBody'),
   trendChartCanvas: document.getElementById('trendChart'),
   monthlyChartCanvas: document.getElementById('monthlyChart'),
-  distributionChartCanvas: document.getElementById('distributionChart')
+  distributionChartCanvas: document.getElementById('distributionChart'),
+  distributionChartServiceCanvas: document.getElementById('distributionChartService'),
+  distributionChartSiteCanvas: document.getElementById('distributionChartSite'),
+  distributionChartYearCanvas: document.getElementById('distributionChartYear')
 };
+
+const distributionLayoutQuery =
+  typeof window !== 'undefined' && typeof window.matchMedia === 'function'
+    ? window.matchMedia('(min-width: 1024px)')
+    : {
+        matches: false,
+        addEventListener: null,
+        addListener: null
+      };
 
 let dataset = [];
 let trendChart;
 let monthlyChart;
 let distributionChart;
+const distributionChartsByDimension = {
+  Service: null,
+  Site: null,
+  Year: null
+};
 let servicesBySite = new Map();
 
 const colors = [
@@ -539,12 +556,27 @@ function updateMonthlyChart(filtered, metricKey) {
 }
 
 function updateDistributionChart(filtered, metricKey) {
-  const distribution = getDistributionData(filtered, metricKey, state.distributionDimension);
-  elements.distributionLabel.textContent = `Share by ${distribution.dimension.toLowerCase()}`;
   const metricDescription = getMetricDescription(state.metric);
-  const dimensionDescription = distribution.dimension.toLowerCase();
+  const dimensions = ['Service', 'Site', 'Year'];
+  const distributionDataMap = dimensions.reduce((acc, dimension) => {
+    acc[dimension] = getDistributionData(filtered, metricKey, dimension);
+    return acc;
+  }, {});
+  const activeDistribution = distributionDataMap[state.distributionDimension] || distributionDataMap.Service;
+  const showAllDimensions = distributionLayoutQuery.matches;
 
-  const chartData = {
+  if (showAllDimensions) {
+    elements.distributionLabel.textContent = 'Share by service, site, and year';
+  } else {
+    elements.distributionLabel.textContent = `Share by ${activeDistribution.dimension.toLowerCase()}`;
+  }
+
+  const areaHasData = showAllDimensions
+    ? dimensions.some((dimension) => distributionDataMap[dimension].values.length > 0)
+    : activeDistribution.values.length > 0;
+  setChartAreaState(elements.distributionChartCanvas, areaHasData);
+
+  const buildChartData = (distribution) => ({
     labels: distribution.labels,
     datasets: [
       {
@@ -553,9 +585,9 @@ function updateDistributionChart(filtered, metricKey) {
         backgroundColor: generatePalette(distribution.labels.length)
       }
     ]
-  };
+  });
 
-  const options = {
+  const buildOptions = () => ({
     maintainAspectRatio: false,
     interaction: {
       mode: 'nearest',
@@ -574,27 +606,60 @@ function updateDistributionChart(filtered, metricKey) {
         }
       }
     }
+  });
+
+  const applyChartUpdate = (chartInstance, canvas, distribution) => {
+    if (!canvas) {
+      return chartInstance;
+    }
+
+    const dimensionLabel = distribution.dimension.toLowerCase();
+    const hasData = distribution.values.length > 0;
+    updateChartAriaLabel(
+      canvas,
+      hasData
+        ? `Pie chart showing ${metricDescription} by ${dimensionLabel}.`
+        : `Pie chart showing ${metricDescription} by ${dimensionLabel}. No data available for the current filters.`
+    );
+
+    if (!chartInstance) {
+      return new Chart(canvas, {
+        type: 'pie',
+        data: buildChartData(distribution),
+        options: buildOptions()
+      });
+    }
+
+    chartInstance.data = buildChartData(distribution);
+    chartInstance.options = buildOptions();
+    chartInstance.update();
+    return chartInstance;
   };
 
-  const hasData = distribution.values.length > 0;
-  updateChartAriaLabel(
-    elements.distributionChartCanvas,
-    hasData
-      ? `Pie chart showing ${metricDescription} by ${dimensionDescription}.`
-      : `Pie chart showing ${metricDescription} by ${dimensionDescription}. No data available for the current filters.`
-  );
-  setChartAreaState(elements.distributionChartCanvas, hasData);
+  distributionChart = applyChartUpdate(distributionChart, elements.distributionChartCanvas, activeDistribution);
 
-  if (!distributionChart) {
-    distributionChart = new Chart(elements.distributionChartCanvas, {
-      type: 'pie',
-      data: chartData,
-      options
+  const shouldUpdateAllDimensions = showAllDimensions || Object.values(distributionChartsByDimension).some((chart) => chart);
+
+  if (shouldUpdateAllDimensions) {
+    const canvasMap = {
+      Service: elements.distributionChartServiceCanvas,
+      Site: elements.distributionChartSiteCanvas,
+      Year: elements.distributionChartYearCanvas
+    };
+
+    dimensions.forEach((dimension) => {
+      const canvas = canvasMap[dimension];
+      const distribution = distributionDataMap[dimension];
+      distributionChartsByDimension[dimension] = applyChartUpdate(
+        distributionChartsByDimension[dimension],
+        canvas,
+        distribution
+      );
+
+      if (showAllDimensions && distributionChartsByDimension[dimension]) {
+        distributionChartsByDimension[dimension].resize();
+      }
     });
-  } else {
-    distributionChart.data = chartData;
-    distributionChart.options = options;
-    distributionChart.update();
   }
 }
 
@@ -709,6 +774,16 @@ function updateDashboard() {
   updateDistributionChart(filtered, metricKey);
   updateTable(filtered);
   updateActiveFilters();
+}
+
+const handleDistributionLayoutChange = () => {
+  updateDashboard();
+};
+
+if (typeof distributionLayoutQuery.addEventListener === 'function') {
+  distributionLayoutQuery.addEventListener('change', handleDistributionLayoutChange);
+} else if (typeof distributionLayoutQuery.addListener === 'function') {
+  distributionLayoutQuery.addListener(handleDistributionLayoutChange);
 }
 
 function registerSingleSelectToggle(container, stateKey, { onChange } = {}) {

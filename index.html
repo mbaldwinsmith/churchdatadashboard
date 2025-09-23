@@ -156,7 +156,7 @@
             </canvas>
           </div>
         </article>
-        <article class="chart-card">
+        <article class="chart-card chart-card--distribution">
           <div class="chart-header">
             <div class="chart-title">
               <h2>Distribution</h2>
@@ -201,13 +201,47 @@
             </div>
           </div>
           <div class="chart-area">
-            <canvas
-              id="distributionChart"
-              role="img"
-              aria-label="Attendance distribution pie chart by service."
-            >
-              Pie chart showing attendance distribution by service.
-            </canvas>
+            <div class="distribution-single">
+              <canvas
+                id="distributionChart"
+                role="img"
+                aria-label="Attendance distribution pie chart by service."
+              >
+                Pie chart showing attendance distribution by service.
+              </canvas>
+            </div>
+            <div class="distribution-grid">
+              <div class="distribution-grid__item">
+                <p class="distribution-grid__label">By Service</p>
+                <canvas
+                  id="distributionChartService"
+                  role="img"
+                  aria-label="Attendance distribution pie chart by service."
+                >
+                  Pie chart showing attendance distribution by service.
+                </canvas>
+              </div>
+              <div class="distribution-grid__item">
+                <p class="distribution-grid__label">By Site</p>
+                <canvas
+                  id="distributionChartSite"
+                  role="img"
+                  aria-label="Attendance distribution pie chart by site."
+                >
+                  Pie chart showing attendance distribution by site.
+                </canvas>
+              </div>
+              <div class="distribution-grid__item">
+                <p class="distribution-grid__label">By Year</p>
+                <canvas
+                  id="distributionChartYear"
+                  role="img"
+                  aria-label="Attendance distribution pie chart by year."
+                >
+                  Pie chart showing attendance distribution by year.
+                </canvas>
+              </div>
+            </div>
           </div>
         </article>
       </section>
