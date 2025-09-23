@@ -554,6 +554,43 @@ body {
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
 }
 
+.chart-card--distribution .chart-area {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.chart-card--distribution .distribution-single {
+  position: relative;
+  flex: 1;
+  display: flex;
+}
+
+.chart-card--distribution .distribution-grid {
+  display: none;
+  gap: 1rem;
+}
+
+.chart-card--distribution .distribution-grid__item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  min-height: 220px;
+  height: clamp(220px, 24vw, 280px);
+}
+
+.chart-card--distribution .distribution-grid__label {
+  margin: 0;
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.chart-card--distribution .distribution-grid__item canvas {
+  flex: 1;
+}
+
 .chart-card {
   position: relative;
   background: var(--surface);
@@ -648,6 +685,34 @@ body {
   flex-wrap: wrap;
   gap: 0.5rem;
   align-items: center;
+}
+
+@media (min-width: 1024px) {
+  .charts {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .chart-card--distribution {
+    grid-column: 1 / -1;
+  }
+
+  .chart-card--distribution .chart-area {
+    height: auto;
+  }
+
+  .chart-card--distribution .distribution-single {
+    display: none;
+  }
+
+  .chart-card--distribution .distribution-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    align-items: stretch;
+  }
+
+  .chart-card--distribution .chart-toggle-group {
+    display: none;
+  }
 }
 
 .table-section {
