@@ -333,7 +333,7 @@ function calculateAverageGrowth(aggregated) {
       periods: 0,
       startDate: startEntry.date,
       endDate: lastEntry.date,
-      hasBaseline: true,
+      hasBaseline,
       hasRange: false
     };
   }
@@ -375,7 +375,7 @@ function calculateAverageGrowth(aggregated) {
     periods: slice.length - 1,
     startDate: startEntry.date,
     endDate: lastEntry.date,
-    hasBaseline: true,
+    hasBaseline,
     hasRange: true
   };
 }
