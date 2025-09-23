@@ -295,53 +295,85 @@ function aggregateByDate(rows, metricKey) {
 }
 
 function calculateAverageGrowth(aggregated) {
-  if (!Array.isArray(aggregated) || !aggregated.length) {
+  if (!Array.isArray(aggregated) || aggregated.length < 2) {
+    const startDate = aggregated && aggregated[0] ? aggregated[0].date : null;
+    const endDate = aggregated && aggregated[aggregated.length - 1]
+      ? aggregated[aggregated.length - 1].date
+      : null;
     return {
       value: 0,
       periods: 0,
-      startDate: null,
-      endDate: null,
+      startDate,
+      endDate,
       hasBaseline: false,
       hasRange: false
     };
   }
 
-  const firstEntry = aggregated[0];
+  const baselineIndex = aggregated.findIndex((entry) => entry.value > 0);
+  const startEntry = baselineIndex !== -1 ? aggregated[baselineIndex] : aggregated[0];
   const lastEntry = aggregated[aggregated.length - 1];
-  const baselineIndex = aggregated.findIndex((item) => item.value > 0);
-  const hasBaseline = baselineIndex !== -1;
 
-  if (!hasBaseline) {
+  if (baselineIndex === -1) {
     return {
       value: 0,
-      periods: 0,
-      startDate: firstEntry.date,
+      periods: aggregated.length - 1,
+      startDate: startEntry.date,
       endDate: lastEntry.date,
       hasBaseline: false,
       hasRange: aggregated.length > 1
     };
   }
 
-  const baselineEntry = aggregated[baselineIndex];
-  const periods = aggregated.length - 1 - baselineIndex;
+  const slice = aggregated.slice(baselineIndex);
 
-  if (periods <= 0) {
+  if (slice.length < 2) {
     return {
       value: 0,
       periods: 0,
-      startDate: baselineEntry.date,
+      startDate: startEntry.date,
       endDate: lastEntry.date,
       hasBaseline: true,
       hasRange: false
     };
   }
 
-  const change = ((lastEntry.value - baselineEntry.value) / baselineEntry.value) * 100;
+  const xs = slice.map((_, index) => index);
+  const ys = slice.map((entry) => entry.value);
+  const meanX = xs.reduce((sum, value) => sum + value, 0) / xs.length;
+  const meanY = ys.reduce((sum, value) => sum + value, 0) / ys.length;
+
+  let numerator = 0;
+  let denominator = 0;
+  for (let index = 0; index < xs.length; index += 1) {
+    const dx = xs[index] - meanX;
+    numerator += dx * (ys[index] - meanY);
+    denominator += dx * dx;
+  }
+
+  const slope = denominator === 0 ? 0 : numerator / denominator;
+  const intercept = meanY - slope * meanX;
+  const trendStart = intercept;
+  const trendEnd = slope * xs[xs.length - 1] + intercept;
+  const hasBaseline = trendStart > 0;
+
+  if (!hasBaseline) {
+    return {
+      value: 0,
+      periods: slice.length - 1,
+      startDate: startEntry.date,
+      endDate: lastEntry.date,
+      hasBaseline: false,
+      hasRange: true
+    };
+  }
+
+  const percentChange = ((trendEnd - trendStart) / trendStart) * 100;
 
   return {
-    value: change,
-    periods,
-    startDate: baselineEntry.date,
+    value: percentChange,
+    periods: slice.length - 1,
+    startDate: startEntry.date,
     endDate: lastEntry.date,
     hasBaseline: true,
     hasRange: true
@@ -430,29 +462,29 @@ function updateSummaries(filtered, metricKey) {
     elements.summaryAverageGrowth.textContent = `${sign}${formattedValue}%`;
 
     if (startLabel && endLabel) {
-      elements.summaryAverageGrowthLabel.textContent = `Change from ${startLabel} to ${endLabel}`;
+      elements.summaryAverageGrowthLabel.textContent = `Average trendline change from ${startLabel} to ${endLabel}`;
     } else {
-      elements.summaryAverageGrowthLabel.textContent = 'Change across the selected period';
+      elements.summaryAverageGrowthLabel.textContent = 'Average trendline change across the selected period';
     }
   } else {
     elements.summaryAverageGrowth.textContent = '0%';
 
     if (aggregated.length < 2) {
-      elements.summaryAverageGrowthLabel.textContent = 'Select at least two weeks to see change';
+      elements.summaryAverageGrowthLabel.textContent = 'Select at least two weeks to see trendline change';
     } else if (!growthStats.hasBaseline) {
       if (startLabel && endLabel) {
-        elements.summaryAverageGrowthLabel.textContent = `Change from ${startLabel} to ${endLabel} requires a non-zero starting week`;
+        elements.summaryAverageGrowthLabel.textContent = `Trendline change from ${startLabel} to ${endLabel} requires a non-zero starting week`;
       } else {
-        elements.summaryAverageGrowthLabel.textContent = 'Change requires a non-zero starting week';
+        elements.summaryAverageGrowthLabel.textContent = 'Trendline change requires a non-zero starting week';
       }
     } else if (!growthStats.hasRange) {
       if (startLabel && endLabel) {
-        elements.summaryAverageGrowthLabel.textContent = `Change from ${startLabel} to ${endLabel} requires additional weeks of data`;
+        elements.summaryAverageGrowthLabel.textContent = `Trendline change from ${startLabel} to ${endLabel} requires additional week-over-week data`;
       } else {
-        elements.summaryAverageGrowthLabel.textContent = 'Change requires additional weeks of data';
+        elements.summaryAverageGrowthLabel.textContent = 'Trendline change requires additional week-over-week data';
       }
     } else {
-      elements.summaryAverageGrowthLabel.textContent = 'Change not available for the selected period';
+      elements.summaryAverageGrowthLabel.textContent = 'Trendline change not available for the selected period';
     }
   }
 }
