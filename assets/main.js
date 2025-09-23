@@ -593,6 +593,11 @@ function updateDistributionChart(filtered, metricKey) {
       mode: 'nearest',
       intersect: true
     },
+    layout: {
+      padding: {
+        bottom: 24
+      }
+    },
     plugins: {
       legend: {
         position: 'bottom'
