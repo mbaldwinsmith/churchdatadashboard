@@ -133,6 +133,37 @@ function formatNumber(value, { decimals = 0 } = {}) {
   });
 }
 
+function computeLinearRegression(values) {
+  if (!Array.isArray(values) || values.length < 2) {
+    return null;
+  }
+
+  const n = values.length;
+  let sumX = 0;
+  let sumY = 0;
+  let sumXY = 0;
+  let sumXX = 0;
+
+  for (let i = 0; i < n; i += 1) {
+    const x = i;
+    const y = Number(values[i]) || 0;
+    sumX += x;
+    sumY += y;
+    sumXY += x * y;
+    sumXX += x * x;
+  }
+
+  const denominator = n * sumXX - sumX * sumX;
+  if (denominator === 0) {
+    return null;
+  }
+
+  const slope = (n * sumXY - sumX * sumY) / denominator;
+  const intercept = (sumY - slope * sumX) / n;
+
+  return Array.from({ length: n }, (_, index) => intercept + slope * index);
+}
+
 function formatDateLabel(dateString) {
   const date = parseIsoDateLocal(dateString);
   return date.toLocaleDateString('en-US', {
@@ -529,6 +560,21 @@ function updateTrendChart(filtered, metricKey) {
     ]
   };
 
+  const trendlineValues = computeLinearRegression(values);
+  if (trendlineValues) {
+    chartData.datasets.push({
+      type: 'line',
+      label: `${state.metric} Trend`,
+      data: trendlineValues,
+      borderColor: '#3f6ae0',
+      borderDash: [6, 6],
+      borderWidth: 2,
+      pointRadius: 0,
+      fill: false,
+      tension: 0
+    });
+  }
+
   const options = {
     maintainAspectRatio: false,
     interaction: {
@@ -607,6 +653,21 @@ function updateMonthlyChart(filtered, metricKey) {
       }
     ]
   };
+
+  const monthlyTrendlineValues = computeLinearRegression(values);
+  if (monthlyTrendlineValues) {
+    chartData.datasets.push({
+      type: 'line',
+      label: `${state.metric} Trend`,
+      data: monthlyTrendlineValues,
+      borderColor: '#2eb88a',
+      borderDash: [6, 6],
+      borderWidth: 2,
+      pointRadius: 0,
+      fill: false,
+      tension: 0
+    });
+  }
 
   const options = {
     maintainAspectRatio: false,
