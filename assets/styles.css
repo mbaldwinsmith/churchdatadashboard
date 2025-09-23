@@ -543,7 +543,7 @@ body {
   --summary-accent-soft: rgba(244, 162, 97, 0.24);
 }
 
-.summary-card.summary-top-group {
+.summary-card.summary-growth {
   --summary-accent: #a855f7;
   --summary-accent-soft: rgba(168, 85, 247, 0.24);
 }
