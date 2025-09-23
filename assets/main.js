@@ -23,8 +23,8 @@ const elements = {
   summaryAverage: document.getElementById('summaryAverage'),
   summaryPeak: document.getElementById('summaryPeak'),
   summaryPeakLabel: document.getElementById('summaryPeakLabel'),
-  summaryTopGroup: document.getElementById('summaryTopGroup'),
-  summaryTopGroupLabel: document.getElementById('summaryTopGroupLabel'),
+  summaryAverageGrowth: document.getElementById('summaryAverageGrowth'),
+  summaryAverageGrowthLabel: document.getElementById('summaryAverageGrowthLabel'),
   distributionLabel: document.getElementById('distributionLabel'),
   activeFilters: document.getElementById('activeFilters'),
   metricHeader: document.getElementById('metricHeader'),
@@ -294,6 +294,38 @@ function aggregateByDate(rows, metricKey) {
   );
 }
 
+function calculateAverageGrowth(aggregated) {
+  if (!Array.isArray(aggregated) || !aggregated.length) {
+    return { value: 0, periods: 0, startDate: null, endDate: null };
+  }
+
+  const startDate = aggregated[0].date;
+  const endDate = aggregated[aggregated.length - 1].date;
+
+  if (aggregated.length < 2) {
+    return { value: 0, periods: 0, startDate, endDate };
+  }
+
+  let totalChange = 0;
+  let periods = 0;
+
+  for (let index = 1; index < aggregated.length; index += 1) {
+    const previous = aggregated[index - 1].value;
+    const current = aggregated[index].value;
+
+    if (previous > 0) {
+      totalChange += ((current - previous) / previous) * 100;
+      periods += 1;
+    }
+  }
+
+  if (!periods) {
+    return { value: 0, periods: 0, startDate, endDate };
+  }
+
+  return { value: totalChange / periods, periods, startDate, endDate };
+}
+
 function aggregateMonthly(rows, metricKey) {
   const map = new Map();
   rows.forEach((row) => {
@@ -367,19 +399,30 @@ function updateSummaries(filtered, metricKey) {
     elements.summaryPeakLabel.textContent = 'No data available';
   }
 
-  const distribution = getDistributionData(filtered, metricKey, state.distributionDimension);
-  if (distribution.values.length) {
-    let maxIndex = 0;
-    distribution.values.forEach((value, index) => {
-      if (value > distribution.values[maxIndex]) {
-        maxIndex = index;
-      }
-    });
-    elements.summaryTopGroup.textContent = formatNumber(distribution.values[maxIndex]);
-    elements.summaryTopGroupLabel.textContent = `${distribution.dimension}: ${distribution.labels[maxIndex]}`;
+  const growthStats = calculateAverageGrowth(aggregated);
+  const startLabel = growthStats.startDate ? formatDateLabel(growthStats.startDate) : null;
+  const endLabel = growthStats.endDate ? formatDateLabel(growthStats.endDate) : null;
+  if (growthStats.periods > 0) {
+    const sign = growthStats.value > 0 ? '+' : growthStats.value < 0 ? '−' : '';
+    const formattedValue = formatNumber(Math.abs(growthStats.value), { decimals: 1 });
+    elements.summaryAverageGrowth.textContent = `${sign}${formattedValue}%`;
+
+    if (startLabel && endLabel) {
+      elements.summaryAverageGrowthLabel.textContent = `Average weekly change from ${startLabel} to ${endLabel}`;
+    } else {
+      elements.summaryAverageGrowthLabel.textContent = 'Average weekly change for selected period';
+    }
   } else {
-    elements.summaryTopGroup.textContent = '0';
-    elements.summaryTopGroupLabel.textContent = 'No data for selected grouping';
+    const hasRange = aggregated.length >= 2;
+    elements.summaryAverageGrowth.textContent = '0%';
+
+    if (hasRange && startLabel && endLabel) {
+      elements.summaryAverageGrowthLabel.textContent = `Average weekly change from ${startLabel} to ${endLabel} requires non-zero attendance in the prior week`;
+    } else if (hasRange) {
+      elements.summaryAverageGrowthLabel.textContent = 'Average weekly change requires non-zero attendance';
+    } else {
+      elements.summaryAverageGrowthLabel.textContent = 'Select at least two weeks to see growth';
+    }
   }
 }
 
