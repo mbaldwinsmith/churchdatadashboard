@@ -607,8 +607,12 @@ function updateTrendChart(filtered, metricKey) {
       legend: { display: false },
       tooltip: {
         callbacks: {
-          title: (items) => items.map((item) => formatDateLabel(item.label)),
-          label: (item) => `${state.metric}: ${formatNumber(item.parsed.y)}`
+          title: (items) => (items.length ? formatDateLabel(items[0].label) : ''),
+          label: (item) => {
+            const datasetLabel = item.dataset?.label || '';
+            const labelText = datasetLabel.endsWith(' Trend') ? 'Trend' : state.metric;
+            return `${labelText}: ${formatNumber(item.parsed.y)}`;
+          }
         }
       }
     }
@@ -694,7 +698,11 @@ function updateMonthlyChart(filtered, metricKey) {
       legend: { display: false },
       tooltip: {
         callbacks: {
-          label: (item) => `${state.metric}: ${formatNumber(item.parsed.y)}`
+          label: (item) => {
+            const datasetLabel = item.dataset?.label || '';
+            const labelText = datasetLabel.endsWith(' Trend') ? 'Trend' : state.metric;
+            return `${labelText}: ${formatNumber(item.parsed.y)}`;
+          }
         }
       }
     }
