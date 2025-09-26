@@ -1,5 +1,9 @@
+// CSV parsing helpers that convert uploaded attendance spreadsheets into the
+// normalized objects consumed by the dashboard. Security checks are delegated
+// to the csvSecurity module.
 import { ensureNoBinaryData, sanitizeTextValue, enforceRowLimit } from './csvSecurity.mjs';
 
+// Ordered month names used for validation and presentation.
 export const monthNames = [
   'January',
   'February',
@@ -15,11 +19,13 @@ export const monthNames = [
   'December'
 ];
 
+// Provide a sortable index for each month name (January -> 0, ...).
 export const monthRank = monthNames.reduce((acc, name, index) => {
   acc[name] = index;
   return acc;
 }, {});
 
+// Expected column headers for uploaded CSV files. The parser throws if any are missing.
 export const REQUIRED_HEADERS = [
   'Week',
   'Date',
@@ -31,6 +37,7 @@ export const REQUIRED_HEADERS = [
   'Kids Checked-in'
 ];
 
+// Lightweight CSV line parser that respects quoted fields and escaped quotes.
 function parseCsvLine(line) {
   const values = [];
   let current = '';
@@ -57,6 +64,8 @@ function parseCsvLine(line) {
   return values;
 }
 
+// Fall back to the month of the parsed date when a CSV cell omits or misspells
+// the month name.
 function normalizeMonth(value, date) {
   if (value) {
     const match = monthNames.find((month) => month.toLowerCase() === value.toLowerCase());
@@ -67,6 +76,7 @@ function normalizeMonth(value, date) {
   return monthNames[date.getMonth()];
 }
 
+// Convert a raw CSV row into a sanitized, typed record the dashboard can trust.
 function normalizeCsvRow(entry) {
   const weekValue = Number(entry.Week);
   if (!Number.isFinite(weekValue)) {
@@ -119,6 +129,7 @@ function normalizeCsvRow(entry) {
   };
 }
 
+// Strictly parse YYYY-MM-DD strings into real Date objects in the local timezone.
 export function parseIsoDateLocal(value) {
   if (typeof value !== 'string') {
     throw new Error(`Invalid Date value "${value}".`);
@@ -151,6 +162,7 @@ export function parseIsoDateLocal(value) {
   return date;
 }
 
+// Parse a CSV string into normalized attendance records with validation applied.
 export function parseCsv(text) {
   ensureNoBinaryData(text);
 

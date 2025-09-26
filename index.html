@@ -15,6 +15,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   </head>
   <body>
+    <!-- Introductory hero with the project title and supporting copy. -->
     <header class="page-header">
       <div class="layout-shell">
         <h1>Church Attendance Dashboard</h1>
@@ -25,6 +26,7 @@
       </div>
     </header>
 
+    <!-- Primary dashboard layout containing controls, charts, and tables. -->
     <main class="layout-shell main-content">
       <section class="data-management" aria-labelledby="dataManagementHeading">
         <article class="data-card">
@@ -56,6 +58,7 @@
         </article>
       </section>
     
+      <!-- Filter controls for narrowing down the dataset (year, site, service, metric). -->
       <section class="controls" aria-labelledby="filtersHeading">
         <h2 class="controls__badge" id="filtersHeading">Filters</h2>
         <div class="control-group toggle-group">
@@ -83,6 +86,7 @@
         </div>
       </section>
 
+      <!-- Compact summary of the active filters for quick reference. -->
       <section class="filters-summary">
         <div class="filters-summary__content">
           <span class="filters-summary__label">Current view</span>
@@ -90,6 +94,7 @@
         </div>
       </section>
 
+      <!-- Topline metric cards that surface totals, averages, peaks, and growth. -->
       <section class="summaries" aria-live="polite">
         <article class="summary-card summary-total">
           <div class="summary-card__header">
@@ -125,6 +130,7 @@
         </article>
       </section>
 
+      <!-- Chart collection: weekly trend, monthly totals, and distribution breakdowns. -->
       <section class="charts">
         <article class="chart-card">
           <div class="chart-header">
@@ -246,6 +252,7 @@
         </article>
       </section>
 
+      <!-- Detailed table view of the 50 most recent rows matching the filters. -->
       <section class="table-section">
         <div class="table-header">
           <h2>Recent Weeks</h2>
@@ -269,12 +276,14 @@
       </section>
     </main>
 
+    <!-- Attribution footer that clarifies the dataset origin. -->
     <footer class="page-footer">
       <div class="layout-shell">
         <p>Placeholder data generated for demonstration purposes.</p>
       </div>
     </footer>
 
+    <!-- Load the main dashboard module once the document structure is in place. -->
     <script type="module" src="assets/main.js"></script>
   </body>
 </html>

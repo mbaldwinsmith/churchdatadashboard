@@ -1,6 +1,12 @@
+// Core dashboard logic for the interactive charts, filters, and data management.
+// The module coordinates state, DOM references, and the rendering pipeline so the
+// UI stays synchronized with the selected filters and dataset.
 import { monthRank, parseCsv, parseIsoDateLocal } from './csvParser.mjs';
 import { MAX_FILE_SIZE_BYTES, describeFileSize } from './csvSecurity.mjs';
 
+// Track the currently applied filters and preferences. Filters that support
+// multi-select store their values in arrays, while radio-style choices are
+// stored as strings for simplicity.
 const state = {
   year: ['All'],
   site: ['All'],
@@ -9,6 +15,8 @@ const state = {
   distributionDimension: 'Service'
 };
 
+// Cache frequently accessed DOM elements so we can update the UI quickly
+// without repeatedly querying the document tree.
 const elements = {
   yearToggle: document.getElementById('yearToggle'),
   siteToggle: document.getElementById('siteToggle'),
@@ -38,6 +46,9 @@ const elements = {
   distributionChartYearCanvas: document.getElementById('distributionChartYear')
 };
 
+// Detect whether the layout has enough room to show the trio of pie charts at
+// once. The listener is registered defensively so the dashboard still works in
+// older browsers that only provide `addListener`.
 const distributionLayoutQuery =
   typeof window !== 'undefined' && typeof window.matchMedia === 'function'
     ? window.matchMedia('(min-width: 1024px)')
@@ -47,6 +58,7 @@ const distributionLayoutQuery =
         addListener: null
       };
 
+// Mutable references to the currently loaded dataset and Chart.js instances.
 let dataset = [];
 let trendChart;
 let monthlyChart;
@@ -58,6 +70,8 @@ const distributionChartsByDimension = {
 };
 let servicesBySite = new Map();
 
+// Palette of base colors used across charts. Additional colors are generated
+// on demand so visualizations stay distinct even with many segments.
 const colors = [
   '#3f6ae0',
   '#2eb88a',
@@ -69,6 +83,8 @@ const colors = [
   '#20c997'
 ];
 
+// Normalize the stored filter for the given key so downstream logic always
+// receives an array of selected values.
 function getActiveSelections(stateKey) {
   const value = state[stateKey];
   if (Array.isArray(value)) {
@@ -82,6 +98,8 @@ function getActiveSelections(stateKey) {
   return [...state[stateKey]];
 }
 
+// Apply a new selection to the `state` object while respecting available
+// options and the "All" sentinel value.
 function applySelection(stateKey, selections, options = []) {
   const optionSet = new Set(options);
   const hasAllOption = optionSet.has('All');
@@ -115,10 +133,12 @@ function applySelection(stateKey, selections, options = []) {
   return normalized;
 }
 
+// Determine whether a particular value is included in the given selection set.
 function matchesSelection(selections, value) {
   return !selections.length || selections.includes('All') || selections.includes(value);
 }
 
+// Convert a list of strings into a reader-friendly phrase.
 function formatList(items) {
   if (!items.length) return '';
   if (items.length === 1) return items[0];
@@ -126,6 +146,7 @@ function formatList(items) {
   return `${items.slice(0, -1).join(', ')}, and ${items[items.length - 1]}`;
 }
 
+// Format a numeric value with localized thousands separators and decimals.
 function formatNumber(value, { decimals = 0 } = {}) {
   return Number(value).toLocaleString('en-US', {
     minimumFractionDigits: decimals,
@@ -133,6 +154,8 @@ function formatNumber(value, { decimals = 0 } = {}) {
   });
 }
 
+// Generate a simple least-squares trendline for the provided series. The
+// resulting array mirrors the input length so it can be plotted directly.
 function computeLinearRegression(values) {
   if (!Array.isArray(values) || values.length < 2) {
     return null;
@@ -164,6 +187,7 @@ function computeLinearRegression(values) {
   return Array.from({ length: n }, (_, index) => intercept + slope * index);
 }
 
+// Display a human-readable date label for tooltips and table rows.
 function formatDateLabel(dateString) {
   const date = parseIsoDateLocal(dateString);
   return date.toLocaleDateString('en-US', {
@@ -173,6 +197,8 @@ function formatDateLabel(dateString) {
   });
 }
 
+// Provide lower-case descriptions of the tracked metrics for accessibility
+// strings and narration.
 function getMetricDescription(metricKey) {
   if (metricKey === 'Attendance') {
     return 'attendance';
@@ -183,11 +209,13 @@ function getMetricDescription(metricKey) {
   return String(metricKey || '').toLowerCase();
 }
 
+// Ensure each chart canvas advertises meaningful context to screen readers.
 function updateChartAriaLabel(canvas, description) {
   if (!canvas) return;
   canvas.setAttribute('aria-label', description);
 }
 
+// Toggle empty-state styling when a chart has no datapoints to display.
 function setChartAreaState(canvas, hasData) {
   if (!canvas) return;
   const chartArea = canvas.closest('.chart-area');
@@ -195,6 +223,7 @@ function setChartAreaState(canvas, hasData) {
   chartArea.classList.toggle('is-empty', !hasData);
 }
 
+// Update the dataset status banner with context-sensitive feedback.
 function setDatasetStatus(message, type = 'info') {
   if (!elements.datasetStatus) return;
   elements.datasetStatus.textContent = message;
@@ -206,6 +235,8 @@ function setDatasetStatus(message, type = 'info') {
   }
 }
 
+// Cache the services available at each site so the service filter can stay in
+// sync with the selected locations.
 function buildServicesBySite(data) {
   const map = new Map();
   data.forEach((row) => {
@@ -217,6 +248,7 @@ function buildServicesBySite(data) {
   servicesBySite = new Map(Array.from(map.entries()).map(([site, services]) => [site, Array.from(services).sort()]));
 }
 
+// Visually mark a single-select toggle button as active and update ARIA state.
 function updateToggleGroupSelection(container, selectedValue) {
   if (!container) return;
   const buttons = container.querySelectorAll('.toggle-button');
@@ -228,6 +260,7 @@ function updateToggleGroupSelection(container, selectedValue) {
   });
 }
 
+// Build the toggle buttons for multi-select filters (years, sites, services).
 function renderToggleOptions(container, options, stateKey) {
   if (!container) return;
   if (!options.length) {
@@ -258,6 +291,8 @@ function renderToggleOptions(container, options, stateKey) {
   });
 }
 
+// After state changes, ensure every toggle button reflects the latest
+// selection set.
 function updateMultiToggleSelection(container, stateKey) {
   if (!container) return;
   const selections = Array.isArray(state[stateKey]) ? state[stateKey] : [];
@@ -271,6 +306,7 @@ function updateMultiToggleSelection(container, stateKey) {
   });
 }
 
+// Rebuild the year, site, and service toggles whenever the dataset changes.
 function populateFilterOptions() {
   const uniqueYears = Array.from(new Set(dataset.map((row) => row.Year))).sort();
   renderToggleOptions(elements.yearToggle, ['All', ...uniqueYears], 'year');
@@ -281,6 +317,7 @@ function populateFilterOptions() {
   updateServiceOptions();
 }
 
+// Limit the service filter options to those that exist for the selected sites.
 function updateServiceOptions() {
   const siteSelections = getActiveSelections('site');
   const servicesSet = new Set();
@@ -298,6 +335,7 @@ function updateServiceOptions() {
   renderToggleOptions(elements.serviceToggle, options, 'service');
 }
 
+// Apply the active filters and return the matching dataset rows.
 function filterData() {
   const yearSelections = getActiveSelections('year');
   const siteSelections = getActiveSelections('site');
@@ -310,6 +348,7 @@ function filterData() {
   });
 }
 
+// Summarize filtered rows by ISO date so we can build weekly charts.
 function aggregateByDate(rows, metricKey) {
   const map = new Map();
   rows.forEach((row) => {
@@ -325,6 +364,8 @@ function aggregateByDate(rows, metricKey) {
   );
 }
 
+// Derive a trendline-based percentage change for the summary widget. The
+// calculations are defensive so the UI can explain why growth is unavailable.
 function calculateAverageGrowth(aggregated) {
   const rows = Array.isArray(aggregated) ? aggregated : [];
   const firstEntry = rows[0] || null;
@@ -418,6 +459,7 @@ function calculateAverageGrowth(aggregated) {
   });
 }
 
+// Aggregate rows into monthly totals using the month ranking helper.
 function aggregateMonthly(rows, metricKey) {
   const map = new Map();
   rows.forEach((row) => {
@@ -436,6 +478,7 @@ function aggregateMonthly(rows, metricKey) {
   return Array.from(map.values()).sort((a, b) => (a.sortKey > b.sortKey ? 1 : -1));
 }
 
+// Produce totals grouped by service, site, or year for the distribution charts.
 function getDistributionData(rows, metricKey, requestedDimension = 'Service') {
   const dimensionMap = new Map([
     ['Service', (row) => row.Service],
@@ -473,6 +516,7 @@ function getDistributionData(rows, metricKey, requestedDimension = 'Service') {
   };
 }
 
+// Refresh the headline metrics section (total, average, peak, trendline info).
 function updateSummaries(filtered, metricKey) {
   const total = filtered.reduce((sum, row) => sum + row[metricKey], 0);
   const aggregated = aggregateByDate(filtered, metricKey);
@@ -527,6 +571,7 @@ function updateSummaries(filtered, metricKey) {
   }
 }
 
+// Expand the base color set with progressively lighter tints when needed.
 function generatePalette(count) {
   if (count <= colors.length) {
     return colors.slice(0, count);
@@ -546,6 +591,8 @@ function generatePalette(count) {
   return palette;
 }
 
+// Render or update the weekly trend line chart, including the optional
+// regression overlay.
 function updateTrendChart(filtered, metricKey) {
   const aggregated = aggregateByDate(filtered, metricKey);
   const labels = aggregated.map((item) => item.date);
@@ -647,6 +694,7 @@ function updateTrendChart(filtered, metricKey) {
   }
 }
 
+// Render the month-over-month bar chart and keep its trendline synced.
 function updateMonthlyChart(filtered, metricKey) {
   const aggregated = aggregateMonthly(filtered, metricKey);
   const labels = aggregated.map((item) => item.label);
@@ -737,6 +785,7 @@ function updateMonthlyChart(filtered, metricKey) {
   }
 }
 
+// Show the proportional breakdown of metrics by service, site, or year.
 function updateDistributionChart(filtered, metricKey) {
   const metricDescription = getMetricDescription(state.metric);
   const dimensions = ['Service', 'Site', 'Year'];
@@ -795,6 +844,7 @@ function updateDistributionChart(filtered, metricKey) {
     }
   });
 
+  // Create or refresh a pie chart for a specific dimension.
   const applyChartUpdate = (chartInstance, canvas, distribution) => {
     if (!canvas) {
       return chartInstance;
@@ -850,6 +900,7 @@ function updateDistributionChart(filtered, metricKey) {
   }
 }
 
+// Populate the detail table with the 50 most recent matching records.
 function updateTable(filtered) {
   const metricKey = state.metric;
   const secondaryKey = metricKey === 'Attendance' ? 'Kids Checked-in' : 'Attendance';
@@ -901,6 +952,7 @@ function updateTable(filtered) {
   elements.tableBody.replaceChildren(fragment);
 }
 
+// Build a readable summary sentence that reflects the active filters.
 function updateActiveFilters() {
   const yearSelections = getActiveSelections('year');
   const siteSelections = getActiveSelections('site');
@@ -951,6 +1003,7 @@ function updateActiveFilters() {
   elements.activeFilters.textContent = `Showing ${metricLabel} for ${serviceLabel} at ${siteLabel} across ${yearLabel}.`;
 }
 
+// Recompute every dashboard surface based on the currently filtered dataset.
 function updateDashboard() {
   const filtered = filterData();
   const metricKey = state.metric;
@@ -963,6 +1016,8 @@ function updateDashboard() {
   updateActiveFilters();
 }
 
+// When responsive breakpoints change we rebuild the dashboard so the
+// distribution charts align with the new layout.
 const handleDistributionLayoutChange = () => {
   updateDashboard();
 };
@@ -973,6 +1028,7 @@ if (typeof distributionLayoutQuery.addEventListener === 'function') {
   distributionLayoutQuery.addListener(handleDistributionLayoutChange);
 }
 
+// Wire up a group of toggle buttons that behave like a radio control.
 function registerSingleSelectToggle(container, stateKey, { onChange } = {}) {
   if (!container) return;
 
@@ -1026,6 +1082,7 @@ function registerSingleSelectToggle(container, stateKey, { onChange } = {}) {
   });
 }
 
+// Wire up a group of toggle buttons that support multiple active selections.
 function registerMultiSelectToggle(container, stateKey, { onChange } = {}) {
   if (!container) return;
 
@@ -1104,6 +1161,7 @@ function registerMultiSelectToggle(container, stateKey, { onChange } = {}) {
   });
 }
 
+// Register all DOM event listeners required for interactive filters and uploads.
 function attachEventListeners() {
   registerMultiSelectToggle(elements.yearToggle, 'year');
   registerMultiSelectToggle(elements.siteToggle, 'site', {
@@ -1133,6 +1191,7 @@ function attachEventListeners() {
   }
 }
 
+// Replace the working dataset, refresh filters, and surface a status message.
 function applyDataset(data, { message, type = 'info' } = {}) {
   if (!Array.isArray(data) || data.length === 0) {
     throw new Error('The dataset must contain at least one row.');
@@ -1157,6 +1216,7 @@ function applyDataset(data, { message, type = 'info' } = {}) {
   setDatasetStatus(message || defaultMessage, type);
 }
 
+// Validate uploaded CSV files before parsing them into the dashboard dataset.
 function handleDatasetUpload(event) {
   const input = event.target;
   const file = input.files && input.files[0];
@@ -1214,6 +1274,7 @@ function handleDatasetUpload(event) {
   reader.readAsText(file);
 }
 
+// Load the bundled demonstration dataset when the app boots or on reset.
 async function loadPlaceholderDataset(feedbackType = 'info') {
   try {
     setDatasetStatus('Loading placeholder dataset…');
@@ -1232,6 +1293,7 @@ async function loadPlaceholderDataset(feedbackType = 'info') {
   }
 }
 
+// Entry point invoked at the bottom of the module to bootstrap the UI.
 function initialize() {
   attachEventListeners();
   loadPlaceholderDataset();
