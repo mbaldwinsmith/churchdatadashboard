@@ -326,47 +326,55 @@ function aggregateByDate(rows, metricKey) {
 }
 
 function calculateAverageGrowth(aggregated) {
-  if (!Array.isArray(aggregated) || aggregated.length < 2) {
-    const startDate = aggregated && aggregated[0] ? aggregated[0].date : null;
-    const endDate = aggregated && aggregated[aggregated.length - 1]
-      ? aggregated[aggregated.length - 1].date
-      : null;
-    return {
-      value: 0,
-      periods: 0,
-      startDate,
-      endDate,
-      hasBaseline: false,
-      hasRange: false
-    };
+  const rows = Array.isArray(aggregated) ? aggregated : [];
+  const firstEntry = rows[0] || null;
+  const lastEntry = rows.length ? rows[rows.length - 1] : firstEntry;
+
+  const buildGrowthResult = ({
+    value = 0,
+    periods = 0,
+    start = firstEntry,
+    end = lastEntry,
+    hasBaseline = false,
+    hasRange = false
+  } = {}) => ({
+    value,
+    periods,
+    startDate: start ? start.date : null,
+    endDate: end ? end.date : null,
+    hasBaseline,
+    hasRange
+  });
+
+  if (rows.length < 2) {
+    return buildGrowthResult({ hasRange: rows.length > 1 });
   }
 
-  const baselineIndex = aggregated.findIndex((entry) => entry.value > 0);
-  const startEntry = baselineIndex !== -1 ? aggregated[baselineIndex] : aggregated[0];
-  const lastEntry = aggregated[aggregated.length - 1];
+  const baselineIndex = rows.findIndex((entry) => entry.value > 0);
+  const hasPositiveBaseline = baselineIndex !== -1;
+  const startIndex = hasPositiveBaseline ? baselineIndex : 0;
+  const startEntry = rows[startIndex] || firstEntry;
+  const endEntry = lastEntry;
 
-  if (baselineIndex === -1) {
-    return {
-      value: 0,
-      periods: aggregated.length - 1,
-      startDate: startEntry.date,
-      endDate: lastEntry.date,
+  if (!hasPositiveBaseline) {
+    return buildGrowthResult({
+      periods: rows.length - 1,
+      start: startEntry,
+      end: endEntry,
       hasBaseline: false,
-      hasRange: aggregated.length > 1
-    };
+      hasRange: rows.length > 1
+    });
   }
 
-  const slice = aggregated.slice(baselineIndex);
+  const slice = rows.slice(startIndex);
 
   if (slice.length < 2) {
-    return {
-      value: 0,
-      periods: 0,
-      startDate: startEntry.date,
-      endDate: lastEntry.date,
-      hasBaseline,
+    return buildGrowthResult({
+      start: startEntry,
+      end: endEntry,
+      hasBaseline: true,
       hasRange: false
-    };
+    });
   }
 
   const xs = slice.map((_, index) => index);
@@ -389,26 +397,25 @@ function calculateAverageGrowth(aggregated) {
   const hasBaseline = trendStart > 0;
 
   if (!hasBaseline) {
-    return {
-      value: 0,
+    return buildGrowthResult({
       periods: slice.length - 1,
-      startDate: startEntry.date,
-      endDate: lastEntry.date,
+      start: startEntry,
+      end: endEntry,
       hasBaseline: false,
       hasRange: true
-    };
+    });
   }
 
   const percentChange = ((trendEnd - trendStart) / trendStart) * 100;
 
-  return {
+  return buildGrowthResult({
     value: percentChange,
     periods: slice.length - 1,
-    startDate: startEntry.date,
-    endDate: lastEntry.date,
-    hasBaseline,
+    start: startEntry,
+    end: endEntry,
+    hasBaseline: true,
     hasRange: true
-  };
+  });
 }
 
 function aggregateMonthly(rows, metricKey) {
