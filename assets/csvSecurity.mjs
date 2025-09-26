@@ -1,10 +1,12 @@
+// Guardrails that protect CSV uploads from malicious formulas and binary data.
 const CONTROL_CHAR_REGEX = /[\u0000-\u0008\u000B-\u000C\u000E-\u001F\u007F]/;
 const DANGEROUS_FORMULA_PREFIX = /^[=+\-@]/;
 const MAX_TEXT_LENGTH = 120;
 
-export const MAX_FILE_SIZE_BYTES = 2 * 1024 * 1024; // 2 MB
+export const MAX_FILE_SIZE_BYTES = 2 * 1024 * 1024; // 2 MB hard limit for uploads
 export const MAX_CSV_ROWS = 10000;
 
+// Human-friendly representation of a byte size (e.g., 2048 -> "2 KB").
 export function describeFileSize(bytes) {
   if (!Number.isFinite(bytes) || bytes <= 0) {
     return '0 bytes';
@@ -23,6 +25,7 @@ export function describeFileSize(bytes) {
   return `${formatted} ${units[unitIndex]}`;
 }
 
+// Reject files that contain control characters indicating binary content.
 export function ensureNoBinaryData(text) {
   if (typeof text !== 'string') {
     throw new Error('Unable to read the file as text.');
@@ -33,6 +36,8 @@ export function ensureNoBinaryData(text) {
   }
 }
 
+// Normalize text fields while rejecting values that could trigger spreadsheet
+// formula execution or break the UI.
 export function sanitizeTextValue(value, fieldName) {
   if (value === undefined || value === null) {
     return '';
@@ -63,6 +68,7 @@ export function sanitizeTextValue(value, fieldName) {
   return stringValue;
 }
 
+// Prevent excessively large CSVs from exhausting browser memory.
 export function enforceRowLimit(rowCount) {
   if (rowCount > MAX_CSV_ROWS) {
     throw new Error(`The CSV file exceeds the maximum allowed ${MAX_CSV_ROWS.toLocaleString()} data rows.`);

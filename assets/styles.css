@@ -1,3 +1,4 @@
+/* Design tokens and global font stack for the dashboard. */
 :root {
   --bg: #f5f7fb;
   --surface: #ffffff;
@@ -9,10 +10,12 @@
   font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
 
+/* Ensure consistent box sizing for layout calculations. */
 * {
   box-sizing: border-box;
 }
 
+/* Base page background with subtle gradients and typography. */
 body {
   margin: 0;
   min-height: 100vh;
@@ -25,6 +28,7 @@ body {
   line-height: 1.5;
 }
 
+/* Constrain content width and add responsive horizontal padding. */
 .layout-shell {
   width: 100%;
   max-width: 72rem;
@@ -33,6 +37,7 @@ body {
   padding-right: clamp(1rem, 4vw, 2rem);
 }
 
+/* Hero header styling with gradient background and layered flare. */
 .page-header {
   position: relative;
   padding: 2.5rem 0 1.5rem;
@@ -76,6 +81,7 @@ body {
   color: rgba(255, 255, 255, 0.85);
 }
 
+/* Vertical spacing between major dashboard sections. */
 .main-content {
   padding: 2rem 0 4rem;
   display: flex;
@@ -83,10 +89,12 @@ body {
   gap: 2rem;
 }
 
+/* Keep the data source card full-width while allowing layout tweaks later. */
 .data-management {
   display: flex;
 }
 
+/* Card shell shared by the data source panel. */
 .data-card {
   background: var(--surface);
   padding: 1.5rem;
@@ -103,6 +111,7 @@ body {
   font-size: 1.15rem;
 }
 
+/* Pill-shaped status badge that surfaces dataset feedback. */
 .dataset-status {
   --status-color: var(--accent);
   --status-bg: rgba(63, 106, 224, 0.12);
@@ -155,6 +164,7 @@ body {
   content: '⚠';
 }
 
+/* Align upload, reset, and download controls on a flexible row. */
 .data-actions {
   display: flex;
   flex-wrap: wrap;
@@ -162,6 +172,7 @@ body {
   align-items: center;
 }
 
+/* Custom styled file input that hides the default browser control. */
 .file-upload {
   position: relative;
   display: inline-flex;
@@ -186,6 +197,7 @@ body {
   box-shadow: 0 0 0 3px var(--accent-soft);
 }
 
+/* Primary button appearance shared by several CTAs. */
 .pill-button {
   display: inline-flex;
   align-items: center;
@@ -224,6 +236,7 @@ body {
   box-shadow: none;
 }
 
+/* Disclosure widget for CSV formatting tips. */
 .guidelines summary {
   font-weight: 600;
   cursor: pointer;
@@ -240,6 +253,7 @@ body {
   margin-bottom: 0.5rem;
 }
 
+/* Glassmorphism-inspired container for the filter toggles. */
 .controls {
   position: relative;
   display: grid;
@@ -278,6 +292,7 @@ body {
   z-index: 1;
 }
 
+/* Label badge that titles the filters section. */
 .controls__badge {
   grid-column: 1 / -1;
   margin: 0;
@@ -305,6 +320,7 @@ body {
   box-shadow: 0 0 0 4px rgba(63, 106, 224, 0.18);
 }
 
+/* Layout primitives shared by toggle groups and radio blocks. */
 .control-group {
   display: flex;
   flex-direction: column;
@@ -322,12 +338,14 @@ body {
   font-size: 0.9rem;
 }
 
+/* Allow toggle buttons to wrap gracefully on smaller widths. */
 .toggle-options {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
 }
 
+/* Base toggle button style reused across multi- and single-select controls. */
 .toggle-button {
   border: 1px solid var(--border);
   background: #fff;
@@ -368,6 +386,7 @@ body {
   box-shadow: 0 0 0 3px var(--accent-soft), 0 10px 20px rgba(63, 106, 224, 0.2);
 }
 
+/* Capsule-styled radio group for switching between metrics. */
 .metric-toggle {
   display: flex;
   align-items: center;
@@ -390,6 +409,7 @@ body {
   accent-color: var(--accent);
 }
 
+/* Container for the textual summary of active filters. */
 .filters-summary {
   display: flex;
   padding: 0 0.5rem;
@@ -437,12 +457,14 @@ body {
   color: var(--text);
 }
 
+/* Responsive grid for the headline statistic cards. */
 .summaries {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 1.5rem;
 }
 
+/* Shared appearance and hover effect for each summary card. */
 .summary-card {
   --summary-accent: #3f6ae0;
   --summary-accent-soft: rgba(63, 106, 224, 0.18);
@@ -548,12 +570,14 @@ body {
   --summary-accent-soft: rgba(168, 85, 247, 0.24);
 }
 
+/* Grid layout that positions the trio of chart cards responsively. */
 .charts {
   display: grid;
   gap: 1.5rem;
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
 }
 
+/* The distribution card switches between single and triple chart layouts. */
 .chart-card--distribution .chart-area {
   display: flex;
   flex-direction: column;
@@ -593,6 +617,7 @@ body {
   flex: 1;
 }
 
+/* Generic card styling applied to every chart container. */
 .chart-card {
   position: relative;
   background: var(--surface);
@@ -626,6 +651,7 @@ body {
   pointer-events: none;
 }
 
+/* Responsive canvas container that also surfaces empty states. */
 .chart-area {
   position: relative;
   min-height: 240px;
@@ -656,6 +682,7 @@ body {
   pointer-events: none;
 }
 
+/* Title and subtitle styling for chart headings. */
 .chart-header {
   display: flex;
   justify-content: space-between;
@@ -689,6 +716,7 @@ body {
   align-items: center;
 }
 
+/* On wide screens show all distribution charts simultaneously. */
 @media (min-width: 1024px) {
   .charts {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -718,6 +746,7 @@ body {
   }
 }
 
+/* Card styling for the detailed data table. */
 .table-section {
   position: relative;
   background: var(--surface);
@@ -764,6 +793,7 @@ body {
   color: var(--muted);
 }
 
+/* Allow the data table to scroll horizontally on narrow screens. */
 .table-wrapper {
   border-radius: 0.75rem;
   overflow: hidden;
@@ -772,6 +802,7 @@ body {
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6);
 }
 
+/* Core table layout shared by the weekly detail grid. */
 table {
   width: 100%;
   border-collapse: collapse;
@@ -798,6 +829,7 @@ tbody tr:last-child td {
   border-bottom: none;
 }
 
+/* Gentle hover interactions for table rows. */
 tbody tr {
   transition: background 0.2s ease;
 }
@@ -822,6 +854,7 @@ tbody tr:hover {
   font-weight: 500;
 }
 
+/* Centered footer with muted supporting text. */
 .page-footer {
   padding: 1.5rem 0 3rem;
   color: var(--muted);
@@ -829,6 +862,7 @@ tbody tr:hover {
   text-align: center;
 }
 
+/* Stack controls and soften chart headers on small devices. */
 @media (max-width: 768px) {
   .controls {
     grid-template-columns: 1fr;

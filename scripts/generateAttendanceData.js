@@ -1,6 +1,11 @@
+// Utility script that synthesizes a plausible multi-year attendance dataset
+// for demo and testing purposes. It produces both JSON and CSV exports that
+// feed the dashboard's placeholder state.
 const fs = require('fs');
 const path = require('path');
 
+// Services with baseline attendance and kids check-in counts. Growth trends
+// are applied later so each subsequent year increases slightly.
 const services = [
   { site: 'Central', service: '9am', baseAttendance: 200, baseKids: 50 },
   { site: 'Central', service: '11am', baseAttendance: 180, baseKids: 30 },
@@ -12,12 +17,14 @@ const years = [2022, 2023, 2024];
 const attendanceGrowth = 0.13;
 const kidsGrowth = 0.15;
 
+// Easter dates help us add realistic seasonal surges alongside Christmas.
 const easterDates = {
   2022: new Date('2022-04-17'),
   2023: new Date('2023-04-09'),
   2024: new Date('2024-03-31')
 };
 
+// Find the first Sunday of a given year so we can iterate week-by-week.
 function getFirstSunday(year) {
   const date = new Date(year, 0, 1);
   while (date.getDay() !== 0) {
@@ -26,6 +33,7 @@ function getFirstSunday(year) {
   return date;
 }
 
+// Build a list of every Sunday in the provided year with an incremental week number.
 function getSundays(year) {
   const sundays = [];
   const date = getFirstSunday(year);
@@ -40,11 +48,13 @@ function getSundays(year) {
   return sundays;
 }
 
+// Smooth gaussian boost used to simulate attendance spikes near key events.
 function gaussianBoost(date, center, widthDays, amplitude) {
   const diffDays = Math.abs((date - center) / (1000 * 60 * 60 * 24));
   return amplitude * Math.exp(-Math.pow(diffDays / widthDays, 2));
 }
 
+// Combine holiday boosts and summer slowdowns to mimic real-world rhythms.
 function seasonalMultiplier(date, year) {
   const month = date.getMonth();
   let multiplier = 1;
@@ -67,6 +77,7 @@ function seasonalMultiplier(date, year) {
   return Math.max(multiplier, 0.6);
 }
 
+// Random variation added to each week so the data feels less uniform.
 function weeklyNoise(intensity = 0.08) {
   const u1 = Math.random();
   const u2 = Math.random();
@@ -74,6 +85,7 @@ function weeklyNoise(intensity = 0.08) {
   return randStdNormal * intensity;
 }
 
+// Format a Date as YYYY-MM-DD for consistency across exports.
 function formatDate(date) {
   const year = date.getFullYear();
   const month = String(date.getMonth() + 1).padStart(2, '0');
@@ -81,10 +93,12 @@ function formatDate(date) {
   return `${year}-${month}-${day}`;
 }
 
+// Convert a Date into a human-readable month string (e.g., "March").
 function toMonthString(date) {
   return date.toLocaleString('en-US', { month: 'long' });
 }
 
+// Generate the entire dataset by iterating services across every Sunday.
 function generateData() {
   const rows = [];
 
@@ -122,6 +136,7 @@ function generateData() {
   return rows;
 }
 
+// Produce a CSV string that mirrors the JSON payload for download links.
 function toCSV(data) {
   const headers = [
     'Week',
@@ -147,6 +162,7 @@ function toCSV(data) {
   return lines.join('\n');
 }
 
+// Entry point that writes the generated dataset to the /data directory.
 function main() {
   const data = generateData();
   const outDir = path.join(__dirname, '..', 'data');
