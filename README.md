@@ -5,6 +5,16 @@ served as a set of static files, making it easy to host on Netlify, GitHub
 Pages, or any plain file server while keeping the authoring and development
 workflow lightweight.
 
+## Technologies used
+
+- **HTML5** for the semantic structure and accessible layout of the dashboard.
+- **CSS3** (plain, framework-free) for styling, theming, and responsive design.
+- **JavaScript ES modules** to orchestrate state management, filtering logic,
+  and interactive behaviors without a build step.
+- **Chart.js** (loaded from a CDN) to render the line, bar, and pie charts.
+- **Node.js scripts** for generating sample datasets and validating CSV inputs
+  during development.
+
 ## Getting started
 
 1. (Optional) Generate or refresh the placeholder dataset:
